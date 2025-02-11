@@ -43,6 +43,19 @@ const garmentIcons = {
   tank: <Shirt className="w-6 h-6 transform scale-x-75" />,
 };
 
+const colorStyles = {
+  white: "bg-white",
+  black: "bg-black",
+  navy: "bg-[#1B2B65]",
+  "heather-gray": "bg-gray-300",
+  "sport-gray": "bg-gray-400",
+  "royal-blue": "bg-blue-600",
+  "dark-heather": "bg-gray-600",
+  "military-green": "bg-olive-600",
+  maroon: "bg-red-800",
+  red: "bg-red-600",
+};
+
 export default function Order() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
@@ -346,10 +359,10 @@ export default function Order() {
                                 className="grid grid-cols-3 gap-4"
                               >
                                 {[
-                                  { value: "cotton", label: "100% Cotton" },
-                                  { value: "5050", label: "50/50 Blend" },
-                                  { value: "polyester", label: "100% Polyester" },
-                                ].map(({ value, label }) => (
+                                  { value: "cotton", label: "100% Cotton", bgColor: "bg-[#F2FCE2]" },
+                                  { value: "5050", label: "50/50 Blend", bgColor: "bg-[#FEC6A1]" },
+                                  { value: "polyester", label: "100% Polyester", bgColor: "bg-[#D3E4FD]" },
+                                ].map(({ value, label, bgColor }) => (
                                   <div key={value} className="relative">
                                     <RadioGroupItem
                                       value={value}
@@ -358,9 +371,9 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={`material-${value}`}
-                                      className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                      className={`flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300`}
                                     >
-                                      <Package2 className="w-6 h-6 mb-2" />
+                                      <div className={`w-8 h-8 rounded-full mb-2 ${bgColor}`} />
                                       <span className="text-sm font-medium">{label}</span>
                                     </label>
                                   </div>
@@ -438,20 +451,23 @@ export default function Order() {
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
-                                    <SelectValue placeholder="Select color" />
+                                    <SelectValue placeholder="Select color">
+                                      {field.value && (
+                                        <div className="flex items-center gap-2">
+                                          <div className={`w-4 h-4 rounded-full ${colorStyles[field.value as keyof typeof colorStyles]}`} />
+                                          <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                        </div>
+                                      )}
+                                    </SelectValue>
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
-                                  <SelectItem value="white">White</SelectItem>
-                                  <SelectItem value="black">Black</SelectItem>
-                                  <SelectItem value="navy">Navy</SelectItem>
-                                  <SelectItem value="heather-gray">Heather Gray</SelectItem>
-                                  <SelectItem value="sport-gray">Sport Gray</SelectItem>
-                                  <SelectItem value="royal-blue">Royal Blue</SelectItem>
-                                  <SelectItem value="dark-heather">Dark Heather</SelectItem>
-                                  <SelectItem value="military-green">Military Green</SelectItem>
-                                  <SelectItem value="maroon">Maroon</SelectItem>
-                                  <SelectItem value="red">Red</SelectItem>
+                                  {Object.entries(colorStyles).map(([color, bgClass]) => (
+                                    <SelectItem key={color} value={color} className="flex items-center gap-2">
+                                      <div className={`w-4 h-4 rounded-full ${bgClass} border border-gray-200`} />
+                                      <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                    </SelectItem>
+                                  ))}
                                 </SelectContent>
                               </Select>
                             </FormItem>
