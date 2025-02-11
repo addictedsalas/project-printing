@@ -102,7 +102,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}` as keyof OrderFormValues['sizes']}
+            name={`sizes.${id}`}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -110,7 +110,8 @@ export default function Order() {
                   <Input
                     type="number"
                     {...field}
-                    value={field.value || "0"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    value={field.value}
                     min="0"
                     className="h-10 border-2 border-brand-blue focus:border-brand-navy"
                   />
