@@ -1,4 +1,3 @@
-
 import { Shirt, Package2, Sparkles, Palette } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -59,7 +58,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           <FormItem key={id} className="space-y-4">
             <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">{label}</FormLabel>
             <div className="space-y-4">
-              {form.watch(`sizes.${id}`)?.map((sizeColor, index) => (
+              {form.watch(`sizes.${id}`)?.map((sizeColor: SizeColor, index: number) => (
                 <div key={`${id}-${index}`} className="flex items-end gap-4">
                   <FormField
                     control={form.control}
