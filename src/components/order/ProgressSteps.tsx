@@ -42,7 +42,7 @@ export const ProgressSteps = ({ step, totalSteps }: ProgressStepsProps) => {
                   animate={{ width: step > index + 1 ? "100%" : "0%" }}
                   transition={{ duration: 0.5 }}
                   className="h-full bg-gradient-to-r from-brand-navy to-brand-yellow dark:from-brand-yellow dark:to-brand-yellow/50 absolute top-0 left-0"
-                ></motion.div>
+                />
               </div>
             )}
           </div>
@@ -52,4 +52,13 @@ export const ProgressSteps = ({ step, totalSteps }: ProgressStepsProps) => {
         <span className={`${step >= 1 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
           Product Details
         </span>
-        <span className={`${step >= 2 ? "text-brand-navy dark
+        <span className={`${step >= 2 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
+          Customization
+        </span>
+        <span className={`${step >= 3 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
+          Review & Submit
+        </span>
+      </div>
+    </div>
+  );
+};
