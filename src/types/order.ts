@@ -16,9 +16,9 @@ export const orderFormSchema = z.object({
   sizeType: z.enum(["adult", "youth"]),
   sizes: z.record(z.array(sizeColorSchema)),
   printLocations: z.array(z.string()),
-  designs: z.record(z.string(), z.string()),
+  designs: z.record(z.string()),
   fabricQuality: z.string(),
 });
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;
-export type SizesKey = keyof OrderFormValues['sizes'];
+export type SizesKey = "xsmall" | "small" | "medium" | "large" | "xlarge" | "xxlarge" | "youth_s" | "youth_m" | "youth_l";

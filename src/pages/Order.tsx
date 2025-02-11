@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from "@/components/theme-provider";
 import { ReviewStep } from "@/components/order/ReviewStep";
 import { orderFormSchema } from "@/types/order";
-import type { OrderFormValues, SizesKey } from "@/types/order";
+import type { OrderFormValues, SizesKey, SizeColor } from "@/types/order";
+import { colorStyles } from "@/components/order/orderConstants";
 
 const garmentIcons = {
   tshirt: <Shirt className="w-6 h-6" />,
@@ -22,53 +22,12 @@ const garmentIcons = {
   tank: <Shirt className="w-6 h-6 transform scale-x-75" />,
 };
 
-const colorStyles = {
-  white: "bg-white",
-  black: "bg-black",
-  navy: "bg-[#1B2B65]",
-  "heather-gray": "bg-gray-300",
-  "sport-gray": "bg-gray-400",
-  "royal-blue": "bg-blue-600",
-  "dark-heather": "bg-gray-600",
-  "military-green": "bg-olive-600",
-  maroon: "bg-red-800",
-  red: "bg-red-600",
-};
-
-const materialTypeOptions = {
-  cotton: [
-    { value: "basic", label: "Basic Cotton" },
-    { value: "premium", label: "Premium Cotton" },
-    { value: "organic", label: "Organic Cotton" },
-    { value: "ringspun", label: "Ring-Spun Cotton" },
-    { value: "combed", label: "Combed Cotton" },
-    { value: "pima", label: "Pima Cotton" }
-  ],
-  "5050": [
-    { value: "cotton-poly", label: "Cotton/Poly Blend" },
-    { value: "tri-blend", label: "Tri-Blend" },
-    { value: "eco-blend", label: "Eco-Friendly Blend" },
-    { value: "performance-blend", label: "Performance Blend" }
-  ],
-  polyester: [
-    { value: "basic-poly", label: "Basic Polyester" },
-    { value: "moisture-wicking", label: "Moisture Wicking" },
-    { value: "performance", label: "Performance Polyester" },
-    { value: "recycled", label: "Recycled Polyester" }
-  ]
-};
-
 export default function Order() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [mounted, setMounted] = useState(false);
   const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
   const { theme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderFormSchema),
@@ -79,21 +38,26 @@ export default function Order() {
       brand: "",
       sizeType: "adult",
       sizes: {
-        xsmall: [],
-        small: [],
-        medium: [],
-        large: [],
-        xlarge: [],
-        xxlarge: [],
-        youth_s: [],
-        youth_m: [],
-        youth_l: [],
+        xsmall: [] as SizeColor[],
+        small: [] as SizeColor[],
+        medium: [] as SizeColor[],
+        large: [] as SizeColor[],
+        xlarge: [] as SizeColor[],
+        xxlarge: [] as SizeColor[],
+        youth_s: [] as SizeColor[],
+        youth_m: [] as SizeColor[],
+        youth_l: [] as SizeColor[],
       },
       printLocations: [],
       designs: {},
       fabricQuality: "",
     },
   });
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const onSubmit = (data: OrderFormValues) => {
     console.log(data);
@@ -129,7 +93,7 @@ export default function Order() {
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
                 <FormControl>
                   <div className="space-y-2">
-                    {(field.value || []).map((item, index) => (
+                    {(field.value || []).map((item: SizeColor, index: number) => (
                       <div key={index} className="flex gap-2">
                         <Input
                           type="number"
@@ -142,25 +106,33 @@ export default function Order() {
                           min="0"
                           className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                         />
-                        <Select
-                          value={item.color}
-                          onValueChange={(color) => {
-                            const newValue = [...field.value];
-                            newValue[index] = { ...newValue[index], color };
-                            field.onChange(newValue);
-                          }}
-                        >
-                          <SelectTrigger className="h-10">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.entries(colorStyles).map(([color, _]) => (
-                              <SelectItem key={color} value={color}>
-                                {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <FormField
+                          control={form.control}
+                          name={`sizes.${id}.${index}.color`}
+                          render={({ field: colorField }) => (
+                            <Select
+                              value={item.color}
+                              onValueChange={(newColor) => {
+                                const newValue = [...field.value];
+                                newValue[index] = { ...newValue[index], color: newColor };
+                                field.onChange(newValue);
+                              }}
+                            >
+                              <SelectTrigger className="h-10">
+                                <SelectValue>
+                                  {item.color && item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                </SelectValue>
+                              </SelectTrigger>
+                              <SelectContent>
+                                {Object.entries(colorStyles).map(([color, _]) => (
+                                  <SelectItem key={color} value={color}>
+                                    {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        />
                         <Button
                           type="button"
                           variant="destructive"
@@ -205,58 +177,6 @@ export default function Order() {
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <div className="flex justify-between mb-4">
-              {Array.from({ length: totalSteps }).map((_, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center ${
-                    index < totalSteps - 1 ? "flex-1" : ""
-                  }`}
-                >
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: index * 0.2 }}
-                    className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 transition-all duration-300 group
-                      ${
-                        step > index + 1
-                          ? "bg-brand-navy border-brand-navy text-white dark:bg-brand-yellow dark:border-brand-yellow dark:text-brand-navy"
-                          : step === index + 1
-                          ? "bg-brand-yellow border-brand-navy text-brand-navy dark:bg-brand-yellow dark:border-brand-yellow"
-                          : "bg-white/80 border-gray-200 text-gray-400 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:text-gray-500"
-                      } hover:shadow-lg hover:-translate-y-1`}
-                  >
-                    {index === 0 && <Package2 className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
-                    {index === 1 && <Palette className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
-                    {index === 2 && <MapPin className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
-                  </motion.div>
-                  {index < totalSteps - 1 && (
-                    <div className="flex-1 h-1 mx-4 bg-gray-200 dark:bg-brand-navy-dark relative rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: "0%" }}
-                        animate={{ width: step > index + 1 ? "100%" : "0%" }}
-                        transition={{ duration: 0.5 }}
-                        className="h-full bg-gradient-to-r from-brand-navy to-brand-yellow dark:from-brand-yellow dark:to-brand-yellow/50 absolute top-0 left-0"
-                      ></motion.div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between text-sm font-medium">
-              <span className={`${step >= 1 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
-                Product Details
-              </span>
-              <span className={`${step >= 2 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
-                Customization
-              </span>
-              <span className={`${step >= 3 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
-                Review & Submit
-              </span>
-            </div>
-          </div>
-
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <AnimatePresence mode="wait">
