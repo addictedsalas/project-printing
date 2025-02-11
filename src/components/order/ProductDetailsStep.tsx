@@ -56,86 +56,111 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
     return (
       <div className="grid gap-6">
         {sizes.map(({ id, label }) => (
-          <FormItem key={id} className="space-y-4">
-            <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">{label}</FormLabel>
-            <div className="space-y-4">
-              {form.watch(`sizes.${id}`)?.map((sizeColor: SizeColor, index: number) => (
-                <div key={`${id}-${index}`} className="flex items-end gap-4">
-                  <FormField
-                    control={form.control}
-                    name={`sizes.${id}.${index}.quantity`}
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel className="text-sm font-medium">Quantity</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            {...field}
-                            onChange={(e) => field.onChange(e.target.value)}
-                            value={field.value?.toString() || "0"}
-                            min="0"
-                            className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`sizes.${id}.${index}.color`}
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel className="text-sm font-medium">Color</FormLabel>
-                        <Select 
-                          onValueChange={field.onChange} 
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="h-10">
-                              <SelectValue>
-                                {field.value && (
-                                  <div className="flex items-center gap-2">
-                                    <div className={`w-4 h-4 rounded-full ${colorStyles[field.value]} border border-gray-200`} />
-                                    <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                                  </div>
-                                )}
-                              </SelectValue>
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {Object.entries(colorStyles).map(([color, bgClass]) => (
-                              <SelectItem key={color} value={color} className="flex items-center gap-2">
-                                <div className={`w-4 h-4 rounded-full ${bgClass} border border-gray-200`} />
-                                <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="mb-[2px]"
-                    onClick={() => removeColorFromSize(id, index)}
+          <motion.div
+            key={id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="group"
+          >
+            <FormItem className="space-y-3">
+              <FormLabel className="flex items-center justify-between text-lg font-medium text-brand-navy dark:text-white">
+                <span>{label}</span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addColorToSize(id)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-brand-blue/10 hover:bg-brand-blue/20 dark:bg-brand-yellow/10 dark:hover:bg-brand-yellow/20"
+                >
+                  Add Color
+                </Button>
+              </FormLabel>
+              <div className="space-y-3">
+                {form.watch(`sizes.${id}`)?.map((sizeColor: SizeColor, index: number) => (
+                  <div 
+                    key={`${id}-${index}`} 
+                    className="flex items-end gap-4 p-4 rounded-lg bg-white/50 dark:bg-brand-navy/50 border border-brand-blue/20 dark:border-brand-blue/10 hover:border-brand-navy/30 dark:hover:border-brand-yellow/30 transition-colors duration-200"
                   >
-                    ✕
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => addColorToSize(id)}
-                className="w-full"
-              >
-                Add Color
-              </Button>
-            </div>
-          </FormItem>
+                    <FormField
+                      control={form.control}
+                      name={`sizes.${id}.${index}.quantity`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel className="text-sm font-medium text-gray-600 dark:text-gray-300">Quantity</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              {...field}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              value={field.value?.toString() || "0"}
+                              min="0"
+                              className="h-10 border-2 border-brand-blue/30 focus:border-brand-navy dark:bg-brand-navy/20 dark:border-brand-blue/30 dark:focus:border-brand-yellow"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`sizes.${id}.${index}.color`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel className="text-sm font-medium text-gray-600 dark:text-gray-300">Color</FormLabel>
+                          <Select 
+                            onValueChange={field.onChange} 
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-10 border-2 border-brand-blue/30 focus:border-brand-navy dark:bg-brand-navy/20 dark:border-brand-blue/30 dark:focus:border-brand-yellow">
+                                <SelectValue>
+                                  {field.value && (
+                                    <div className="flex items-center gap-2">
+                                      <div className={`w-4 h-4 rounded-full ${colorStyles[field.value]} border border-gray-200`} />
+                                      <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                    </div>
+                                  )}
+                                </SelectValue>
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {Object.entries(colorStyles).map(([color, bgClass]) => (
+                                <SelectItem key={color} value={color} className="flex items-center gap-2">
+                                  <div className={`w-4 h-4 rounded-full ${bgClass} border border-gray-200`} />
+                                  <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeColorFromSize(id, index)}
+                      className="mb-[2px] hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                ))}
+                {form.watch(`sizes.${id}`)?.length === 0 && (
+                  <div className="flex items-center justify-center p-8 rounded-lg border-2 border-dashed border-brand-blue/20 dark:border-brand-blue/10">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addColorToSize(id)}
+                      className="bg-brand-blue/10 hover:bg-brand-blue/20 dark:bg-brand-yellow/10 dark:hover:bg-brand-yellow/20"
+                    >
+                      Add Color
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </FormItem>
+          </motion.div>
         ))}
       </div>
     );
@@ -390,10 +415,57 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
         />
 
         {/* Size Inputs */}
-        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue dark:bg-brand-navy-dark/50 dark:border-brand-blue/50">
-          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
-            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
-          </h3>
+        <div className="space-y-6 bg-gradient-to-br from-white/80 to-brand-blue-light/20 dark:from-brand-navy-dark/80 dark:to-brand-navy-light/20 p-8 rounded-xl border border-brand-blue/20 dark:border-brand-blue/10 shadow-lg">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold text-brand-navy dark:text-white">
+              {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
+            </h3>
+            <FormField
+              control={form.control}
+              name="sizeType"
+              render={({ field }) => (
+                <FormItem>
+                  <RadioGroup
+                    onValueChange={(value: "adult" | "youth") => {
+                      field.onChange(value);
+                      setSizeType(value);
+                    }}
+                    defaultValue={field.value}
+                    className="flex gap-2"
+                  >
+                    {[
+                      { value: "adult", label: "Adult" },
+                      { value: "youth", label: "Youth" },
+                    ].map(({ value, label }) => (
+                      <div key={value} className="relative">
+                        <RadioGroupItem
+                          value={value}
+                          id={`size-${value}`}
+                          className="peer sr-only"
+                        />
+                        <label
+                          htmlFor={`size-${value}`}
+                          className={`flex items-center justify-center px-4 py-2 text-sm border rounded-lg cursor-pointer transition-all duration-300
+                            ${
+                              field.value === value
+                                ? isDark
+                                  ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
+                                  : "border-brand-navy bg-brand-blue-light/30 text-brand-navy"
+                                : isDark
+                                  ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy/20"
+                                  : "border-brand-blue/30 hover:bg-brand-blue-light/20"
+                            }
+                          `}
+                        >
+                          {label}
+                        </label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </FormItem>
+              )}
+            />
+          </div>
           {renderSizeInputs(sizeType)}
         </div>
       </div>
