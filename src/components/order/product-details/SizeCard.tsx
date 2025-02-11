@@ -23,7 +23,7 @@ export const SizeCard = ({
   onKeyDown 
 }: SizeCardProps) => {
   return (
-    <div className="relative bg-slate-100 dark:bg-brand-navy-dark/80 ring-1 ring-brand-yellow rounded-lg transition-all duration-300 dark:border-brand-yellow">
+    <div className="relative bg-slate-100 dark:bg-brand-navy-dark/80 ring-1 ring-brand-blue rounded-lg transition-all duration-300 dark:border-brand-blue">
       <div className="flex flex-col items-center justify-between text-center p-2.5 min-h-[85px]">
         <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{label}</span>
         {sizeColors.length === 0 ? (
