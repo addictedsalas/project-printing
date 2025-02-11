@@ -106,28 +106,29 @@ export default function Order() {
                           min="0"
                           className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                         />
-                        <Select
-                          value={item.color}
-                          onValueChange={(newColor) => {
-                            const newValue = [...field.value];
-                            newValue[index] = { ...newValue[index], color: newColor };
-                            field.onChange(newValue);
-                          }}
-                        >
-                          <SelectTrigger className="h-10">
-                            <SelectValue>
-                              {typeof item.color === 'string' && 
-                                item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                            </SelectValue>
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.entries(colorStyles).map(([color, _]) => (
-                              <SelectItem key={color} value={color}>
-                                {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div>
+                          <Select
+                            defaultValue={item.color}
+                            onValueChange={(newColor) => {
+                              const newValue = [...field.value];
+                              newValue[index] = { ...newValue[index], color: newColor };
+                              field.onChange(newValue);
+                            }}
+                          >
+                            <SelectTrigger className="h-10">
+                              <SelectValue>
+                                {item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(colorStyles).map(([color, _]) => (
+                                <SelectItem key={color} value={color}>
+                                  {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                         <Button
                           type="button"
                           variant="destructive"
