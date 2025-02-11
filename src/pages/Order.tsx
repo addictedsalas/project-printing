@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useTheme } from "@/components/theme-provider";
 
 const orderFormSchema = z.object({
   quantity: z.string(),
@@ -46,6 +47,7 @@ export default function Order() {
   const totalSteps = 3;
   const [mounted, setMounted] = useState(false);
   const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
+  const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -102,7 +104,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}` as keyof OrderFormValues}
+            name={`sizes.${id}`}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -111,8 +113,9 @@ export default function Order() {
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(e.target.value)}
+                    value={field.value || "0"}
                     min="0"
-                    className="h-10 border-2 border-brand-blue focus:border-brand-navy"
+                    className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                   />
                 </FormControl>
               </FormItem>
@@ -123,8 +126,14 @@ export default function Order() {
     );
   };
 
+  const isDark = theme === "dark";
+
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light via-white to-brand-yellow-light">
+    <div className={`min-h-screen relative overflow-hidden ${
+      isDark 
+        ? "bg-gradient-to-br from-brand-navy/20 via-brand-navy/10 to-brand-blue/20" 
+        : "bg-gradient-to-br from-brand-blue-light via-white to-brand-yellow-light"
+    }`}>
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -189,7 +198,11 @@ export default function Order() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-gradient-to-br from-white/90 to-brand-yellow-light/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue hover:border-brand-navy transition-all duration-300"
+                  className={`${
+                    isDark 
+                      ? "bg-gradient-to-br from-brand-navy/20 to-brand-blue/20 backdrop-blur-sm border-brand-blue/30" 
+                      : "bg-gradient-to-br from-white/90 to-brand-yellow-light/50 backdrop-blur-sm border-brand-blue"
+                  } p-8 rounded-xl shadow-lg border-2 hover:border-brand-navy transition-all duration-300`}
                 >
                   {step === 1 && (
                     <div className="space-y-8">
@@ -497,7 +510,11 @@ export default function Order() {
                     type="button"
                     variant="outline"
                     onClick={() => setStep(step - 1)}
-                    className="px-8 bg-white hover:bg-brand-blue-light hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className={`px-8 ${
+                      isDark 
+                        ? "bg-brand-navy/20 hover:bg-brand-navy/40" 
+                        : "bg-white hover:bg-brand-blue-light"
+                    } hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
                   >
                     Previous
                   </Button>
@@ -513,7 +530,11 @@ export default function Order() {
                 ) : (
                   <Button 
                     type="submit" 
-                    className="ml-auto px-8 bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className={`ml-auto px-8 ${
+                      isDark 
+                        ? "bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90" 
+                        : "bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
+                    } hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
                   >
                     Submit Order
                   </Button>
