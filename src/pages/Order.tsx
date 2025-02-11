@@ -255,7 +255,17 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={value}
-                                      className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                      className={`flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer transition-all duration-300
+                                        ${
+                                          field.value === value
+                                            ? isDark
+                                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
+                                              : "border-brand-navy bg-brand-blue-light text-brand-navy"
+                                            : isDark
+                                              ? "hover:bg-brand-navy/20"
+                                              : "hover:bg-brand-blue-light/20"
+                                        }
+                                      `}
                                     >
                                       {garmentIcons[value as keyof typeof garmentIcons]}
                                       <span className="text-sm font-medium mt-2">{label}</span>
@@ -293,7 +303,17 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={`size-${value}`}
-                                      className="flex items-center justify-center px-6 py-3 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                      className={`flex items-center justify-center px-6 py-3 border-2 rounded-lg cursor-pointer transition-all duration-300
+                                        ${
+                                          field.value === value
+                                            ? isDark
+                                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
+                                              : "border-brand-navy bg-brand-blue-light text-brand-navy"
+                                            : isDark
+                                              ? "border-brand-blue/50 hover:bg-brand-navy/20"
+                                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                                        }
+                                      `}
                                     >
                                       <span className="text-sm font-medium">{label}</span>
                                     </label>
