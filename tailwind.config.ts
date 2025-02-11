@@ -29,6 +29,12 @@ export default {
           blue: "#A5C6E2",
           yellow: "#FFD84F",
           white: "#FFFFFF",
+          'navy-light': "#2C3F85",
+          'blue-light': "#C7DDF0",
+          'yellow-light': "#FFE588",
+          'navy-dark': "#131D45",
+          'blue-dark': "#84A8C4",
+          'yellow-dark': "#E6BE2D",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

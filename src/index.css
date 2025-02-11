@@ -28,7 +28,7 @@
   }
 
   body {
-    @apply bg-white text-brand-navy;
+    @apply bg-gradient-to-br from-white via-brand-blue-light/10 to-brand-yellow-light/10 text-brand-navy min-h-screen;
     font-family: 'Inter', sans-serif;
   }
 
@@ -42,20 +42,49 @@
   .brand-button {
     @apply px-8 py-3 bg-brand-yellow text-brand-navy font-semibold rounded-none 
            transition-all duration-300 hover:bg-brand-navy hover:text-white 
-           focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-opacity-50;
+           focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-opacity-50
+           shadow-[4px_4px_0px_0px_#1B2B65];
   }
 
   .brand-card {
-    @apply bg-white rounded-none shadow-md p-6 transition-all duration-300 
-           hover:shadow-lg border border-brand-blue;
+    @apply bg-white/90 backdrop-blur-sm rounded-none shadow-lg p-6 transition-all duration-300 
+           hover:shadow-xl border-2 border-brand-blue hover:border-brand-navy
+           hover:translate-y-[-2px];
   }
 
   .section-title {
-    @apply text-4xl md:text-5xl font-bold text-brand-navy mb-4;
+    @apply text-4xl md:text-5xl font-bold text-brand-navy mb-4
+           relative after:content-[''] after:absolute after:-bottom-2 after:left-0 
+           after:w-24 after:h-1 after:bg-brand-yellow;
   }
 
   .brand-input {
-    @apply w-full px-4 py-2 border border-brand-blue rounded-none focus:ring-2 
-           focus:ring-brand-navy focus:border-transparent transition-all duration-300;
+    @apply w-full px-4 py-2 border-2 border-brand-blue rounded-none 
+           focus:ring-2 focus:ring-brand-yellow focus:border-brand-navy 
+           transition-all duration-300 bg-white/90 backdrop-blur-sm;
   }
+
+  .nav-link {
+    @apply relative text-brand-navy hover:text-brand-yellow transition-colors duration-300
+           after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 
+           after:h-0.5 after:bg-brand-yellow after:transition-all after:duration-300
+           hover:after:w-full;
+  }
+}
+
+/* Custom Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
