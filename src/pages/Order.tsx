@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from "@/components/theme-provider";
 import { ReviewStep } from "@/components/order/ReviewStep";
 import { orderFormSchema } from "@/types/order";
-import type { OrderFormValues } from "@/types/order";
+import type { OrderFormValues, SizesKey } from "@/types/order";
 
 const garmentIcons = {
   tshirt: <Shirt className="w-6 h-6" />,
@@ -73,23 +73,21 @@ export default function Order() {
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      quantity: "",
       garmentType: "",
-      color: "",
       cottonType: "",
       materialType: "cotton",
       brand: "",
       sizeType: "adult",
       sizes: {
-        xsmall: "0",
-        small: "0",
-        medium: "0",
-        large: "0",
-        xlarge: "0",
-        xxlarge: "0",
-        youth_s: "0",
-        youth_m: "0",
-        youth_l: "0",
+        xsmall: [],
+        small: [],
+        medium: [],
+        large: [],
+        xlarge: [],
+        xxlarge: [],
+        youth_s: [],
+        youth_m: [],
+        youth_l: [],
       },
       printLocations: [],
       designs: {},
@@ -125,19 +123,70 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}` as `sizes.${SizesKey}`}
+            name={`sizes.${id}`}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    value={field.value?.toString() || "0"}
-                    min="0"
-                    className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
-                  />
+                  <div className="space-y-2">
+                    {(field.value || []).map((item, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          type="number"
+                          value={item.quantity}
+                          onChange={(e) => {
+                            const newValue = [...field.value];
+                            newValue[index] = { ...newValue[index], quantity: e.target.value };
+                            field.onChange(newValue);
+                          }}
+                          min="0"
+                          className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
+                        />
+                        <Select
+                          value={item.color}
+                          onValueChange={(color) => {
+                            const newValue = [...field.value];
+                            newValue[index] = { ...newValue[index], color };
+                            field.onChange(newValue);
+                          }}
+                        >
+                          <SelectTrigger className="h-10">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.entries(colorStyles).map(([color, _]) => (
+                              <SelectItem key={color} value={color}>
+                                {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => {
+                            const newValue = [...field.value];
+                            newValue.splice(index, 1);
+                            field.onChange(newValue);
+                          }}
+                        >
+                          ✕
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        field.onChange([...(field.value || []), { quantity: "0", color: "white" }]);
+                      }}
+                      className="w-full"
+                    >
+                      Add Color
+                    </Button>
+                  </div>
                 </FormControl>
               </FormItem>
             )}
@@ -670,19 +719,7 @@ export default function Order() {
                   )}
 
                   {step === 3 && (
-                    <div className="space-y-6">
-                      <div className="text-center mb-8">
-                        <motion.h2 
-                          initial={{ opacity: 0, y: -20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-3xl font-bold text-brand-navy dark:text-white"
-                        >
-                          Review & Submit
-                        </motion.h2>
-                        <p className="text-gray-600 dark:text-gray-300">Almost there! Review your order details</p>
-                      </div>
-                      <ReviewStep />
-                    </div>
+                    <ReviewStep form={form} />
                   )}
                 </motion.div>
               </AnimatePresence>
