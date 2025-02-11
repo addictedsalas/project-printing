@@ -8,7 +8,7 @@ export default function Hero() {
       </div>
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-block px-6 py-2 bg-brand-yellow text-sm font-medium mb-4 animate-fade-up shadow-[4px_4px_0px_0px_#1B2B65] hover:shadow-[6px_6px_0px_0px_#1B2B65] hover:-translate-y-0.5 transition-all duration-300">
+          <span className="inline-block px-6 py-2 bg-brand-yellow text-brand-navy text-sm font-medium mb-4 animate-fade-up shadow-[4px_4px_0px_0px_#1B2B65] hover:shadow-[6px_6px_0px_0px_#1B2B65] hover:-translate-y-0.5 transition-all duration-300 dark:bg-brand-blue dark:text-white dark:shadow-[4px_4px_0px_0px_#FFD84F] dark:hover:shadow-[6px_6px_0px_0px_#FFD84F]">
             Custom Screen Printing
           </span>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-up hover-glow" style={{ animationDelay: "0.2s" }}>
@@ -18,14 +18,14 @@ export default function Hero() {
               Remarkable Results
             </span>
           </h1>
-          <p className="text-xl mb-8 text-brand-navy/80 animate-fade-up hover:text-brand-navy transition-colors duration-300" style={{ animationDelay: "0.4s" }}>
+          <p className="text-xl mb-8 text-brand-navy/80 animate-fade-up hover:text-brand-navy transition-colors duration-300 dark:text-white/80 dark:hover:text-white" style={{ animationDelay: "0.4s" }}>
             Premium custom screen printing for your modern apparel and branding needs.
           </p>
           <div className="space-x-4 animate-fade-up" style={{ animationDelay: "0.6s" }}>
             <a href="/order" className="brand-button inline-block hover:scale-105 transition-transform duration-300">
               Start Your Order
             </a>
-            <a href="/shop" className="brand-button bg-transparent border-2 border-brand-navy hover:bg-brand-navy hover:text-white inline-block hover:scale-105 transition-transform duration-300">
+            <a href="/shop" className="brand-button bg-transparent border-2 border-brand-navy hover:bg-brand-navy hover:text-white inline-block hover:scale-105 transition-transform duration-300 dark:border-white dark:hover:bg-white dark:hover:text-brand-navy">
               Browse Shop
             </a>
           </div>
