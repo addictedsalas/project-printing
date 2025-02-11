@@ -24,20 +24,20 @@ export const SizeCard = ({
 }: SizeCardProps) => {
   return (
     <div className="relative bg-slate-100 dark:bg-brand-navy-dark/80 ring-1 ring-gray-950/10 rounded-lg transition-all duration-300 hover:ring-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow">
-      <div className="flex flex-col items-center text-center p-4">
-        <span className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{label}</span>
+      <div className="flex flex-col items-center text-center p-3">
+        <span className="text-xs font-medium mb-1.5 text-gray-700 dark:text-gray-300">{label}</span>
         {sizeColors.length === 0 ? (
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={() => onAddColor(id)}
-            className="h-7 px-3 text-xs border border-gray-950/20 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
+            className="h-6 px-2 text-xs border border-gray-950/20 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
           >
             Add Color
           </Button>
         ) : (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-1.5">
             {sizeColors.map((_, index) => (
               <SizeColorInput
                 key={`${id}-${index}`}
