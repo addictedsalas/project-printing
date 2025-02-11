@@ -1,3 +1,4 @@
+
 import { Shirt, Package2, Palette, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -213,62 +214,6 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           )}
         />
 
-        {/* Size Category */}
-        <FormField
-          control={form.control}
-          name="sizeType"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">Size Category</FormLabel>
-              <RadioGroup
-                onValueChange={(value: "adult" | "youth") => {
-                  field.onChange(value);
-                  setSizeType(value);
-                }}
-                defaultValue={field.value}
-                className="flex gap-4"
-              >
-                {[
-                  { value: "adult", label: "Adult Sizes" },
-                  { value: "youth", label: "Youth Sizes" },
-                ].map(({ value, label }) => (
-                  <div key={value} className="relative">
-                    <RadioGroupItem
-                      value={value}
-                      id={`size-${value}`}
-                      className="peer sr-only"
-                    />
-                    <label
-                      htmlFor={`size-${value}`}
-                      className={`flex items-center justify-center px-6 py-3 border-2 rounded-lg cursor-pointer transition-all duration-300
-                        ${
-                          field.value === value
-                            ? isDark
-                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
-                              : "border-brand-navy bg-brand-blue-light text-brand-navy"
-                            : isDark
-                              ? "border-brand-blue/50 hover:bg-brand-navy/20"
-                              : "border-brand-blue hover:bg-brand-blue-light/20"
-                        }
-                      `}
-                    >
-                      <span className="text-sm font-medium">{label}</span>
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FormItem>
-          )}
-        />
-
-        {/* Size Inputs */}
-        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue dark:bg-brand-navy-dark/50 dark:border-brand-blue/50">
-          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
-            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
-          </h3>
-          {renderSizeInputs(sizeType)}
-        </div>
-
         {/* Material Type */}
         <FormField
           control={form.control}
@@ -395,6 +340,62 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
             </FormItem>
           )}
         />
+
+        {/* Size Category */}
+        <FormField
+          control={form.control}
+          name="sizeType"
+          render={({ field }) => (
+            <FormItem className="space-y-4">
+              <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">Size Category</FormLabel>
+              <RadioGroup
+                onValueChange={(value: "adult" | "youth") => {
+                  field.onChange(value);
+                  setSizeType(value);
+                }}
+                defaultValue={field.value}
+                className="flex gap-4"
+              >
+                {[
+                  { value: "adult", label: "Adult Sizes" },
+                  { value: "youth", label: "Youth Sizes" },
+                ].map(({ value, label }) => (
+                  <div key={value} className="relative">
+                    <RadioGroupItem
+                      value={value}
+                      id={`size-${value}`}
+                      className="peer sr-only"
+                    />
+                    <label
+                      htmlFor={`size-${value}`}
+                      className={`flex items-center justify-center px-6 py-3 border-2 rounded-lg cursor-pointer transition-all duration-300
+                        ${
+                          field.value === value
+                            ? isDark
+                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
+                              : "border-brand-navy bg-brand-blue-light text-brand-navy"
+                            : isDark
+                              ? "border-brand-blue/50 hover:bg-brand-navy/20"
+                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                        }
+                      `}
+                    >
+                      <span className="text-sm font-medium">{label}</span>
+                    </label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </FormItem>
+          )}
+        />
+
+        {/* Size Inputs */}
+        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue dark:bg-brand-navy-dark/50 dark:border-brand-blue/50">
+          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
+            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
+          </h3>
+          {renderSizeInputs(sizeType)}
+        </div>
       </div>
     </div>
   );
