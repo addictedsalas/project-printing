@@ -40,5 +40,5 @@ export const colorStyles = {
   "purple": "bg-purple-600",
   "yellow": "bg-yellow-400",
   "orange": "bg-orange-500",
-  "pink": "bg-pink-500",
-};
+  "pink": "bg-pink-500"
+} as const;
