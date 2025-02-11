@@ -59,7 +59,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           <FormItem key={id} className="space-y-4">
             <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">{label}</FormLabel>
             <div className="space-y-4">
-              {form.watch(`sizes.${id}`)?.map((_, index) => (
+              {form.watch(`sizes.${id}`)?.map((sizeColor, index) => (
                 <div key={`${id}-${index}`} className="flex items-end gap-4">
                   <FormField
                     control={form.control}
@@ -89,15 +89,16 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                         <Select 
                           onValueChange={field.onChange} 
                           defaultValue={field.value}
-                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger className="h-10">
                               <SelectValue>
-                                <div className="flex items-center gap-2">
-                                  <div className={`w-4 h-4 rounded-full ${colorStyles[field.value]} border border-gray-200`} />
-                                  <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                                </div>
+                                {field.value && (
+                                  <div className="flex items-center gap-2">
+                                    <div className={`w-4 h-4 rounded-full ${colorStyles[field.value]} border border-gray-200`} />
+                                    <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                  </div>
+                                )}
                               </SelectValue>
                             </SelectTrigger>
                           </FormControl>
@@ -390,42 +391,6 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   <SelectItem value="bella-canvas">Bella + Canvas</SelectItem>
                   <SelectItem value="next-level">Next Level</SelectItem>
                   <SelectItem value="port-company">Port & Company</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-
-        {/* Color */}
-        <FormField
-          control={form.control}
-          name="color"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                <Palette className="w-5 h-5" />
-                Color
-              </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
-                    <SelectValue placeholder="Select color">
-                      {field.value && (
-                        <div className="flex items-center gap-2">
-                          <div className={`w-4 h-4 rounded-full ${colorStyles[field.value as keyof typeof colorStyles]}`} />
-                          <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                        </div>
-                      )}
-                    </SelectValue>
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
-                  {Object.entries(colorStyles).map(([color, bgClass]) => (
-                    <SelectItem key={color} value={color} className="flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full ${bgClass} border border-gray-200`} />
-                      <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                    </SelectItem>
-                  ))}
                 </SelectContent>
               </Select>
             </FormItem>
