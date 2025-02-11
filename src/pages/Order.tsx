@@ -33,6 +33,13 @@ const orderFormSchema = z.object({
 
 type OrderFormValues = z.infer<typeof orderFormSchema>;
 
+const garmentIcons = {
+  tshirt: <Shirt className="w-6 h-6" />,
+  hoodie: <Package2 className="w-6 h-6" />,
+  sweatshirt: <Shirt className="w-6 h-6 transform rotate-45" />,
+  tank: <Shirt className="w-6 h-6 transform scale-x-75" />,
+};
+
 export default function Order() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
@@ -93,7 +100,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}` as const}
+            name={`sizes.${id}` as keyof OrderFormValues}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -101,6 +108,7 @@ export default function Order() {
                   <Input
                     type="number"
                     {...field}
+                    value={field.value || "0"}
                     min="0"
                     className="h-10 border-2 border-brand-blue focus:border-brand-navy"
                   />
@@ -234,8 +242,8 @@ export default function Order() {
                                       htmlFor={value}
                                       className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
                                     >
-                                      <Shirt className="w-6 h-6 mb-2" />
-                                      <span className="text-sm font-medium">{label}</span>
+                                      {garmentIcons[value as keyof typeof garmentIcons]}
+                                      <span className="text-sm font-medium mt-2">{label}</span>
                                     </label>
                                   </div>
                                 ))}
