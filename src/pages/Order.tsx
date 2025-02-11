@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion } from "framer-motion";
+import { Package2, Shirt, Palette, MapPin } from "lucide-react";
 
 const orderFormSchema = z.object({
   quantity: z.string(),
@@ -48,13 +49,13 @@ export default function Order() {
 
   const onSubmit = (data: OrderFormValues) => {
     console.log(data);
-    // Handle form submission
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light/20 via-white to-brand-yellow-light/20">
+      <div className="geometric-pattern"></div>
       <Navbar />
-      <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-12">
@@ -70,23 +71,26 @@ export default function Order() {
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: index * 0.2 }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                      step > index + 1
-                        ? "bg-brand-navy border-brand-navy text-white"
-                        : step === index + 1
-                        ? "bg-brand-yellow border-brand-navy text-brand-navy"
-                        : "bg-white border-gray-200 text-gray-400"
-                    }`}
+                    className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 transition-all duration-300 group
+                      ${
+                        step > index + 1
+                          ? "bg-brand-navy border-brand-navy text-white"
+                          : step === index + 1
+                          ? "bg-brand-yellow border-brand-navy text-brand-navy"
+                          : "bg-white border-gray-200 text-gray-400"
+                      } hover:shadow-lg hover:-translate-y-1`}
                   >
-                    {index + 1}
+                    {index === 0 && <Package2 className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
+                    {index === 1 && <Palette className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
+                    {index === 2 && <MapPin className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
                   </motion.div>
                   {index < totalSteps - 1 && (
-                    <div className="flex-1 h-0.5 mx-4 bg-gray-200 relative">
+                    <div className="flex-1 h-1 mx-4 bg-gray-200 relative rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: "0%" }}
                         animate={{ width: step > index + 1 ? "100%" : "0%" }}
                         transition={{ duration: 0.5 }}
-                        className="h-full bg-brand-navy absolute top-0 left-0"
+                        className="h-full bg-gradient-to-r from-brand-navy to-brand-yellow absolute top-0 left-0"
                       ></motion.div>
                     </div>
                   )}
@@ -94,9 +98,15 @@ export default function Order() {
               ))}
             </div>
             <div className="flex justify-between text-sm font-medium">
-              <span className={step >= 1 ? "text-brand-navy" : "text-gray-400"}>Product Details</span>
-              <span className={step >= 2 ? "text-brand-navy" : "text-gray-400"}>Customization</span>
-              <span className={step >= 3 ? "text-brand-navy" : "text-gray-400"}>Review & Submit</span>
+              <span className={`${step >= 1 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+                Product Details
+              </span>
+              <span className={`${step >= 2 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+                Customization
+              </span>
+              <span className={`${step >= 3 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+                Review & Submit
+              </span>
             </div>
           </div>
 
@@ -107,13 +117,18 @@ export default function Order() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
+                className="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue hover:border-brand-navy transition-all duration-300"
               >
                 {step === 1 && (
                   <div className="space-y-6">
                     <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold text-brand-navy mb-2">
+                      <motion.h2 
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-3xl font-bold text-brand-navy mb-2"
+                      >
                         Product Details
-                      </h2>
+                      </motion.h2>
                       <p className="text-gray-600">Let's start with the basics of your order</p>
                     </div>
 
@@ -122,11 +137,14 @@ export default function Order() {
                         control={form.control}
                         name="garmentType"
                         render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-lg font-medium">Garment Type</FormLabel>
+                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                              <Shirt className="w-5 h-5" />
+                              Garment Type
+                            </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12">
+                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
                                   <SelectValue placeholder="Select garment type" />
                                 </SelectTrigger>
                               </FormControl>
@@ -145,11 +163,14 @@ export default function Order() {
                         control={form.control}
                         name="fabricQuality"
                         render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-lg font-medium">Fabric Quality</FormLabel>
+                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                              <Package2 className="w-5 h-5" />
+                              Fabric Quality
+                            </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12">
+                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
                                   <SelectValue placeholder="Select fabric quality" />
                                 </SelectTrigger>
                               </FormControl>
@@ -167,11 +188,14 @@ export default function Order() {
                         control={form.control}
                         name="color"
                         render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-lg font-medium">Color</FormLabel>
+                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                              <Palette className="w-5 h-5" />
+                              Color
+                            </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12">
+                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                               </FormControl>
@@ -192,9 +216,13 @@ export default function Order() {
                 {step === 2 && (
                   <div className="space-y-6">
                     <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold text-brand-navy mb-2">
+                      <motion.h2 
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-3xl font-bold text-brand-navy mb-2"
+                      >
                         Customization
-                      </h2>
+                      </motion.h2>
                       <p className="text-gray-600">Design your perfect print</p>
                     </div>
 
@@ -202,11 +230,14 @@ export default function Order() {
                       control={form.control}
                       name="printLocation"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-lg font-medium">Print Location</FormLabel>
+                        <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
+                          <FormLabel className="text-lg font-medium flex items-center gap-2">
+                            <MapPin className="w-5 h-5" />
+                            Print Location
+                          </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="h-12">
+                              <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
                                 <SelectValue placeholder="Select print location" />
                               </SelectTrigger>
                             </FormControl>
@@ -226,9 +257,13 @@ export default function Order() {
                 {step === 3 && (
                   <div className="space-y-6">
                     <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold text-brand-navy mb-2">
+                      <motion.h2 
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-3xl font-bold text-brand-navy mb-2"
+                      >
                         Review & Submit
-                      </h2>
+                      </motion.h2>
                       <p className="text-gray-600">Almost there! Review your order details</p>
                     </div>
                     {/* Add order summary here */}
@@ -247,7 +282,7 @@ export default function Order() {
                     type="button"
                     variant="outline"
                     onClick={() => setStep(step - 1)}
-                    className="px-8"
+                    className="px-8 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                   >
                     Previous
                   </Button>
@@ -255,7 +290,7 @@ export default function Order() {
                 {step < totalSteps ? (
                   <Button
                     type="button"
-                    className="ml-auto px-8 bg-brand-navy hover:bg-brand-navy/90"
+                    className="ml-auto px-8 bg-brand-navy hover:bg-brand-navy/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                     onClick={() => setStep(step + 1)}
                   >
                     Next
@@ -263,7 +298,7 @@ export default function Order() {
                 ) : (
                   <Button 
                     type="submit" 
-                    className="ml-auto px-8 bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
+                    className="ml-auto px-8 bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                   >
                     Submit Order
                   </Button>
