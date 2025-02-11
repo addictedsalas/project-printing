@@ -143,11 +143,7 @@ export default function Order() {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen relative overflow-hidden ${
-      isDark 
-        ? "bg-gradient-to-br from-brand-navy/20 via-brand-navy/10 to-brand-blue/20" 
-        : "bg-gradient-to-br from-brand-blue-light via-white to-brand-yellow-light"
-    }`}>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light/20 via-white to-brand-yellow-light/20 dark:from-brand-navy-dark dark:via-brand-navy dark:to-brand-navy-light">
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -167,10 +163,10 @@ export default function Order() {
                     className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 transition-all duration-300 group
                       ${
                         step > index + 1
-                          ? "bg-brand-navy border-brand-navy text-white"
+                          ? "bg-brand-navy border-brand-navy text-white dark:bg-brand-yellow dark:border-brand-yellow dark:text-brand-navy"
                           : step === index + 1
-                          ? "bg-brand-yellow border-brand-navy text-brand-navy"
-                          : "bg-white border-gray-200 text-gray-400"
+                          ? "bg-brand-yellow border-brand-navy text-brand-navy dark:bg-brand-yellow dark:border-brand-yellow"
+                          : "bg-white/80 border-gray-200 text-gray-400 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:text-gray-500"
                       } hover:shadow-lg hover:-translate-y-1`}
                   >
                     {index === 0 && <Package2 className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
@@ -178,12 +174,12 @@ export default function Order() {
                     {index === 2 && <MapPin className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />}
                   </motion.div>
                   {index < totalSteps - 1 && (
-                    <div className="flex-1 h-1 mx-4 bg-gray-200 relative rounded-full overflow-hidden">
+                    <div className="flex-1 h-1 mx-4 bg-gray-200 dark:bg-brand-navy-dark relative rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: "0%" }}
                         animate={{ width: step > index + 1 ? "100%" : "0%" }}
                         transition={{ duration: 0.5 }}
-                        className="h-full bg-gradient-to-r from-brand-navy to-brand-yellow absolute top-0 left-0"
+                        className="h-full bg-gradient-to-r from-brand-navy to-brand-yellow dark:from-brand-yellow dark:to-brand-yellow/50 absolute top-0 left-0"
                       ></motion.div>
                     </div>
                   )}
@@ -191,13 +187,13 @@ export default function Order() {
               ))}
             </div>
             <div className="flex justify-between text-sm font-medium">
-              <span className={`${step >= 1 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+              <span className={`${step >= 1 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
                 Product Details
               </span>
-              <span className={`${step >= 2 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+              <span className={`${step >= 2 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
                 Customization
               </span>
-              <span className={`${step >= 3 ? "text-brand-navy" : "text-gray-400"} transition-colors duration-300`}>
+              <span className={`${step >= 3 ? "text-brand-navy dark:text-white" : "text-gray-400 dark:text-gray-500"} transition-colors duration-300`}>
                 Review & Submit
               </span>
             </div>
@@ -212,11 +208,7 @@ export default function Order() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className={`${
-                    isDark 
-                      ? "bg-gradient-to-br from-brand-navy/20 to-brand-blue/20 backdrop-blur-sm border-brand-blue/30" 
-                      : "bg-gradient-to-br from-white/90 to-brand-yellow-light/50 backdrop-blur-sm border-brand-blue"
-                  } p-8 rounded-xl shadow-lg border-2 hover:border-brand-navy transition-all duration-300`}
+                  className="bg-white/80 dark:bg-brand-navy-dark/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue dark:border-brand-blue/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-all duration-300"
                 >
                   {step === 1 && (
                     <div className="space-y-8">
@@ -224,19 +216,19 @@ export default function Order() {
                         <motion.div
                           initial={{ opacity: 0, scale: 0.5 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-light rounded-full mb-4"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-light dark:bg-brand-yellow/20 rounded-full mb-4"
                         >
-                          <Sparkles className="w-4 h-4 text-brand-navy" />
-                          <span className="text-sm font-medium text-brand-navy">Design Your Custom Apparel</span>
+                          <Sparkles className="w-4 h-4 text-brand-navy dark:text-brand-yellow" />
+                          <span className="text-sm font-medium text-brand-navy dark:text-brand-yellow">Design Your Custom Apparel</span>
                         </motion.div>
                         <motion.h2 
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="text-3xl font-bold mb-2 text-brand-navy"
+                          className="text-3xl font-bold mb-2 text-brand-navy dark:text-white"
                         >
                           Product Details
                         </motion.h2>
-                        <p className="text-gray-600">Customize your perfect design</p>
+                        <p className="text-gray-600 dark:text-gray-300">Customize your perfect design</p>
                       </div>
 
                       <div className="grid gap-8">
@@ -245,13 +237,13 @@ export default function Order() {
                           name="garmentType"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Shirt className="w-5 h-5" />
                                 Garment Type
                               </FormLabel>
                               <RadioGroup
                                 onValueChange={field.onChange}
-                                defaultValue={field.value}
+                                value={field.value}
                                 className="grid grid-cols-2 md:grid-cols-4 gap-4"
                               >
                                 {[
@@ -268,15 +260,15 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={value}
-                                      className={`flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer transition-all duration-300
+                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
                                         ${
                                           field.value === value
                                             ? isDark
-                                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
-                                              : "border-brand-navy bg-brand-blue-light text-brand-navy"
+                                              ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
+                                              : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
                                             : isDark
-                                              ? "hover:bg-brand-navy/20"
-                                              : "hover:bg-brand-blue-light/20"
+                                              ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
+                                              : "border-brand-blue hover:bg-brand-blue-light/20"
                                         }
                                       `}
                                     >
@@ -295,7 +287,7 @@ export default function Order() {
                           name="sizeType"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium text-brand-navy">Size Category</FormLabel>
+                              <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">Size Category</FormLabel>
                               <RadioGroup
                                 onValueChange={(value: "adult" | "youth") => {
                                   field.onChange(value);
@@ -337,8 +329,8 @@ export default function Order() {
                           )}
                         />
 
-                        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue">
-                          <h3 className="text-lg font-medium text-brand-navy">
+                        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue dark:bg-brand-navy-dark/50 dark:border-brand-blue/50">
+                          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
                             {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
                           </h3>
                           {renderSizeInputs(sizeType)}
@@ -349,7 +341,7 @@ export default function Order() {
                           name="materialType"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Package2 className="w-5 h-5" />
                                 Material Type
                               </FormLabel>
@@ -371,10 +363,30 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={`material-${value}`}
-                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300`}
+                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
+                                        ${
+                                          field.value === value
+                                            ? isDark
+                                              ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
+                                              : "border-brand-navy bg-brand-blue-light/50 text-brand-navy shadow-lg scale-105"
+                                            : isDark
+                                              ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
+                                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                                        }
+                                      `}
                                     >
-                                      <div className={`w-8 h-8 rounded-full mb-2 ${bgColor}`} />
-                                      <span className="text-sm font-medium">{label}</span>
+                                      <div className={`w-8 h-8 rounded-full mb-2 ${bgColor} border-2 ${
+                                        field.value === value 
+                                          ? isDark 
+                                            ? "border-brand-yellow" 
+                                            : "border-brand-navy"
+                                          : "border-gray-200 dark:border-gray-600"
+                                      }`} />
+                                      <span className={`text-sm font-medium ${
+                                        field.value === value
+                                          ? "scale-105 font-semibold"
+                                          : ""
+                                      }`}>{label}</span>
                                     </label>
                                   </div>
                                 ))}
@@ -388,17 +400,17 @@ export default function Order() {
                           name="cottonType"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Package2 className="w-5 h-5" />
                                 Cotton Type
                               </FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
+                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
                                     <SelectValue placeholder="Select cotton type" />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
                                   <SelectItem value="basic">Basic Cotton</SelectItem>
                                   <SelectItem value="premium">Premium Cotton</SelectItem>
                                   <SelectItem value="organic">Organic Cotton</SelectItem>
@@ -416,17 +428,17 @@ export default function Order() {
                           name="brand"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Shirt className="w-5 h-5" />
                                 Brand
                               </FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
+                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
                                     <SelectValue placeholder="Select brand" />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
                                   <SelectItem value="gildan">Gildan Classic</SelectItem>
                                   <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
                                   <SelectItem value="american-apparel">American Apparel</SelectItem>
@@ -444,13 +456,13 @@ export default function Order() {
                           name="color"
                           render={({ field }) => (
                             <FormItem className="space-y-4">
-                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Palette className="w-5 h-5" />
                                 Color
                               </FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
+                                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
                                     <SelectValue placeholder="Select color">
                                       {field.value && (
                                         <div className="flex items-center gap-2">
@@ -461,7 +473,7 @@ export default function Order() {
                                     </SelectValue>
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
                                   {Object.entries(colorStyles).map(([color, bgClass]) => (
                                     <SelectItem key={color} value={color} className="flex items-center gap-2">
                                       <div className={`w-4 h-4 rounded-full ${bgClass} border border-gray-200`} />
@@ -483,11 +495,11 @@ export default function Order() {
                         <motion.h2 
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="text-3xl font-bold text-brand-navy mb-2"
+                          className="text-3xl font-bold text-brand-navy dark:text-white"
                         >
                           Customization
                         </motion.h2>
-                        <p className="text-gray-600">Design your perfect print</p>
+                        <p className="text-gray-600 dark:text-gray-300">Design your perfect print</p>
                       </div>
 
                       <FormField
@@ -495,17 +507,17 @@ export default function Order() {
                         name="printLocation"
                         render={({ field }) => (
                           <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                               <MapPin className="w-5 h-5" />
                               Print Location
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
+                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
                                   <SelectValue placeholder="Select print location" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
+                              <SelectContent className="dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
                                 <SelectItem value="front">Front</SelectItem>
                                 <SelectItem value="back">Back</SelectItem>
                                 <SelectItem value="both">Front & Back</SelectItem>
@@ -524,11 +536,11 @@ export default function Order() {
                         <motion.h2 
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="text-3xl font-bold text-brand-navy mb-2"
+                          className="text-3xl font-bold text-brand-navy dark:text-white"
                         >
                           Review & Submit
                         </motion.h2>
-                        <p className="text-gray-600">Almost there! Review your order details</p>
+                        <p className="text-gray-600 dark:text-gray-300">Almost there! Review your order details</p>
                       </div>
                       {/* Add order summary here */}
                     </div>
@@ -547,11 +559,7 @@ export default function Order() {
                     type="button"
                     variant="outline"
                     onClick={() => setStep(step - 1)}
-                    className={`px-8 ${
-                      isDark 
-                        ? "bg-brand-navy/20 hover:bg-brand-navy/40" 
-                        : "bg-white hover:bg-brand-blue-light"
-                    } hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
+                    className="px-8 bg-white dark:bg-brand-navy-dark/80 hover:bg-brand-blue-light/20 dark:hover:bg-brand-navy-light/20 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 dark:text-white dark:border-brand-blue/20"
                   >
                     Previous
                   </Button>
@@ -559,19 +567,15 @@ export default function Order() {
                 {step < totalSteps ? (
                   <Button
                     type="button"
-                    className="ml-auto px-8 bg-brand-navy hover:bg-brand-navy/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className="ml-auto px-8 bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                     onClick={() => setStep(step + 1)}
                   >
                     Next
                   </Button>
                 ) : (
                   <Button 
-                    type="submit" 
-                    className={`ml-auto px-8 ${
-                      isDark 
-                        ? "bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90" 
-                        : "bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                    } hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
+                    type="submit"
+                    className="ml-auto px-8 bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                   >
                     Submit Order
                   </Button>
