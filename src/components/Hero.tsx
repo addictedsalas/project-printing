@@ -41,12 +41,12 @@ export default function Hero() {
           </p>
 
           {/* Buttons - adjusted spacing and width for mobile */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
-            <a href="/order" className="brand-button inline-block transition-all duration-300 group w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 max-w-[200px] sm:max-w-none mx-auto">
+            <a href="/order" className="brand-button text-sm px-6 py-2 inline-block transition-all duration-300 group w-full sm:w-auto">
               Start Your Order
               <span className="inline-block ml-2 group-hover:translate-y-0.5 transition-transform duration-300">✨</span>
             </a>
-            <a href="/shop" className="brand-button bg-transparent border-2 border-brand-navy hover:bg-brand-navy hover:text-white inline-block transition-all duration-300 dark:border-white dark:hover:bg-white dark:hover:text-brand-navy group w-full sm:w-auto">
+            <a href="/shop" className="brand-button text-sm px-6 py-2 bg-transparent border-2 border-brand-navy hover:bg-brand-navy hover:text-white inline-block transition-all duration-300 dark:border-white dark:hover:bg-white dark:hover:text-brand-navy group w-full sm:w-auto">
               Browse Shop
               <span className="inline-block ml-2 group-hover:translate-x-0.5 transition-transform duration-300">→</span>
             </a>
