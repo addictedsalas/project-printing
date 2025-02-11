@@ -51,6 +51,48 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           { id: "youth_m" as SizesKey, label: "Youth Medium" },
           { id: "youth_l" as SizesKey, label: "Youth Large" }
         ];
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, currentId: string, currentIndex: number) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent form submission
+        
+        // Find the next available size input
+        const allSizes = sizes.map(s => s.id);
+        const currentSizeIndex = allSizes.indexOf(currentId);
+        let nextSize: string | undefined;
+        
+        // Check if there's another color in the current size
+        if (form.watch(`sizes.${currentId}`)?.length > currentIndex + 1) {
+          // Focus next color input in the same size
+          const nextInput = document.querySelector(`input[name="sizes.${currentId}.${currentIndex + 1}.quantity"]`);
+          (nextInput as HTMLElement)?.focus();
+          return;
+        }
+        
+        // Find the next size that has color inputs
+        for (let i = currentSizeIndex + 1; i < allSizes.length; i++) {
+          if (form.watch(`sizes.${allSizes[i]}`)?.length > 0) {
+            nextSize = allSizes[i];
+            break;
+          }
+        }
+        
+        // If no next size found, loop back to the first size
+        if (!nextSize) {
+          for (let i = 0; i < currentSizeIndex; i++) {
+            if (form.watch(`sizes.${allSizes[i]}`)?.length > 0) {
+              nextSize = allSizes[i];
+              break;
+            }
+          }
+        }
+        
+        if (nextSize) {
+          const nextInput = document.querySelector(`input[name="sizes.${nextSize}.0.quantity"]`);
+          (nextInput as HTMLElement)?.focus();
+        }
+      }
+    };
     
     return (
       <div className="grid grid-cols-3 gap-3">
@@ -110,6 +152,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                                     field.onChange("");
                                   }
                                 }}
+                                onKeyDown={(e) => handleKeyDown(e, id, index)}
                                 value={field.value?.toString()}
                                 min="0"
                                 className="h-7 text-xs bg-brand-navy-dark border-brand-blue/20 focus:border-brand-yellow/50"
