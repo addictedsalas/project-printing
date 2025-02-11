@@ -53,28 +53,22 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
         ];
     
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         {sizes.map(({ id, label }) => (
           <div 
             key={id} 
-            className={`relative group p-4 border-2 rounded-lg transition-all duration-300
+            className={`relative group border rounded-lg transition-all duration-300
               ${form.watch(`sizes.${id}`)?.length > 0
-                ? isDark
-                  ? "border-brand-yellow bg-brand-yellow/10"
-                  : "border-brand-navy bg-brand-blue-light"
-                : isDark
-                  ? "border-brand-blue/20 hover:bg-brand-navy-light/20"
-                  : "border-brand-blue hover:bg-brand-blue-light/20"
+                ? "border-brand-yellow bg-brand-yellow/5"
+                : "border-brand-blue/10 hover:border-brand-yellow/30"
               }
             `}
           >
-            <div className="flex flex-col items-center text-center">
-              <span className={`text-sm font-medium mb-2 ${
+            <div className="flex flex-col items-center text-center p-3">
+              <span className={`text-sm font-medium mb-1 ${
                 form.watch(`sizes.${id}`)?.length > 0
-                  ? isDark
-                    ? "text-brand-yellow"
-                    : "text-brand-navy"
-                  : "text-gray-300"
+                  ? "text-brand-yellow"
+                  : "text-gray-400"
               }`}>{label}</span>
               {form.watch(`sizes.${id}`)?.length === 0 ? (
                 <Button
@@ -82,7 +76,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   variant="outline"
                   size="sm"
                   onClick={() => addColorToSize(id)}
-                  className="h-7 px-3 text-xs bg-brand-blue/10 hover:bg-brand-blue/20 dark:bg-brand-yellow/10 dark:hover:bg-brand-yellow/20"
+                  className="h-6 px-2 text-xs border-brand-blue/20 hover:bg-brand-yellow/5 hover:border-brand-yellow/30"
                 >
                   Add Color
                 </Button>
@@ -91,14 +85,14 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   {form.watch(`sizes.${id}`)?.map((sizeColor: SizeColor, index: number) => (
                     <div 
                       key={`${id}-${index}`} 
-                      className="flex items-end gap-2 p-2 rounded-lg bg-white/50 dark:bg-brand-navy/50 border border-brand-blue/20 dark:border-brand-blue/10"
+                      className="flex items-end gap-2 p-2 rounded bg-brand-navy-dark/50 border border-brand-blue/10"
                     >
                       <FormField
                         control={form.control}
                         name={`sizes.${id}.${index}.quantity`}
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel className="text-xs font-medium text-gray-600 dark:text-gray-300">Qty</FormLabel>
+                            <FormLabel className="text-[10px] font-medium text-gray-400">Qty</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
@@ -106,7 +100,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                                 onChange={(e) => field.onChange(e.target.value)}
                                 value={field.value?.toString() || "0"}
                                 min="0"
-                                className="h-8 text-sm border border-brand-blue/30 focus:border-brand-navy dark:bg-brand-navy/20 dark:border-brand-blue/30 dark:focus:border-brand-yellow"
+                                className="h-7 text-xs bg-brand-navy-dark border-brand-blue/20 focus:border-brand-yellow/50"
                               />
                             </FormControl>
                           </FormItem>
@@ -117,27 +111,27 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                         name={`sizes.${id}.${index}.color`}
                         render={({ field }) => (
                           <FormItem className="flex-1">
-                            <FormLabel className="text-xs font-medium text-gray-600 dark:text-gray-300">Color</FormLabel>
+                            <FormLabel className="text-[10px] font-medium text-gray-400">Color</FormLabel>
                             <Select 
                               onValueChange={field.onChange} 
                               defaultValue={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="h-8 text-sm border border-brand-blue/30 focus:border-brand-navy dark:bg-brand-navy/20 dark:border-brand-blue/30 dark:focus:border-brand-yellow">
+                                <SelectTrigger className="h-7 text-xs bg-brand-navy-dark border-brand-blue/20 focus:border-brand-yellow/50">
                                   <SelectValue>
                                     {field.value && (
-                                      <div className="flex items-center gap-2">
-                                        <div className={`w-3 h-3 rounded-full ${colorStyles[field.value]} border border-gray-200`} />
-                                        <span>{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                                      <div className="flex items-center gap-1.5">
+                                        <div className={`w-2.5 h-2.5 rounded-full ${colorStyles[field.value]} border border-gray-700`} />
+                                        <span className="truncate">{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                                       </div>
                                     )}
                                   </SelectValue>
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
+                              <SelectContent className="bg-brand-navy-dark border-brand-blue/20">
                                 {Object.entries(colorStyles).map(([color, bgClass]) => (
                                   <SelectItem key={color} value={color} className="flex items-center gap-2">
-                                    <div className={`w-3 h-3 rounded-full ${bgClass} border border-gray-200`} />
+                                    <div className={`w-2.5 h-2.5 rounded-full ${bgClass} border border-gray-700`} />
                                     <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                                   </SelectItem>
                                 ))}
@@ -151,7 +145,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                         variant="ghost"
                         size="sm"
                         onClick={() => removeColorFromSize(id, index)}
-                        className="h-8 w-8 px-0 mb-[2px] hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+                        className="h-7 w-7 px-0 mb-[2px] hover:bg-red-900/20 hover:text-red-400"
                       >
                         ✕
                       </Button>
@@ -172,19 +166,19 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-light dark:bg-brand-yellow/20 rounded-full mb-4"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-yellow/20 rounded-full mb-4"
         >
-          <Sparkles className="w-4 h-4 text-brand-navy dark:text-brand-yellow" />
-          <span className="text-sm font-medium text-brand-navy dark:text-brand-yellow">Design Your Custom Apparel</span>
+          <Sparkles className="w-4 h-4 text-brand-yellow" />
+          <span className="text-sm font-medium text-brand-yellow">Design Your Custom Apparel</span>
         </motion.div>
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold mb-2 text-brand-navy dark:text-white"
+          className="text-3xl font-bold mb-2 text-white"
         >
           Product Details
         </motion.h2>
-        <p className="text-gray-600 dark:text-gray-300">Customize your perfect design</p>
+        <p className="text-gray-400">Customize your perfect design</p>
       </div>
 
       <div className="grid gap-8">
@@ -193,15 +187,15 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           control={form.control}
           name="garmentType"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                <Shirt className="w-5 h-5" />
+            <FormItem className="space-y-3">
+              <FormLabel className="text-base font-medium flex items-center gap-2 text-white">
+                <Shirt className="w-4 h-4" />
                 Garment Type
               </FormLabel>
               <RadioGroup
                 onValueChange={field.onChange}
                 value={field.value}
-                className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                className="grid grid-cols-2 md:grid-cols-4 gap-3"
               >
                 {[
                   { value: "tshirt", label: "T-Shirt" },
@@ -217,15 +211,11 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                     />
                     <label
                       htmlFor={value}
-                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
+                      className={`flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all duration-300
                         ${
                           field.value === value
-                            ? isDark
-                              ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
-                              : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
-                            : isDark
-                              ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
-                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                            ? "border-brand-yellow bg-brand-yellow/5 text-brand-yellow"
+                            : "border-brand-blue/10 text-gray-400 hover:border-brand-yellow/30 hover:bg-brand-yellow/5"
                         }
                       `}
                     >
@@ -244,15 +234,15 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           control={form.control}
           name="materialType"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                <Package2 className="w-5 h-5" />
+            <FormItem className="space-y-3">
+              <FormLabel className="text-base font-medium flex items-center gap-2 text-white">
+                <Package2 className="w-4 h-4" />
                 Material Type
               </FormLabel>
               <RadioGroup
                 onValueChange={field.onChange}
                 value={field.value}
-                className="grid grid-cols-3 gap-4"
+                className="grid grid-cols-3 gap-3"
               >
                 {[
                   { value: "cotton", label: "100% Cotton", bgColor: "bg-[#F2FCE2]" },
@@ -267,30 +257,20 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                     />
                     <label
                       htmlFor={`material-${value}`}
-                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
+                      className={`flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all duration-300
                         ${
                           field.value === value
-                            ? isDark
-                              ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
-                              : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
-                            : isDark
-                              ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
-                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                            ? "border-brand-yellow bg-brand-yellow/5 text-brand-yellow"
+                            : "border-brand-blue/10 text-gray-400 hover:border-brand-yellow/30 hover:bg-brand-yellow/5"
                         }
                       `}
                     >
-                      <div className={`w-8 h-8 rounded-full mb-2 ${bgColor} border-2 ${
+                      <div className={`w-6 h-6 rounded-full mb-2 ${bgColor} border-2 ${
                         field.value === value 
-                          ? isDark 
-                            ? "border-brand-yellow" 
-                            : "border-brand-navy"
-                          : "border-gray-200 dark:border-gray-600"
+                          ? "border-brand-yellow" 
+                          : "border-gray-600"
                       }`} />
-                      <span className={`text-sm font-medium ${
-                        field.value === value
-                          ? "scale-105 font-semibold"
-                          : ""
-                      }`}>{label}</span>
+                      <span className="text-sm font-medium text-center">{label}</span>
                     </label>
                   </div>
                 ))}
@@ -304,9 +284,9 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           control={form.control}
           name="cottonType"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                <Package2 className="w-5 h-5" />
+            <FormItem className="space-y-3">
+              <FormLabel className="text-base font-medium flex items-center gap-2 text-white">
+                <Package2 className="w-4 h-4" />
                 {watchMaterialType === "cotton" ? "Cotton Type" : 
                  watchMaterialType === "5050" ? "Blend Type" : 
                  "Polyester Type"}
@@ -317,16 +297,16 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                 value={field.value || undefined}
               >
                 <FormControl>
-                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
+                  <SelectTrigger className="h-10 bg-brand-navy-dark border-brand-blue/20 hover:border-brand-yellow/30 focus:border-brand-yellow/50">
                     <SelectValue placeholder={`Select ${watchMaterialType === "cotton" ? "cotton" : watchMaterialType === "5050" ? "blend" : "polyester"} type`} />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
+                <SelectContent className="bg-brand-navy-dark border-brand-blue/20">
                   {materialTypeOptions[watchMaterialType as keyof typeof materialTypeOptions]?.map(({ value, label }) => (
                     <SelectItem 
                       key={value} 
                       value={value}
-                      className="dark:text-white hover:bg-brand-blue-light/20 dark:hover:bg-brand-yellow/20"
+                      className="hover:bg-brand-yellow/5"
                     >
                       {label}
                     </SelectItem>
@@ -342,18 +322,18 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           control={form.control}
           name="brand"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                <Shirt className="w-5 h-5" />
+            <FormItem className="space-y-3">
+              <FormLabel className="text-base font-medium flex items-center gap-2 text-white">
+                <Shirt className="w-4 h-4" />
                 Brand
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
+                  <SelectTrigger className="h-10 bg-brand-navy-dark border-brand-blue/20 hover:border-brand-yellow/30 focus:border-brand-yellow/50">
                     <SelectValue placeholder="Select brand" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
+                <SelectContent className="bg-brand-navy-dark border-brand-blue/20">
                   <SelectItem value="gildan">Gildan Classic</SelectItem>
                   <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
                   <SelectItem value="american-apparel">American Apparel</SelectItem>
@@ -371,15 +351,15 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           control={form.control}
           name="sizeType"
           render={({ field }) => (
-            <FormItem className="space-y-4">
-              <FormLabel className="text-lg font-medium text-brand-navy dark:text-white">Size Category</FormLabel>
+            <FormItem className="space-y-3">
+              <FormLabel className="text-base font-medium text-white">Size Category</FormLabel>
               <RadioGroup
                 onValueChange={(value: "adult" | "youth") => {
                   field.onChange(value);
                   setSizeType(value);
                 }}
                 defaultValue={field.value}
-                className="flex gap-4"
+                className="flex gap-3"
               >
                 {[
                   { value: "adult", label: "Adult Sizes" },
@@ -393,15 +373,11 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                     />
                     <label
                       htmlFor={`size-${value}`}
-                      className={`flex items-center justify-center px-6 py-3 border-2 rounded-lg cursor-pointer transition-all duration-300
+                      className={`flex items-center justify-center px-4 py-2 border rounded-lg cursor-pointer transition-all duration-300
                         ${
                           field.value === value
-                            ? isDark
-                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow shadow-lg scale-105"
-                              : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
-                            : isDark
-                              ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
-                              : "border-brand-blue hover:bg-brand-blue-light/20"
+                            ? "border-brand-yellow bg-brand-yellow/5 text-brand-yellow"
+                            : "border-brand-blue/10 text-gray-400 hover:border-brand-yellow/30 hover:bg-brand-yellow/5"
                         }
                       `}
                     >
@@ -415,50 +391,11 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
         />
 
         {/* Size Inputs */}
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="sizeType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">Size Category</FormLabel>
-                <RadioGroup
-                  onValueChange={(value: "adult" | "youth") => {
-                    field.onChange(value);
-                    setSizeType(value);
-                  }}
-                  defaultValue={field.value}
-                  className="flex gap-4"
-                >
-                  {[
-                    { value: "adult", label: "Adult" },
-                    { value: "youth", label: "Youth" },
-                  ].map(({ value, label }) => (
-                    <div key={value} className="relative">
-                      <RadioGroupItem
-                        value={value}
-                        id={`size-${value}`}
-                        className="peer sr-only"
-                      />
-                      <label
-                        htmlFor={`size-${value}`}
-                        className={`flex items-center justify-center px-3 py-1.5 text-xs border rounded-lg cursor-pointer transition-all duration-300
-                          ${
-                            field.value === value
-                              ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow"
-                              : "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
-                          }
-                        `}
-                      >
-                        {label}
-                      </label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormItem>
-            )}
-          />
-          <div className="bg-brand-navy dark:bg-brand-navy-dark p-6 rounded-xl">
+        <div className="space-y-3">
+          <FormLabel className="text-base font-medium text-white">
+            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
+          </FormLabel>
+          <div className="bg-brand-navy-dark p-4 rounded-lg border border-brand-blue/10">
             {renderSizeInputs(sizeType)}
           </div>
         </div>
