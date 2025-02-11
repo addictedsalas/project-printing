@@ -355,7 +355,7 @@ export default function Order() {
                               </FormLabel>
                               <RadioGroup
                                 onValueChange={field.onChange}
-                                defaultValue={field.value}
+                                value={field.value}
                                 className="grid grid-cols-3 gap-4"
                               >
                                 {[
