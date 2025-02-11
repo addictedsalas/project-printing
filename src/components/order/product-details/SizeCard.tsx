@@ -34,7 +34,7 @@ export const SizeCard = ({
             onClick={() => onAddColor(id)}
             className="w-full h-7 px-2 text-xs border border-gray-950/20 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
           >
-            Add Color
+            Add
           </Button>
         ) : (
           <div className="w-full space-y-1.5">
