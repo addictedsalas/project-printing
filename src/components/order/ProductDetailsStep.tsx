@@ -1,13 +1,15 @@
+
 import { Shirt, Package2, Palette, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { OrderFormValues, SizesKey, SizeColor } from "@/types/order";
-import { materialTypeOptions, garmentIcons, colorStyles } from "./orderConstants";
+import { materialTypeOptions } from "./orderConstants";
+import { GarmentTypeField } from "./product-details/GarmentTypeField";
+import { MaterialTypeField } from "./product-details/MaterialTypeField";
+import { SizeCard } from "./product-details/SizeCard";
 
 interface ProductDetailsStepProps {
   form: ReturnType<typeof useForm<OrderFormValues>>;
@@ -36,6 +38,46 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
     form.setValue(`sizes.${size}`, currentSizeColors);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, currentId: SizesKey, currentIndex: number) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      
+      const sizes = sizeType === "adult" 
+        ? ["xsmall", "small", "medium", "large", "xlarge", "xxlarge"]
+        : ["youth_s", "youth_m", "youth_l"];
+      
+      const currentSizeIndex = sizes.indexOf(currentId);
+      let nextSize: SizesKey | undefined;
+      
+      if (form.watch(`sizes.${currentId}`)?.length > currentIndex + 1) {
+        const nextInput = document.querySelector(`input[name="sizes.${currentId}.${currentIndex + 1}.quantity"]`);
+        (nextInput as HTMLElement)?.focus();
+        return;
+      }
+      
+      for (let i = currentSizeIndex + 1; i < sizes.length; i++) {
+        if (form.watch(`sizes.${sizes[i]}`)?.length > 0) {
+          nextSize = sizes[i] as SizesKey;
+          break;
+        }
+      }
+      
+      if (!nextSize) {
+        for (let i = 0; i < currentSizeIndex; i++) {
+          if (form.watch(`sizes.${sizes[i]}`)?.length > 0) {
+            nextSize = sizes[i] as SizesKey;
+            break;
+          }
+        }
+      }
+      
+      if (nextSize) {
+        const nextInput = document.querySelector(`input[name="sizes.${nextSize}.0.quantity"]`);
+        (nextInput as HTMLElement)?.focus();
+      }
+    }
+  };
+
   const renderSizeInputs = (type: "adult" | "youth") => {
     const sizes = type === "adult" 
       ? [
@@ -52,155 +94,19 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           { id: "youth_l" as SizesKey, label: "Youth Large" }
         ];
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, currentId: SizesKey, currentIndex: number) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        
-        const allSizes = sizes.map(s => s.id);
-        const currentSizeIndex = allSizes.indexOf(currentId);
-        let nextSize: SizesKey | undefined;
-        
-        if (form.watch(`sizes.${currentId}`)?.length > currentIndex + 1) {
-          const nextInput = document.querySelector(`input[name="sizes.${currentId}.${currentIndex + 1}.quantity"]`);
-          (nextInput as HTMLElement)?.focus();
-          return;
-        }
-        
-        for (let i = currentSizeIndex + 1; i < allSizes.length; i++) {
-          if (form.watch(`sizes.${allSizes[i]}`)?.length > 0) {
-            nextSize = allSizes[i];
-            break;
-          }
-        }
-        
-        if (!nextSize) {
-          for (let i = 0; i < currentSizeIndex; i++) {
-            if (form.watch(`sizes.${allSizes[i]}`)?.length > 0) {
-              nextSize = allSizes[i];
-              break;
-            }
-          }
-        }
-        
-        if (nextSize) {
-          const nextInput = document.querySelector(`input[name="sizes.${nextSize}.0.quantity"]`);
-          (nextInput as HTMLElement)?.focus();
-        }
-      }
-    };
-    
     return (
       <div className="grid grid-cols-3 gap-4">
         {sizes.map(({ id, label }) => (
-          <div 
-            key={id} 
-            className={`relative bg-white dark:bg-brand-navy-dark/80 border rounded-lg transition-all duration-300
-              ${form.watch(`sizes.${id}`)?.length > 0
-                ? "border-gray-200 dark:border-brand-blue/20"
-                : "border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow"
-              }
-            `}
-          >
-            <div className="flex flex-col items-center text-center p-4">
-              <span className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{label}</span>
-              {form.watch(`sizes.${id}`)?.length === 0 ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addColorToSize(id)}
-                  className="h-7 px-3 text-xs border-gray-200 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
-                >
-                  Add Color
-                </Button>
-              ) : (
-                <div className="w-full space-y-2">
-                  {form.watch(`sizes.${id}`)?.map((sizeColor: SizeColor, index: number) => (
-                    <div 
-                      key={`${id}-${index}`} 
-                      className="flex items-end gap-2 p-2 rounded bg-gray-50 border border-gray-100 dark:bg-brand-navy-dark/50 dark:border-brand-blue/10"
-                    >
-                      <FormField
-                        control={form.control}
-                        name={`sizes.${id}.${index}.quantity`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel className="text-[10px] font-medium text-gray-500 dark:text-gray-400">Qty</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) => {
-                                  if (field.value === "0" && e.target.value !== "") {
-                                    field.onChange("");
-                                  } else {
-                                    field.onChange(e.target.value);
-                                  }
-                                }}
-                                onFocus={(e) => {
-                                  e.target.select();
-                                  if (field.value === "0") {
-                                    field.onChange("");
-                                  }
-                                }}
-                                onKeyDown={(e) => handleKeyDown(e, id, index)}
-                                value={field.value?.toString()}
-                                min="0"
-                                className="h-7 text-xs bg-white border-gray-200 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow"
-                              />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name={`sizes.${id}.${index}.color`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel className="text-[10px] font-medium text-gray-500 dark:text-gray-400">Color</FormLabel>
-                            <Select 
-                              onValueChange={field.onChange} 
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="h-7 text-xs bg-white border-gray-200 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow">
-                                  <SelectValue>
-                                    {field.value && (
-                                      <div className="flex items-center gap-1.5">
-                                        <div className={`w-2.5 h-2.5 rounded-full ${colorStyles[field.value]} border border-gray-200 dark:border-gray-700`} />
-                                        <span className="truncate">{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                                      </div>
-                                    )}
-                                  </SelectValue>
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                                {Object.entries(colorStyles).map(([color, bgClass]) => (
-                                  <SelectItem key={color} value={color} className="flex items-center gap-2">
-                                    <div className={`w-2.5 h-2.5 rounded-full ${bgClass} border border-gray-200 dark:border-gray-700`} />
-                                    <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </FormItem>
-                        )}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeColorFromSize(id, index)}
-                        className="h-7 w-7 px-0 mb-[2px] text-gray-400 hover:text-red-500 hover:bg-red-50 dark:text-gray-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
-                      >
-                        ✕
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <SizeCard
+            key={id}
+            id={id}
+            label={label}
+            control={form.control}
+            sizeColors={form.watch(`sizes.${id}`) || []}
+            onAddColor={addColorToSize}
+            onRemoveColor={removeColorFromSize}
+            onKeyDown={handleKeyDown}
+          />
         ))}
       </div>
     );
@@ -228,102 +134,8 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
       </div>
 
       <div className="grid gap-8">
-        {/* Garment Type */}
-        <FormField
-          control={form.control}
-          name="garmentType"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
-                <Shirt className="w-4 h-4" />
-                Garment Type
-              </FormLabel>
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value}
-                className="grid grid-cols-2 md:grid-cols-4 gap-3"
-              >
-                {[
-                  { value: "tshirt", label: "T-Shirt" },
-                  { value: "hoodie", label: "Hoodie" },
-                  { value: "sweatshirt", label: "Sweatshirt" },
-                  { value: "tank", label: "Tank Top" },
-                ].map(({ value, label }) => (
-                  <div key={value} className="relative">
-                    <RadioGroupItem
-                      value={value}
-                      id={value}
-                      className="peer sr-only"
-                    />
-                    <label
-                      htmlFor={value}
-                      className={`flex flex-col items-center justify-center p-4 bg-white dark:bg-brand-navy-dark/80 border rounded-lg cursor-pointer transition-all duration-300
-                        ${
-                          field.value === value
-                            ? "border-brand-yellow shadow-sm"
-                            : "border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow"
-                        }
-                      `}
-                    >
-                      {garmentIcons[value as keyof typeof garmentIcons]}
-                      <span className="text-sm font-medium mt-2 text-gray-700 dark:text-gray-300">{label}</span>
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FormItem>
-          )}
-        />
-
-        {/* Material Type */}
-        <FormField
-          control={form.control}
-          name="materialType"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
-                <Package2 className="w-4 h-4" />
-                Material Type
-              </FormLabel>
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value}
-                className="grid grid-cols-3 gap-3"
-              >
-                {[
-                  { value: "cotton", label: "100% Cotton", bgColor: "bg-[#FEF7CD]" },
-                  { value: "5050", label: "50/50 Blend", bgColor: "bg-[#FEC6A1]" },
-                  { value: "polyester", label: "100% Polyester", bgColor: "bg-[#D3E4FD]" },
-                ].map(({ value, label, bgColor }) => (
-                  <div key={value} className="relative">
-                    <RadioGroupItem
-                      value={value}
-                      id={`material-${value}`}
-                      className="peer sr-only"
-                    />
-                    <label
-                      htmlFor={`material-${value}`}
-                      className={`flex flex-col items-center justify-center p-4 bg-white dark:bg-brand-navy-dark/80 border rounded-lg cursor-pointer transition-all duration-300
-                        ${
-                          field.value === value
-                            ? "border-brand-yellow shadow-sm"
-                            : "border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow"
-                        }
-                      `}
-                    >
-                      <div className={`w-6 h-6 rounded-full mb-2 ${bgColor} border ${
-                        field.value === value 
-                          ? "border-brand-yellow" 
-                          : "border-gray-300 dark:border-gray-600"
-                      }`} />
-                      <span className="text-sm font-medium text-center text-gray-700 dark:text-gray-300">{label}</span>
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FormItem>
-          )}
-        />
+        <GarmentTypeField control={form.control} />
+        <MaterialTypeField control={form.control} />
 
         {/* Cotton Type */}
         <FormField
