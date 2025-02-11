@@ -1,4 +1,4 @@
-import { Shirt, Package2, Palette } from "lucide-react";
+import { Shirt, Package2, Palette, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
