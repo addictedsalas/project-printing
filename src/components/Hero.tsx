@@ -40,8 +40,8 @@ export default function Hero() {
             </span>
           </p>
 
-          {/* Buttons - adjusted spacing for mobile */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4">
+          {/* Buttons - adjusted spacing and width for mobile */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
             <a href="/order" className="brand-button inline-block transition-all duration-300 group w-full sm:w-auto">
               Start Your Order
               <span className="inline-block ml-2 group-hover:translate-y-0.5 transition-transform duration-300">✨</span>
