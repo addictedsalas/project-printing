@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -108,8 +109,8 @@ export default function Order() {
                         />
                         <div>
                           <Select
-                            defaultValue={item.color}
-                            onValueChange={(newColor) => {
+                            value={item.color}
+                            onValueChange={(newColor: string) => {
                               const newValue = [...field.value];
                               newValue[index] = { ...newValue[index], color: newColor };
                               field.onChange(newValue);
@@ -117,7 +118,8 @@ export default function Order() {
                           >
                             <SelectTrigger className="h-10">
                               <SelectValue>
-                                {item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                {typeof item.color === 'string' && 
+                                  item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                               </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
