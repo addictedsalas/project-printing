@@ -34,6 +34,7 @@ const orderFormSchema = z.object({
 });
 
 type OrderFormValues = z.infer<typeof orderFormSchema>;
+type SizesKey = keyof OrderFormValues['sizes'];
 
 const garmentIcons = {
   tshirt: <Shirt className="w-6 h-6" />,
@@ -87,15 +88,15 @@ export default function Order() {
   const renderSizeInputs = (type: "adult" | "youth") => {
     const sizes = type === "adult" 
       ? [
-          { id: "small", label: "Small" },
-          { id: "medium", label: "Medium" },
-          { id: "large", label: "Large" },
-          { id: "xlarge", label: "X-Large" }
+          { id: "small" as SizesKey, label: "Small" },
+          { id: "medium" as SizesKey, label: "Medium" },
+          { id: "large" as SizesKey, label: "Large" },
+          { id: "xlarge" as SizesKey, label: "X-Large" }
         ]
       : [
-          { id: "youth_s", label: "Youth Small" },
-          { id: "youth_m", label: "Youth Medium" },
-          { id: "youth_l", label: "Youth Large" }
+          { id: "youth_s" as SizesKey, label: "Youth Small" },
+          { id: "youth_m" as SizesKey, label: "Youth Medium" },
+          { id: "youth_l" as SizesKey, label: "Youth Large" }
         ];
     
     return (
@@ -104,7 +105,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}`}
+            name={`sizes.${id}` as `sizes.${SizesKey}`}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -113,7 +114,7 @@ export default function Order() {
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(e.target.value)}
-                    value={field.value || "0"}
+                    value={field.value?.toString() || "0"}
                     min="0"
                     className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                   />
