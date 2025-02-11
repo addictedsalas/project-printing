@@ -19,7 +19,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/order" className="nav-link hover:scale-105 transition-transform duration-300">Order Custom</a>
+            <a href="/order" className="nav-link hover:scale-105 transition-transform duration-300">Order</a>
             <a href="/shop" className="nav-link hover:scale-105 transition-transform duration-300">Shop</a>
             <a href="/blog" className="nav-link hover:scale-105 transition-transform duration-300">Blog</a>
             <a href="/contact" className="nav-link hover:scale-105 transition-transform duration-300">Contact</a>
@@ -69,7 +69,7 @@ export default function Navbar() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden py-4 animate-fade-in">
-            <a href="/order" className="block py-2 hover:translate-x-2 transition-transform duration-300 hover:text-brand-yellow">Order Custom</a>
+            <a href="/order" className="block py-2 hover:translate-x-2 transition-transform duration-300 hover:text-brand-yellow">Order</a>
             <a href="/shop" className="block py-2 hover:translate-x-2 transition-transform duration-300 hover:text-brand-yellow">Shop</a>
             <a href="/blog" className="block py-2 hover:translate-x-2 transition-transform duration-300 hover:text-brand-yellow">Blog</a>
             <a href="/contact" className="block py-2 hover:translate-x-2 transition-transform duration-300 hover:text-brand-yellow">Contact</a>
