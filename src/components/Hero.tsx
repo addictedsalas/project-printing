@@ -5,7 +5,6 @@ export default function Hero() {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-brand-blue/10 transform -skew-y-6 hover:skew-y-0 transition-transform duration-700"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-brand-yellow/10 via-brand-blue/5 to-brand-navy/10 transform skew-y-3 hover:scale-105 transition-transform duration-700"></div>
-        <div className="geometric-pattern"></div>
       </div>
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
