@@ -27,12 +27,12 @@ export const garmentIcons = {
 };
 
 export const colorStyles = {
-  "white": "bg-white border-gray-400",
-  "black": "bg-black border-gray-900",
+  "white": "bg-white border-slate-400",
+  "black": "bg-black border-slate-900",
   "navy": "bg-blue-900 border-blue-950",
   "royal-blue": "bg-blue-600 border-blue-700",
-  "heather-gray": "bg-gray-400 border-gray-500",
-  "charcoal": "bg-gray-700 border-gray-800",
+  "heather-gray": "bg-slate-400 border-slate-500",
+  "charcoal": "bg-slate-700 border-slate-800",
   "red": "bg-red-600 border-red-700",
   "maroon": "bg-red-900 border-red-950",
   "kelly-green": "bg-green-600 border-green-700",
