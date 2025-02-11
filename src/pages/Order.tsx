@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -107,29 +106,24 @@ export default function Order() {
                           min="0"
                           className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                         />
-                        <div>
-                          <Select
-                            value={item.color}
-                            onValueChange={(newColor: string) => {
-                              const newValue = [...field.value];
-                              newValue[index] = { ...newValue[index], color: newColor };
-                              field.onChange(newValue);
-                            }}
-                          >
-                            <SelectTrigger className="h-10">
-                              <SelectValue>
-                                {typeof item.color === 'string' && 
-                                  item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                              </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
+                        <div className="flex-1">
+                          <div className="relative w-full">
+                            <select
+                              value={item.color}
+                              onChange={(e) => {
+                                const newValue = [...field.value];
+                                newValue[index] = { ...newValue[index], color: e.target.value };
+                                field.onChange(newValue);
+                              }}
+                              className="w-full h-10 px-3 border-2 border-brand-blue rounded-md focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
+                            >
                               {Object.entries(colorStyles).map(([color, _]) => (
-                                <SelectItem key={color} value={color}>
+                                <option key={color} value={color}>
                                   {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                </SelectItem>
+                                </option>
                               ))}
-                            </SelectContent>
-                          </Select>
+                            </select>
+                          </div>
                         </div>
                         <Button
                           type="button"
