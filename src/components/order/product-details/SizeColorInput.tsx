@@ -16,7 +16,7 @@ interface SizeColorInputProps {
 
 export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: SizeColorInputProps) => {
   return (
-    <div className="flex items-end gap-2 p-2 rounded bg-slate-100 border-2 border-slate-300 shadow-sm dark:bg-brand-navy-dark/50 dark:border-brand-blue/10">
+    <div className="flex items-end gap-2 p-2 rounded bg-white/80 shadow-sm ring-1 ring-gray-950/10 dark:bg-brand-navy-dark/50 dark:border-brand-blue/10">
       <FormField
         control={control}
         name={`sizes.${id}.${index}.quantity`}
@@ -43,7 +43,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 onKeyDown={(e) => onKeyDown(e, id, index)}
                 value={field.value?.toString()}
                 min="0"
-                className="h-7 text-xs bg-white border-2 border-slate-300 text-slate-900 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow"
+                className="h-7 text-xs bg-white border border-gray-950/20 text-slate-900 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow"
               />
             </FormControl>
           </FormItem>
@@ -60,21 +60,21 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
               defaultValue={field.value}
             >
               <FormControl>
-                <SelectTrigger className="h-7 text-xs bg-white border-2 border-slate-300 text-slate-900 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow">
+                <SelectTrigger className="h-7 text-xs bg-white border border-gray-950/20 text-slate-900 focus:border-brand-yellow focus:ring-brand-yellow/20 dark:bg-brand-navy-dark dark:border-brand-blue/20 dark:focus:border-brand-yellow">
                   <SelectValue>
                     {field.value && (
                       <div className="flex items-center gap-1.5">
-                        <div className={`w-3 h-3 rounded-full shadow-sm ${colorStyles[field.value]} border-2`} />
+                        <div className={`w-3 h-3 rounded-full shadow-sm ${colorStyles[field.value]} border`} />
                         <span className="truncate font-medium">{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                       </div>
                     )}
                   </SelectValue>
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-white border-2 border-slate-300 dark:bg-brand-navy-dark dark:border-brand-blue/20">
+              <SelectContent className="bg-white border border-gray-950/20 dark:bg-brand-navy-dark dark:border-brand-blue/20">
                 {Object.entries(colorStyles).map(([color, bgClass]) => (
                   <SelectItem key={color} value={color} className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full shadow-sm ${bgClass} border-2`} />
+                    <div className={`w-3 h-3 rounded-full shadow-sm ${bgClass} border`} />
                     <span className="font-medium">{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                   </SelectItem>
                 ))}

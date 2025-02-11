@@ -23,7 +23,7 @@ export const SizeCard = ({
   onKeyDown 
 }: SizeCardProps) => {
   return (
-    <div className="relative bg-white dark:bg-brand-navy-dark/80 border rounded-lg transition-all duration-300 border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow">
+    <div className="relative bg-slate-100 dark:bg-brand-navy-dark/80 ring-1 ring-gray-950/10 rounded-lg transition-all duration-300 hover:ring-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow">
       <div className="flex flex-col items-center text-center p-4">
         <span className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{label}</span>
         {sizeColors.length === 0 ? (
@@ -32,7 +32,7 @@ export const SizeCard = ({
             variant="outline"
             size="sm"
             onClick={() => onAddColor(id)}
-            className="h-7 px-3 text-xs border-gray-200 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
+            className="h-7 px-3 text-xs border border-gray-950/20 hover:bg-brand-yellow/5 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:bg-brand-yellow/5 dark:hover:border-brand-yellow"
           >
             Add Color
           </Button>
