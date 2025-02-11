@@ -3,32 +3,32 @@ import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-navy text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-brand-navy text-white py-8 sm:py-12">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-            <div className="space-y-2">
-              <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-brand-yellow transition-colors">
+          <div className="space-y-4 text-center md:text-left">
+            <h3 className="text-lg font-bold mb-4">Contact Us</h3>
+            <div className="space-y-3">
+              <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start">
                 <Phone className="w-4 h-4" />
                 (123) 456-7890
               </a>
-              <a href="mailto:info@projectprinting.com" className="flex items-center gap-2 hover:text-brand-yellow transition-colors">
+              <a href="mailto:info@projectprinting.com" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start">
                 <Mail className="w-4 h-4" />
                 info@projectprinting.com
               </a>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                123 Print Street, Design City, ST 12345
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <MapPin className="w-4 h-4 flex-shrink-0" />
+                <span>123 Print Street, Design City, ST 12345</span>
               </div>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <div className="space-y-2">
+          <div className="space-y-4 text-center md:text-left">
+            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+            <div className="space-y-3">
               <a href="/order" className="block hover:text-brand-yellow transition-colors">Custom Orders</a>
               <a href="/shop" className="block hover:text-brand-yellow transition-colors">Shop</a>
               <a href="/blog" className="block hover:text-brand-yellow transition-colors">Blog</a>
@@ -37,21 +37,21 @@ export default function Footer() {
           </div>
 
           {/* Social & Newsletter */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-4">Connect With Us</h3>
-            <div className="flex space-x-4">
+          <div className="space-y-4 text-center md:text-left">
+            <h3 className="text-lg font-bold mb-4">Connect With Us</h3>
+            <div className="flex justify-center md:justify-start space-x-6">
               <a href="#" className="hover:text-brand-yellow transition-colors">
-                <Facebook className="w-6 h-6" />
+                <Facebook className="w-5 h-5" />
               </a>
               <a href="#" className="hover:text-brand-yellow transition-colors">
-                <Instagram className="w-6 h-6" />
+                <Instagram className="w-5 h-5" />
               </a>
               <a href="#" className="hover:text-brand-yellow transition-colors">
-                <Twitter className="w-6 h-6" />
+                <Twitter className="w-5 h-5" />
               </a>
             </div>
             <div className="mt-6">
-              <form className="flex gap-2">
+              <form className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
                   placeholder="Enter your email"
@@ -68,7 +68,7 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-white/10 text-center text-sm text-white/60">
+        <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-white/60">
           <p>&copy; {new Date().getFullYear()} Project Printing. All rights reserved.</p>
         </div>
       </div>
