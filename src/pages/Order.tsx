@@ -138,10 +138,10 @@ export default function Order() {
                                     className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
                                       ${
                                         field.value?.includes(value)
-                                          ? isDark
+                                          ? theme === "dark"
                                             ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
                                             : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
-                                          : isDark
+                                          : theme === "dark"
                                             ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
                                             : "border-brand-blue hover:bg-brand-blue-light/20"
                                       }
