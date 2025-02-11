@@ -8,7 +8,7 @@ export default function Hero() {
       </div>
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-block px-6 py-2 bg-brand-yellow text-brand-navy text-sm font-medium mb-4 animate-fade-up shadow-[4px_4px_0px_0px_#1B2B65] hover:shadow-[6px_6px_0px_0px_#1B2B65] hover:-translate-y-0.5 transition-all duration-300 dark:bg-brand-blue dark:text-white dark:shadow-[4px_4px_0px_0px_#FFD84F] dark:hover:shadow-[6px_6px_0px_0px_#FFD84F]">
+          <span className="inline-block px-6 py-2 bg-brand-yellow text-brand-navy text-sm font-medium mb-4 animate-fade-up shadow-[4px_4px_0px_0px_#1B2B65] hover:shadow-[6px_6px_0px_0px_#1B2B65] hover:-translate-y-0.5 transition-all duration-300">
             Custom Screen Printing
           </span>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-up hover-glow" style={{ animationDelay: "0.2s" }}>
