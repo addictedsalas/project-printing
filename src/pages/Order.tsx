@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
+import { Package2, Shirt, Palette, MapPin, Sparkles, Textile } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -16,6 +16,7 @@ const orderFormSchema = z.object({
   garmentType: z.string(),
   color: z.string(),
   cottonType: z.string(),
+  materialType: z.enum(["cotton", "5050", "polyester"]),
   brand: z.string(),
   sizeType: z.enum(["adult", "youth"]),
   sizes: z.object({
@@ -58,6 +59,7 @@ export default function Order() {
       garmentType: "",
       color: "",
       cottonType: "",
+      materialType: "cotton",
       brand: "",
       sizeType: "adult",
       sizes: {
@@ -295,6 +297,45 @@ export default function Order() {
                           </h3>
                           {renderSizeInputs(sizeType)}
                         </div>
+
+                        <FormField
+                          control={form.control}
+                          name="materialType"
+                          render={({ field }) => (
+                            <FormItem className="space-y-4">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                                <Textile className="w-5 h-5" />
+                                Material Type
+                              </FormLabel>
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="grid grid-cols-3 gap-4"
+                              >
+                                {[
+                                  { value: "cotton", label: "100% Cotton" },
+                                  { value: "5050", label: "50/50 Blend" },
+                                  { value: "polyester", label: "100% Polyester" },
+                                ].map(({ value, label }) => (
+                                  <div key={value} className="relative">
+                                    <RadioGroupItem
+                                      value={value}
+                                      id={`material-${value}`}
+                                      className="peer sr-only"
+                                    />
+                                    <label
+                                      htmlFor={`material-${value}`}
+                                      className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                    >
+                                      <Textile className="w-6 h-6 mb-2" />
+                                      <span className="text-sm font-medium">{label}</span>
+                                    </label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
+                            </FormItem>
+                          )}
+                        />
 
                         <FormField
                           control={form.control}
