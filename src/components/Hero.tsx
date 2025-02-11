@@ -14,7 +14,7 @@ export default function Hero() {
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-up hover-glow" style={{ animationDelay: "0.2s" }}>
             Exceptional Print
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-brand-navy to-brand-blue-dark hover:from-brand-navy hover:via-brand-blue hover:to-brand-navy transition-all duration-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-navy via-[#8B5CF6] to-[#D946EF] hover:from-[#D946EF] hover:via-[#8B5CF6] hover:to-brand-navy transition-all duration-500 dark:from-brand-yellow dark:via-brand-blue dark:to-white dark:hover:from-white dark:hover:via-brand-blue dark:hover:to-brand-yellow">
               Remarkable Results
             </span>
           </h1>
