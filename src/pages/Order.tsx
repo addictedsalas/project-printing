@@ -9,6 +9,7 @@ import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const orderFormSchema = z.object({
   quantity: z.string(),
@@ -16,6 +17,7 @@ const orderFormSchema = z.object({
   color: z.string(),
   cottonType: z.string(),
   brand: z.string(),
+  sizeType: z.enum(["adult", "youth"]),
   sizes: z.object({
     small: z.string(),
     medium: z.string(),
@@ -35,6 +37,7 @@ export default function Order() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const [mounted, setMounted] = useState(false);
+  const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
 
   useEffect(() => {
     setMounted(true);
@@ -49,6 +52,7 @@ export default function Order() {
       color: "",
       cottonType: "",
       brand: "",
+      sizeType: "adult",
       sizes: {
         small: "0",
         medium: "0",
@@ -69,36 +73,48 @@ export default function Order() {
 
   if (!mounted) return null;
 
-  const renderSizeInputs = (type: 'adult' | 'youth') => {
-    const sizes = type === 'adult' 
-      ? ['small', 'medium', 'large', 'xlarge'] 
-      : ['youth_s', 'youth_m', 'youth_l'];
+  const renderSizeInputs = (type: "adult" | "youth") => {
+    const sizes = type === "adult" 
+      ? [
+          { id: "small", label: "Small" },
+          { id: "medium", label: "Medium" },
+          { id: "large", label: "Large" },
+          { id: "xlarge", label: "X-Large" }
+        ]
+      : [
+          { id: "youth_s", label: "Youth Small" },
+          { id: "youth_m", label: "Youth Medium" },
+          { id: "youth_l", label: "Youth Large" }
+        ];
     
-    return sizes.map((size) => (
-      <FormField
-        key={size}
-        control={form.control}
-        name={`sizes.${size}` as const}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="capitalize">{size.replace('_', ' ')}</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                min="0"
-                {...field}
-                onChange={(e) => field.onChange(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-brand-blue rounded-md focus:border-brand-navy focus:ring-brand-navy"
-              />
-            </FormControl>
-          </FormItem>
-        )}
-      />
-    ));
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {sizes.map(({ id, label }) => (
+          <FormField
+            key={id}
+            control={form.control}
+            name={`sizes.${id}` as const}
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel className="text-sm font-medium">{label}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    min="0"
+                    className="h-10 border-2 border-brand-blue focus:border-brand-navy"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        ))}
+      </div>
+    );
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FEC6A1] via-white to-[#D3E4FD]">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light via-white to-brand-yellow-light">
       <div className="geometric-pattern opacity-5"></div>
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
@@ -167,7 +183,7 @@ export default function Order() {
                   className="bg-gradient-to-br from-white/90 to-brand-yellow-light/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue hover:border-brand-navy transition-all duration-300"
                 >
                   {step === 1 && (
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       <div className="text-center mb-8">
                         <motion.div
                           initial={{ opacity: 0, scale: 0.5 }}
@@ -175,7 +191,7 @@ export default function Order() {
                           className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-light rounded-full mb-4"
                         >
                           <Sparkles className="w-4 h-4 text-brand-navy" />
-                          <span className="text-sm font-medium text-brand-navy">Customize Your Perfect Shirt!</span>
+                          <span className="text-sm font-medium text-brand-navy">Design Your Custom Apparel</span>
                         </motion.div>
                         <motion.h2 
                           initial={{ opacity: 0, y: -20 }}
@@ -184,15 +200,99 @@ export default function Order() {
                         >
                           Product Details
                         </motion.h2>
-                        <p className="text-gray-600">Select your preferred options below</p>
+                        <p className="text-gray-600">Customize your perfect design</p>
                       </div>
 
                       <div className="grid gap-8">
                         <FormField
                           control={form.control}
+                          name="garmentType"
+                          render={({ field }) => (
+                            <FormItem className="space-y-4">
+                              <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                                <Shirt className="w-5 h-5" />
+                                Garment Type
+                              </FormLabel>
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                              >
+                                {[
+                                  { value: "tshirt", label: "T-Shirt" },
+                                  { value: "hoodie", label: "Hoodie" },
+                                  { value: "sweatshirt", label: "Sweatshirt" },
+                                  { value: "tank", label: "Tank Top" },
+                                ].map(({ value, label }) => (
+                                  <div key={value} className="relative">
+                                    <RadioGroupItem
+                                      value={value}
+                                      id={value}
+                                      className="peer sr-only"
+                                    />
+                                    <label
+                                      htmlFor={value}
+                                      className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                    >
+                                      <Shirt className="w-6 h-6 mb-2" />
+                                      <span className="text-sm font-medium">{label}</span>
+                                    </label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="sizeType"
+                          render={({ field }) => (
+                            <FormItem className="space-y-4">
+                              <FormLabel className="text-lg font-medium text-brand-navy">Size Category</FormLabel>
+                              <RadioGroup
+                                onValueChange={(value: "adult" | "youth") => {
+                                  field.onChange(value);
+                                  setSizeType(value);
+                                }}
+                                defaultValue={field.value}
+                                className="flex gap-4"
+                              >
+                                {[
+                                  { value: "adult", label: "Adult Sizes" },
+                                  { value: "youth", label: "Youth Sizes" },
+                                ].map(({ value, label }) => (
+                                  <div key={value} className="relative">
+                                    <RadioGroupItem
+                                      value={value}
+                                      id={`size-${value}`}
+                                      className="peer sr-only"
+                                    />
+                                    <label
+                                      htmlFor={`size-${value}`}
+                                      className="flex items-center justify-center px-6 py-3 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
+                                    >
+                                      <span className="text-sm font-medium">{label}</span>
+                                    </label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="space-y-4 bg-white/50 p-6 rounded-lg border border-brand-blue">
+                          <h3 className="text-lg font-medium text-brand-navy">
+                            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
+                          </h3>
+                          {renderSizeInputs(sizeType)}
+                        </div>
+
+                        <FormField
+                          control={form.control}
                           name="cottonType"
                           render={({ field }) => (
-                            <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormItem className="space-y-4">
                               <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
                                 <Package2 className="w-5 h-5" />
                                 Cotton Type
@@ -220,7 +320,7 @@ export default function Order() {
                           control={form.control}
                           name="brand"
                           render={({ field }) => (
-                            <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormItem className="space-y-4">
                               <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
                                 <Shirt className="w-5 h-5" />
                                 Brand
@@ -248,7 +348,7 @@ export default function Order() {
                           control={form.control}
                           name="color"
                           render={({ field }) => (
-                            <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormItem className="space-y-4">
                               <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
                                 <Palette className="w-5 h-5" />
                                 Color
@@ -275,22 +375,6 @@ export default function Order() {
                             </FormItem>
                           )}
                         />
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-brand-navy">Adult Sizes</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                              {renderSizeInputs('adult')}
-                            </div>
-                          </div>
-
-                          <div className="space-y-4">
-                            <h3 className="text-lg font-medium text-brand-navy">Youth Sizes</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                              {renderSizeInputs('youth')}
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   )}
