@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion } from "framer-motion";
-import { Package2, Shirt, Palette, MapPin } from "lucide-react";
+import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
 
 const orderFormSchema = z.object({
   quantity: z.string(),
@@ -52,12 +51,11 @@ export default function Order() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light/20 via-white to-brand-yellow-light/20">
-      <div className="geometric-pattern"></div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FEC6A1] via-white to-[#D3E4FD]">
+      <div className="geometric-pattern opacity-5"></div>
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
-          {/* Progress Bar */}
           <div className="mb-12">
             <div className="flex justify-between mb-4">
               {Array.from({ length: totalSteps }).map((_, index) => (
@@ -117,15 +115,23 @@ export default function Order() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue hover:border-brand-navy transition-all duration-300"
+                className="bg-gradient-to-br from-white/90 to-[#FEF7CD]/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-[#FEC6A1] hover:border-[#E5DEFF] transition-all duration-300"
               >
                 {step === 1 && (
                   <div className="space-y-6">
                     <div className="text-center mb-8">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-[#E5DEFF] rounded-full mb-4"
+                      >
+                        <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
+                        <span className="text-sm font-medium text-[#8B5CF6]">Let's Create Something Amazing!</span>
+                      </motion.div>
                       <motion.h2 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl font-bold text-brand-navy mb-2"
+                        className="text-3xl font-bold text-[#8B5CF6] mb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"
                       >
                         Product Details
                       </motion.h2>
@@ -137,22 +143,22 @@ export default function Order() {
                         control={form.control}
                         name="garmentType"
                         render={({ field }) => (
-                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                          <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#8B5CF6]">
                               <Shirt className="w-5 h-5" />
                               Garment Type
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#8B5CF6] hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-300">
                                   <SelectValue placeholder="Select garment type" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
-                                <SelectItem value="tshirt">T-Shirt</SelectItem>
-                                <SelectItem value="hoodie">Hoodie</SelectItem>
-                                <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
-                                <SelectItem value="tank">Tank Top</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
+                                <SelectItem value="tshirt" className="hover:bg-[#E5DEFF]">T-Shirt</SelectItem>
+                                <SelectItem value="hoodie" className="hover:bg-[#E5DEFF]">Hoodie</SelectItem>
+                                <SelectItem value="sweatshirt" className="hover:bg-[#E5DEFF]">Sweatshirt</SelectItem>
+                                <SelectItem value="tank" className="hover:bg-[#E5DEFF]">Tank Top</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
@@ -163,21 +169,21 @@ export default function Order() {
                         control={form.control}
                         name="fabricQuality"
                         render={({ field }) => (
-                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                          <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#D946EF]">
                               <Package2 className="w-5 h-5" />
                               Fabric Quality
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#D946EF] hover:shadow-[0_0_15px_rgba(217,70,239,0.3)] transition-all duration-300">
                                   <SelectValue placeholder="Select fabric quality" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
-                                <SelectItem value="basic">Basic (130g/m²)</SelectItem>
-                                <SelectItem value="premium">Premium (180g/m²)</SelectItem>
-                                <SelectItem value="heavyweight">Heavyweight (220g/m²)</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
+                                <SelectItem value="basic" className="hover:bg-[#FDE1D3]">Basic (130g/m²)</SelectItem>
+                                <SelectItem value="premium" className="hover:bg-[#FDE1D3]">Premium (180g/m²)</SelectItem>
+                                <SelectItem value="heavyweight" className="hover:bg-[#FDE1D3]">Heavyweight (220g/m²)</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
@@ -188,22 +194,22 @@ export default function Order() {
                         control={form.control}
                         name="color"
                         render={({ field }) => (
-                          <FormItem className="space-y-4 hover:-translate-y-1 transition-all duration-300">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2">
+                          <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#F97316]">
                               <Palette className="w-5 h-5" />
                               Color
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300">
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#F97316] hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all duration-300">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
-                                <SelectItem value="white">White</SelectItem>
-                                <SelectItem value="black">Black</SelectItem>
-                                <SelectItem value="navy">Navy</SelectItem>
-                                <SelectItem value="gray">Gray</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
+                                <SelectItem value="white" className="hover:bg-[#FEF7CD]">White</SelectItem>
+                                <SelectItem value="black" className="hover:bg-[#FEF7CD]">Black</SelectItem>
+                                <SelectItem value="navy" className="hover:bg-[#FEF7CD]">Navy</SelectItem>
+                                <SelectItem value="gray" className="hover:bg-[#FEF7CD]">Gray</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
