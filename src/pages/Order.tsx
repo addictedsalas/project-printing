@@ -56,6 +56,29 @@ const colorStyles = {
   red: "bg-red-600",
 };
 
+const materialTypeOptions = {
+  cotton: [
+    { value: "basic", label: "Basic Cotton" },
+    { value: "premium", label: "Premium Cotton" },
+    { value: "organic", label: "Organic Cotton" },
+    { value: "ringspun", label: "Ring-Spun Cotton" },
+    { value: "combed", label: "Combed Cotton" },
+    { value: "pima", label: "Pima Cotton" }
+  ],
+  "5050": [
+    { value: "cotton-poly", label: "Cotton/Poly Blend" },
+    { value: "tri-blend", label: "Tri-Blend" },
+    { value: "eco-blend", label: "Eco-Friendly Blend" },
+    { value: "performance-blend", label: "Performance Blend" }
+  ],
+  polyester: [
+    { value: "basic-poly", label: "Basic Polyester" },
+    { value: "moisture-wicking", label: "Moisture Wicking" },
+    { value: "performance", label: "Performance Polyester" },
+    { value: "recycled", label: "Recycled Polyester" }
+  ]
+};
+
 export default function Order() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
@@ -141,6 +164,8 @@ export default function Order() {
   };
 
   const isDark = theme === "dark";
+
+  const watchMaterialType = form.watch("materialType");
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light/20 via-white to-brand-yellow-light/20 dark:from-brand-navy-dark dark:via-brand-navy dark:to-brand-navy-light">
@@ -368,7 +393,7 @@ export default function Order() {
                                           field.value === value
                                             ? isDark
                                               ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
-                                              : "border-brand-navy bg-brand-blue-light/50 text-brand-navy shadow-lg scale-105"
+                                              : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
                                             : isDark
                                               ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
                                               : "border-brand-blue hover:bg-brand-blue-light/20"
@@ -402,21 +427,30 @@ export default function Order() {
                             <FormItem className="space-y-4">
                               <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
                                 <Package2 className="w-5 h-5" />
-                                Cotton Type
+                                {watchMaterialType === "cotton" ? "Cotton Type" : 
+                                 watchMaterialType === "5050" ? "Blend Type" : 
+                                 "Polyester Type"}
                               </FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <Select 
+                                onValueChange={field.onChange} 
+                                defaultValue={field.value}
+                                value={field.value || undefined}
+                              >
                                 <FormControl>
                                   <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300 dark:bg-brand-navy-dark/50 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:text-white">
-                                    <SelectValue placeholder="Select cotton type" />
+                                    <SelectValue placeholder={`Select ${watchMaterialType === "cotton" ? "cotton" : watchMaterialType === "5050" ? "blend" : "polyester"} type`} />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue dark:bg-brand-navy-dark/80 dark:border-brand-blue/20 dark:text-white">
-                                  <SelectItem value="basic">Basic Cotton</SelectItem>
-                                  <SelectItem value="premium">Premium Cotton</SelectItem>
-                                  <SelectItem value="organic">Organic Cotton</SelectItem>
-                                  <SelectItem value="ringspun">Ring-Spun Cotton</SelectItem>
-                                  <SelectItem value="combed">Combed Cotton</SelectItem>
-                                  <SelectItem value="pima">Pima Cotton</SelectItem>
+                                  {materialTypeOptions[watchMaterialType as keyof typeof materialTypeOptions]?.map(({ value, label }) => (
+                                    <SelectItem 
+                                      key={value} 
+                                      value={value}
+                                      className="dark:text-white hover:bg-brand-blue-light/20 dark:hover:bg-brand-yellow/20"
+                                    >
+                                      {label}
+                                    </SelectItem>
+                                  ))}
                                 </SelectContent>
                               </Select>
                             </FormItem>
