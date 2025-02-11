@@ -371,7 +371,7 @@ export default function Order() {
                                     />
                                     <label
                                       htmlFor={`material-${value}`}
-                                      className={`flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300`}
+                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300`}
                                     >
                                       <div className={`w-8 h-8 rounded-full mb-2 ${bgColor}`} />
                                       <span className="text-sm font-medium">{label}</span>
