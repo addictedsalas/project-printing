@@ -28,38 +28,34 @@
   }
 
   body {
-    @apply bg-vintage-offwhite text-vintage-charcoal;
+    @apply bg-white text-brand-navy;
     font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    @apply font-bold;
   }
 }
 
 @layer components {
-  .vintage-button {
-    @apply px-8 py-3 bg-vintage-terracotta text-vintage-charcoal font-semibold rounded-lg 
-           transition-all duration-300 hover:bg-vintage-navy hover:text-white 
-           focus:outline-none focus:ring-2 focus:ring-vintage-navy focus:ring-opacity-50;
+  .brand-button {
+    @apply px-8 py-3 bg-brand-yellow text-brand-navy font-semibold rounded-none 
+           transition-all duration-300 hover:bg-brand-navy hover:text-white 
+           focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-opacity-50;
   }
 
-  .vintage-card {
-    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 
-           hover:shadow-lg border border-vintage-cream;
+  .brand-card {
+    @apply bg-white rounded-none shadow-md p-6 transition-all duration-300 
+           hover:shadow-lg border border-brand-blue;
   }
 
   .section-title {
-    @apply text-4xl md:text-5xl font-bold text-vintage-navy mb-4 font-playfair;
+    @apply text-4xl md:text-5xl font-bold text-brand-navy mb-4;
   }
 
-  .vintage-input {
-    @apply w-full px-4 py-2 border border-vintage-cream rounded-lg focus:ring-2 
-           focus:ring-vintage-navy focus:border-transparent transition-all duration-300;
+  .brand-input {
+    @apply w-full px-4 py-2 border border-brand-blue rounded-none focus:ring-2 
+           focus:ring-brand-navy focus:border-transparent transition-all duration-300;
   }
-}
-
-.text-stroke {
-  -webkit-text-stroke: 1px theme('colors.vintage.navy');
-  color: transparent;
 }
