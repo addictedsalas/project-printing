@@ -102,7 +102,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}`}
+            name={`sizes.${id}` as keyof OrderFormValues}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -111,7 +111,6 @@ export default function Order() {
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(e.target.value)}
-                    value={field.value}
                     min="0"
                     className="h-10 border-2 border-brand-blue focus:border-brand-navy"
                   />
@@ -126,7 +125,6 @@ export default function Order() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light via-white to-brand-yellow-light">
-      <div className="geometric-pattern opacity-5"></div>
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -499,7 +497,7 @@ export default function Order() {
                     type="button"
                     variant="outline"
                     onClick={() => setStep(step - 1)}
-                    className="px-8 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className="px-8 bg-white hover:bg-brand-blue-light hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                   >
                     Previous
                   </Button>
