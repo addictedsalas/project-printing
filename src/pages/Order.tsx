@@ -13,7 +13,7 @@ import { useTheme } from "@/components/theme-provider";
 import { ReviewStep } from "@/components/order/ReviewStep";
 import { orderFormSchema } from "@/types/order";
 import type { OrderFormValues, SizesKey, SizeColor } from "@/types/order";
-import { colorStyles } from "@/components/order/orderConstants";
+import { colorStyles, materialTypeOptions } from "@/components/order/orderConstants";
 
 const garmentIcons = {
   tshirt: <Shirt className="w-6 h-6" />,
@@ -106,33 +106,28 @@ export default function Order() {
                           min="0"
                           className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                         />
-                        <FormField
-                          control={form.control}
-                          name={`sizes.${id}.${index}.color`}
-                          render={({ field: colorField }) => (
-                            <Select
-                              value={item.color}
-                              onValueChange={(newColor) => {
-                                const newValue = [...field.value];
-                                newValue[index] = { ...newValue[index], color: newColor };
-                                field.onChange(newValue);
-                              }}
-                            >
-                              <SelectTrigger className="h-10">
-                                <SelectValue>
-                                  {item.color && item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                </SelectValue>
-                              </SelectTrigger>
-                              <SelectContent>
-                                {Object.entries(colorStyles).map(([color, _]) => (
-                                  <SelectItem key={color} value={color}>
-                                    {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          )}
-                        />
+                        <Select
+                          value={item.color}
+                          onValueChange={(newColor) => {
+                            const newValue = [...field.value];
+                            newValue[index] = { ...newValue[index], color: newColor };
+                            field.onChange(newValue);
+                          }}
+                        >
+                          <SelectTrigger className="h-10">
+                            <SelectValue>
+                              {typeof item.color === 'string' && 
+                                item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.entries(colorStyles).map(([color, _]) => (
+                              <SelectItem key={color} value={color}>
+                                {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <Button
                           type="button"
                           variant="destructive"
