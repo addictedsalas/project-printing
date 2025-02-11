@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Package2, Shirt, Palette, MapPin, Sparkles, Textile } from "lucide-react";
+import { Package2, Shirt, Palette, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -102,7 +102,7 @@ export default function Order() {
           <FormField
             key={id}
             control={form.control}
-            name={`sizes.${id}` as keyof OrderFormValues}
+            name={`sizes.${id}` as keyof OrderFormValues['sizes']}
             render={({ field }) => (
               <FormItem className="space-y-2">
                 <FormLabel className="text-sm font-medium">{label}</FormLabel>
@@ -304,7 +304,7 @@ export default function Order() {
                           render={({ field }) => (
                             <FormItem className="space-y-4">
                               <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
-                                <Textile className="w-5 h-5" />
+                                <Package2 className="w-5 h-5" />
                                 Material Type
                               </FormLabel>
                               <RadioGroup
@@ -327,7 +327,7 @@ export default function Order() {
                                       htmlFor={`material-${value}`}
                                       className="flex flex-col items-center justify-center p-4 border-2 border-brand-blue rounded-lg cursor-pointer hover:bg-brand-blue-light/20 peer-checked:border-brand-navy peer-checked:bg-brand-blue-light/40 transition-all duration-300"
                                     >
-                                      <Textile className="w-6 h-6 mb-2" />
+                                      <Package2 className="w-6 h-6 mb-2" />
                                       <span className="text-sm font-medium">{label}</span>
                                     </label>
                                   </div>
