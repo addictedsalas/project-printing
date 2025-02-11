@@ -64,7 +64,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                   <SelectValue>
                     {field.value && (
                       <div className="flex items-center gap-1.5">
-                        <div className={`w-2.5 h-2.5 rounded-full ${colorStyles[field.value]} border border-gray-200 dark:border-gray-700`} />
+                        <div className={`w-2.5 h-2.5 rounded-full ${colorStyles[field.value]} border border-gray-300 dark:border-gray-700`} />
                         <span className="truncate">{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                       </div>
                     )}
@@ -74,7 +74,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
               <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
                 {Object.entries(colorStyles).map(([color, bgClass]) => (
                   <SelectItem key={color} value={color} className="flex items-center gap-2">
-                    <div className={`w-2.5 h-2.5 rounded-full ${bgClass} border border-gray-200 dark:border-gray-700`} />
+                    <div className={`w-2.5 h-2.5 rounded-full ${bgClass} border border-gray-300 dark:border-gray-700`} />
                     <span>{color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                   </SelectItem>
                 ))}
