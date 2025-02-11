@@ -13,11 +13,16 @@ const orderFormSchema = z.object({
   quantity: z.string(),
   garmentType: z.string(),
   color: z.string(),
+  cottonType: z.string(),
+  brand: z.string(),
   sizes: z.object({
     small: z.string(),
     medium: z.string(),
     large: z.string(),
     xlarge: z.string(),
+    youth_s: z.string(),
+    youth_m: z.string(),
+    youth_l: z.string(),
   }),
   printLocation: z.string(),
   fabricQuality: z.string(),
@@ -35,11 +40,16 @@ export default function Order() {
       quantity: "",
       garmentType: "",
       color: "",
+      cottonType: "",
+      brand: "",
       sizes: {
         small: "0",
         medium: "0",
         large: "0",
         xlarge: "0",
+        youth_s: "0",
+        youth_m: "0",
+        youth_l: "0",
       },
       printLocation: "",
       fabricQuality: "",
@@ -115,7 +125,7 @@ export default function Order() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="bg-gradient-to-br from-white/90 to-[#FEF7CD]/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-[#FEC6A1] hover:border-[#E5DEFF] transition-all duration-300"
+                className="bg-gradient-to-br from-white/90 to-brand-yellow-light/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue hover:border-brand-navy transition-all duration-300"
               >
                 {step === 1 && (
                   <div className="space-y-6">
@@ -123,42 +133,44 @@ export default function Order() {
                       <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-[#E5DEFF] rounded-full mb-4"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-light rounded-full mb-4"
                       >
-                        <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
-                        <span className="text-sm font-medium text-[#8B5CF6]">Let's Create Something Amazing!</span>
+                        <Sparkles className="w-4 h-4 text-brand-navy" />
+                        <span className="text-sm font-medium text-brand-navy">Customize Your Perfect Shirt!</span>
                       </motion.div>
                       <motion.h2 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl font-bold text-[#8B5CF6] mb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"
+                        className="text-3xl font-bold mb-2 text-brand-navy"
                       >
                         Product Details
                       </motion.h2>
-                      <p className="text-gray-600">Let's start with the basics of your order</p>
+                      <p className="text-gray-600">Select your preferred options below</p>
                     </div>
 
                     <div className="grid gap-8">
                       <FormField
                         control={form.control}
-                        name="garmentType"
+                        name="cottonType"
                         render={({ field }) => (
                           <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#8B5CF6]">
-                              <Shirt className="w-5 h-5" />
-                              Garment Type
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <Package2 className="w-5 h-5" />
+                              Cotton Type
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#8B5CF6] hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-300">
-                                  <SelectValue placeholder="Select garment type" />
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
+                                  <SelectValue placeholder="Select cotton type" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
-                                <SelectItem value="tshirt" className="hover:bg-[#E5DEFF]">T-Shirt</SelectItem>
-                                <SelectItem value="hoodie" className="hover:bg-[#E5DEFF]">Hoodie</SelectItem>
-                                <SelectItem value="sweatshirt" className="hover:bg-[#E5DEFF]">Sweatshirt</SelectItem>
-                                <SelectItem value="tank" className="hover:bg-[#E5DEFF]">Tank Top</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectItem value="basic">Basic Cotton</SelectItem>
+                                <SelectItem value="premium">Premium Cotton</SelectItem>
+                                <SelectItem value="organic">Organic Cotton</SelectItem>
+                                <SelectItem value="ringspun">Ring-Spun Cotton</SelectItem>
+                                <SelectItem value="combed">Combed Cotton</SelectItem>
+                                <SelectItem value="pima">Pima Cotton</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
@@ -167,23 +179,26 @@ export default function Order() {
 
                       <FormField
                         control={form.control}
-                        name="fabricQuality"
+                        name="brand"
                         render={({ field }) => (
                           <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#D946EF]">
-                              <Package2 className="w-5 h-5" />
-                              Fabric Quality
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
+                              <Shirt className="w-5 h-5" />
+                              Brand
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#D946EF] hover:shadow-[0_0_15px_rgba(217,70,239,0.3)] transition-all duration-300">
-                                  <SelectValue placeholder="Select fabric quality" />
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
+                                  <SelectValue placeholder="Select brand" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
-                                <SelectItem value="basic" className="hover:bg-[#FDE1D3]">Basic (130g/m²)</SelectItem>
-                                <SelectItem value="premium" className="hover:bg-[#FDE1D3]">Premium (180g/m²)</SelectItem>
-                                <SelectItem value="heavyweight" className="hover:bg-[#FDE1D3]">Heavyweight (220g/m²)</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectItem value="gildan">Gildan Classic</SelectItem>
+                                <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
+                                <SelectItem value="american-apparel">American Apparel</SelectItem>
+                                <SelectItem value="bella-canvas">Bella + Canvas</SelectItem>
+                                <SelectItem value="next-level">Next Level</SelectItem>
+                                <SelectItem value="port-company">Port & Company</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
@@ -195,26 +210,86 @@ export default function Order() {
                         name="color"
                         render={({ field }) => (
                           <FormItem className="space-y-4 transform transition-all duration-300 hover:scale-105">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-[#F97316]">
+                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy">
                               <Palette className="w-5 h-5" />
                               Color
                             </FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-[#FEC6A1] hover:border-[#F97316] hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all duration-300">
+                                <SelectTrigger className="h-12 bg-white/80 backdrop-blur-sm border-2 border-brand-blue hover:border-brand-navy hover:shadow-lg transition-all duration-300">
                                   <SelectValue placeholder="Select color" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="bg-white/95 backdrop-blur-sm border-[#FEC6A1]">
-                                <SelectItem value="white" className="hover:bg-[#FEF7CD]">White</SelectItem>
-                                <SelectItem value="black" className="hover:bg-[#FEF7CD]">Black</SelectItem>
-                                <SelectItem value="navy" className="hover:bg-[#FEF7CD]">Navy</SelectItem>
-                                <SelectItem value="gray" className="hover:bg-[#FEF7CD]">Gray</SelectItem>
+                              <SelectContent className="bg-white/95 backdrop-blur-sm border-brand-blue">
+                                <SelectItem value="white">White</SelectItem>
+                                <SelectItem value="black">Black</SelectItem>
+                                <SelectItem value="navy">Navy</SelectItem>
+                                <SelectItem value="heather-gray">Heather Gray</SelectItem>
+                                <SelectItem value="sport-gray">Sport Gray</SelectItem>
+                                <SelectItem value="royal-blue">Royal Blue</SelectItem>
+                                <SelectItem value="dark-heather">Dark Heather</SelectItem>
+                                <SelectItem value="military-green">Military Green</SelectItem>
+                                <SelectItem value="maroon">Maroon</SelectItem>
+                                <SelectItem value="red">Red</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormItem>
                         )}
                       />
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-medium text-brand-navy">Adult Sizes</h3>
+                          <div className="grid grid-cols-2 gap-4">
+                            {["small", "medium", "large", "xlarge"].map((size) => (
+                              <FormField
+                                key={size}
+                                control={form.control}
+                                name={`sizes.${size}`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="capitalize">{size}</FormLabel>
+                                    <FormControl>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        {...field}
+                                        className="w-full px-3 py-2 border-2 border-brand-blue rounded-md focus:border-brand-navy focus:ring-brand-navy"
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-medium text-brand-navy">Youth Sizes</h3>
+                          <div className="grid grid-cols-2 gap-4">
+                            {["youth_s", "youth_m", "youth_l"].map((size) => (
+                              <FormField
+                                key={size}
+                                control={form.control}
+                                name={`sizes.${size}`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="capitalize">{size.replace('_', ' ')}</FormLabel>
+                                    <FormControl>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        {...field}
+                                        className="w-full px-3 py-2 border-2 border-brand-blue rounded-md focus:border-brand-navy focus:ring-brand-navy"
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
