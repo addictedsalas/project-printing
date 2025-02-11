@@ -74,7 +74,7 @@ export default function Order() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white/80 dark:bg-brand-navy-dark/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border-2 border-brand-blue dark:border-brand-blue/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-all duration-300"
+                  className="glass-card"
                 >
                   {step === 1 && (
                     <ProductDetailsStep 
@@ -86,28 +86,30 @@ export default function Order() {
                   )}
 
                   {step === 2 && (
-                    <div className="space-y-6">
-                      <div className="text-center mb-8">
+                    <div className="space-y-8">
+                      <div className="text-center">
                         <motion.h2 
                           initial={{ opacity: 0, y: -20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="text-3xl font-bold text-brand-navy dark:text-white"
+                          className="text-4xl font-bold text-brand-navy dark:text-white mb-3"
                         >
                           Customization
                         </motion.h2>
-                        <p className="text-gray-600 dark:text-gray-300">Design your perfect print</p>
+                        <p className="text-lg text-gray-600 dark:text-gray-300">
+                          Design your perfect print
+                        </p>
                       </div>
 
                       <FormField
                         control={form.control}
                         name="printLocations"
                         render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <FormLabel className="text-lg font-medium flex items-center gap-2 text-brand-navy dark:text-white">
-                              <MapPin className="w-5 h-5" />
+                          <FormItem className="space-y-6">
+                            <FormLabel className="text-xl font-semibold flex items-center gap-3 text-brand-navy dark:text-white">
+                              <MapPin className="w-6 h-6" />
                               Print Locations
                             </FormLabel>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                               {[
                                 { value: "left-chest", label: "Left Chest", icon: "👕" },
                                 { value: "right-chest", label: "Right Chest", icon: "👕" },
@@ -135,25 +137,25 @@ export default function Order() {
                                   />
                                   <label
                                     htmlFor={`location-${value}`}
-                                    className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
+                                    className={`flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105
                                       ${
                                         field.value?.includes(value)
                                           ? theme === "dark"
-                                            ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
-                                            : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
+                                            ? "border-brand-yellow bg-brand-yellow/10 text-brand-yellow shadow-xl"
+                                            : "border-brand-navy bg-brand-blue-light/20 text-brand-navy shadow-xl"
                                           : theme === "dark"
-                                            ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/20"
-                                            : "border-brand-blue hover:bg-brand-blue-light/20"
+                                            ? "border-brand-blue/20 text-gray-300 hover:bg-brand-navy-light/10"
+                                            : "border-brand-blue/40 hover:bg-brand-blue-light/10"
                                       }
                                     `}
                                   >
-                                    <span className="text-2xl mb-2">{icon}</span>
+                                    <span className="text-3xl mb-3 transition-transform duration-300 transform hover:scale-110">{icon}</span>
                                     <span className="text-sm font-medium text-center">{label}</span>
                                   </label>
                                 </div>
                               ))}
                             </div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center italic">
                               Select multiple locations for your design
                             </p>
                           </FormItem>
@@ -161,11 +163,11 @@ export default function Order() {
                       />
 
                       {form.watch("printLocations").length > 0 && (
-                        <div className="space-y-4 mt-8">
-                          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
+                        <div className="space-y-6 mt-12">
+                          <h3 className="text-2xl font-semibold text-brand-navy dark:text-white text-center mb-6">
                             Upload Your Designs
                           </h3>
-                          <div className="grid gap-6">
+                          <div className="grid gap-8">
                             {form.watch("printLocations").map((location) => (
                               <FormField
                                 key={location}
@@ -173,23 +175,23 @@ export default function Order() {
                                 name={`designs.${location}`}
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className="flex items-center gap-2 text-brand-navy dark:text-white">
+                                    <FormLabel className="flex items-center gap-2 text-lg font-medium text-brand-navy dark:text-white mb-3">
                                       Design for {location.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                                     </FormLabel>
                                     <FormControl>
-                                      <div className="flex flex-col items-center p-6 border-2 border-dashed rounded-lg border-brand-blue dark:border-brand-blue/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-colors">
+                                      <div className="flex flex-col items-center p-8 border-2 border-dashed rounded-xl border-brand-blue/40 dark:border-brand-blue/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-all duration-300 bg-white/50 dark:bg-brand-navy-dark/50">
                                         {field.value ? (
                                           <div className="relative w-full">
                                             <img 
                                               src={field.value} 
                                               alt={`Design for ${location}`}
-                                              className="max-h-48 object-contain mx-auto"
+                                              className="max-h-56 object-contain mx-auto rounded-lg shadow-md"
                                             />
                                             <Button
                                               type="button"
                                               variant="destructive"
                                               size="sm"
-                                              className="absolute top-2 right-2"
+                                              className="absolute -top-2 -right-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-300"
                                               onClick={() => {
                                                 const newDesigns = { ...form.getValues("designs") };
                                                 delete newDesigns[location];
@@ -200,7 +202,7 @@ export default function Order() {
                                             </Button>
                                           </div>
                                         ) : (
-                                          <div className="text-center">
+                                          <div className="text-center w-full">
                                             <input
                                               type="file"
                                               id={`design-${location}`}
@@ -219,15 +221,15 @@ export default function Order() {
                                             />
                                             <label
                                               htmlFor={`design-${location}`}
-                                              className="cursor-pointer"
+                                              className="cursor-pointer block w-full"
                                             >
-                                              <div className="p-4 rounded-lg bg-brand-blue-light/20 dark:bg-brand-navy-light/20">
-                                                <div className="flex flex-col items-center gap-2">
-                                                  <Package2 className="w-8 h-8 text-brand-navy dark:text-brand-yellow" />
-                                                  <span className="text-sm font-medium text-brand-navy dark:text-white">
+                                              <div className="p-8 rounded-xl bg-gradient-to-br from-brand-blue-light/10 to-brand-yellow-light/10 dark:from-brand-navy-light/10 dark:to-brand-yellow/10 hover:shadow-xl transition-all duration-300">
+                                                <div className="flex flex-col items-center gap-3">
+                                                  <Package2 className="w-12 h-12 text-brand-navy dark:text-brand-yellow mb-2" />
+                                                  <span className="text-lg font-medium text-brand-navy dark:text-white">
                                                     Click to upload design
                                                   </span>
-                                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                  <span className="text-sm text-gray-500 dark:text-gray-400">
                                                     SVG, PNG, JPG or GIF (max. 2MB)
                                                   </span>
                                                 </div>
@@ -255,14 +257,14 @@ export default function Order() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="flex justify-between pt-6"
+                className="flex justify-between pt-8"
               >
                 {step > 1 && (
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => setStep(step - 1)}
-                    className="px-8 bg-white dark:bg-brand-navy-dark/80 hover:bg-brand-blue-light/20 dark:hover:bg-brand-navy-light/20 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 dark:text-white dark:border-brand-blue/20"
+                    className="px-8 py-6 text-lg bg-white/80 dark:bg-brand-navy-dark/80 hover:bg-brand-blue-light/20 dark:hover:bg-brand-navy-light/20 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 dark:text-white dark:border-brand-blue/20"
                   >
                     Previous
                   </Button>
@@ -270,7 +272,7 @@ export default function Order() {
                 {step < totalSteps ? (
                   <Button
                     type="button"
-                    className="ml-auto px-8 bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className="ml-auto px-8 py-6 text-lg bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                     onClick={() => setStep(step + 1)}
                   >
                     Next
@@ -278,7 +280,7 @@ export default function Order() {
                 ) : (
                   <Button 
                     type="submit"
-                    className="ml-auto px-8 bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className="ml-auto px-8 py-6 text-lg bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                   >
                     Submit Order
                   </Button>
