@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -107,23 +108,37 @@ export default function Order() {
                           className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
                         />
                         <div className="flex-1">
-                          <div className="relative w-full">
-                            <select
-                              value={item.color}
-                              onChange={(e) => {
-                                const newValue = [...field.value];
-                                newValue[index] = { ...newValue[index], color: e.target.value };
-                                field.onChange(newValue);
-                              }}
-                              className="w-full h-10 px-3 border-2 border-brand-blue rounded-md focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow"
-                            >
-                              {Object.entries(colorStyles).map(([color, _]) => (
-                                <option key={color} value={color}>
-                                  {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                </option>
+                          <Select
+                            value={item.color}
+                            onValueChange={(value) => {
+                              const newValue = [...field.value];
+                              newValue[index] = { ...newValue[index], color: value };
+                              field.onChange(newValue);
+                            }}
+                          >
+                            <SelectTrigger className="h-10 border-2 border-brand-blue focus:border-brand-navy dark:bg-brand-navy/10 dark:border-brand-blue/50 dark:focus:border-brand-yellow">
+                              <SelectValue>
+                                <div className="flex items-center gap-2">
+                                  <div className={`w-4 h-4 rounded-full ${colorStyles[item.color]}`} />
+                                  <span>
+                                    {item.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                  </span>
+                                </div>
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(colorStyles).map(([color, bgClass]) => (
+                                <SelectItem key={color} value={color}>
+                                  <div className="flex items-center gap-2">
+                                    <div className={`w-4 h-4 rounded-full ${bgClass}`} />
+                                    <span>
+                                      {color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                    </span>
+                                  </div>
+                                </SelectItem>
                               ))}
-                            </select>
-                          </div>
+                            </SelectContent>
+                          </Select>
                         </div>
                         <Button
                           type="button"
@@ -148,7 +163,7 @@ export default function Order() {
                       }}
                       className="w-full"
                     >
-                      Add Color
+                      Add
                     </Button>
                   </div>
                 </FormControl>
