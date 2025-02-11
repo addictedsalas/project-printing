@@ -21,10 +21,12 @@ const orderFormSchema = z.object({
   brand: z.string(),
   sizeType: z.enum(["adult", "youth"]),
   sizes: z.object({
+    xsmall: z.string(),
     small: z.string(),
     medium: z.string(),
     large: z.string(),
     xlarge: z.string(),
+    xxlarge: z.string(),
     youth_s: z.string(),
     youth_m: z.string(),
     youth_l: z.string(),
@@ -102,10 +104,12 @@ export default function Order() {
       brand: "",
       sizeType: "adult",
       sizes: {
+        xsmall: "0",
         small: "0",
         medium: "0",
         large: "0",
         xlarge: "0",
+        xxlarge: "0",
         youth_s: "0",
         youth_m: "0",
         youth_l: "0",
@@ -124,10 +128,12 @@ export default function Order() {
   const renderSizeInputs = (type: "adult" | "youth") => {
     const sizes = type === "adult" 
       ? [
+          { id: "xsmall" as SizesKey, label: "Extra Small" },
           { id: "small" as SizesKey, label: "Small" },
           { id: "medium" as SizesKey, label: "Medium" },
           { id: "large" as SizesKey, label: "Large" },
-          { id: "xlarge" as SizesKey, label: "X-Large" }
+          { id: "xlarge" as SizesKey, label: "X-Large" },
+          { id: "xxlarge" as SizesKey, label: "2X-Large" }
         ]
       : [
           { id: "youth_s" as SizesKey, label: "Youth Small" },
