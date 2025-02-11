@@ -97,8 +97,20 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                               <Input
                                 type="number"
                                 {...field}
-                                onChange={(e) => field.onChange(e.target.value)}
-                                value={field.value?.toString() || "0"}
+                                onChange={(e) => {
+                                  if (field.value === "0" && e.target.value !== "") {
+                                    field.onChange("");
+                                  } else {
+                                    field.onChange(e.target.value);
+                                  }
+                                }}
+                                onFocus={(e) => {
+                                  e.target.select();
+                                  if (field.value === "0") {
+                                    field.onChange("");
+                                  }
+                                }}
+                                value={field.value?.toString()}
                                 min="0"
                                 className="h-7 text-xs bg-brand-navy-dark border-brand-blue/20 focus:border-brand-yellow/50"
                               />
