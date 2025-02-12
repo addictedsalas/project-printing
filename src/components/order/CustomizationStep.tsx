@@ -1,10 +1,12 @@
 
-import { MapPin, Package2 } from "lucide-react";
+import { MapPin, Package2, Wand2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { OrderFormValues } from "@/types/order";
+import { useState } from "react";
+import { DesignHelpModal } from "./DesignHelpModal";
 
 interface CustomizationStepProps {
   form: ReturnType<typeof useForm<OrderFormValues>>;
@@ -12,6 +14,8 @@ interface CustomizationStepProps {
 }
 
 export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
+  const [showDesignHelp, setShowDesignHelp] = useState(false);
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -169,8 +173,25 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
               />
             ))}
           </div>
+          
+          <div className="flex justify-center mt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowDesignHelp(true)}
+              className="flex items-center gap-2 py-6 px-8 border-2 border-dashed hover:border-solid transition-all duration-300"
+            >
+              <Wand2 className="w-5 h-5" />
+              I need help with my design
+            </Button>
+          </div>
         </div>
       )}
+
+      <DesignHelpModal 
+        isOpen={showDesignHelp}
+        onClose={() => setShowDesignHelp(false)}
+      />
     </div>
   );
 };
