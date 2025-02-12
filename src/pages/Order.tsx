@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { MapPin, Package2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -11,6 +10,7 @@ import { useTheme } from "@/components/theme-provider";
 import { ReviewStep } from "@/components/order/ReviewStep";
 import { ThankYouScreen } from "@/components/order/ThankYouScreen";
 import { ProductDetailsStep } from "@/components/order/ProductDetailsStep";
+import { ContinueModal } from "@/components/order/ContinueModal";
 import { orderFormSchema } from "@/types/order";
 import type { OrderFormValues } from "@/types/order";
 
@@ -20,6 +20,7 @@ export default function Order() {
   const [mounted, setMounted] = useState(false);
   const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showContinueModal, setShowContinueModal] = useState(false);
   const { theme } = useTheme();
 
   const form = useForm<OrderFormValues>({
@@ -55,6 +56,24 @@ export default function Order() {
   const onSubmit = (data: OrderFormValues) => {
     console.log(data);
     setIsSubmitted(true);
+  };
+
+  const handleNext = () => {
+    if (step === 1) {
+      setShowContinueModal(true);
+    } else {
+      setStep(step + 1);
+    }
+  };
+
+  const handleContinue = () => {
+    setShowContinueModal(false);
+    setStep(2);
+  };
+
+  const handleAddMore = () => {
+    setShowContinueModal(false);
+    // Keep in step 1, form data persists
   };
 
   if (!mounted) return null;
@@ -273,7 +292,7 @@ export default function Order() {
                   <Button
                     type="button"
                     className="ml-auto px-8 py-6 text-lg bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-                    onClick={() => setStep(step + 1)}
+                    onClick={handleNext}
                   >
                     Next
                   </Button>
@@ -288,6 +307,13 @@ export default function Order() {
               </motion.div>
             </form>
           </Form>
+
+          <ContinueModal
+            isOpen={showContinueModal}
+            onClose={() => setShowContinueModal(false)}
+            onContinue={handleContinue}
+            onAddMore={handleAddMore}
+          />
         </div>
       </div>
     </div>
