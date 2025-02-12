@@ -37,6 +37,13 @@ export const useOrderForm = () => {
       designs: {},
       fabricQuality: "",
       itemIndex: 0,
+      contactInfo: {
+        fullName: "",
+        email: "",
+        phone: "",
+        company: "",
+        message: "",
+      },
     },
   });
 
@@ -178,6 +185,7 @@ export const useOrderForm = () => {
       designs: {},
       fabricQuality: "",
       itemIndex: savedItems.length + 1,
+      contactInfo: form.getValues().contactInfo, // Preserve contact info when adding more items
     });
 
     setShowContinueModal(false);
