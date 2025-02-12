@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 export const ThankYouScreen = () => {
   const navigate = useNavigate();
 
+  const handleReturnHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-brand-blue-light/20 via-white to-brand-yellow-light/20 dark:from-brand-navy-dark dark:via-brand-navy dark:to-brand-navy-light">
       <motion.div 
@@ -29,7 +33,8 @@ export const ThankYouScreen = () => {
           We've received your custom apparel request and will review it shortly. We'll be in touch with you soon!
         </p>
         <Button
-          onClick={() => navigate("/")}
+          onClick={handleReturnHome}
+          variant="default"
           className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 transition-all duration-300"
         >
           Return to Home
