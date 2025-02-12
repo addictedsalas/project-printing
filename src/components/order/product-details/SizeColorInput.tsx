@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { SizeColor, SizesKey } from "@/types/order";
 import { colorStyles } from "../orderConstants";
+import { X } from "lucide-react";
 
 interface SizeColorInputProps {
   id: SizesKey;
@@ -95,9 +96,9 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
         variant="ghost"
         size="sm"
         onClick={() => onRemove(index)}
-        className="h-8 w-8 px-0 mb-[2px] text-brand-navy/70 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+        className="h-8 w-8 px-0 mb-[2px] rounded-full transition-all duration-200 hover:scale-110 hover:bg-red-100 dark:hover:bg-red-900/30 group"
       >
-        ✕
+        <X className="w-4 h-4 text-gray-400 group-hover:text-red-500 dark:text-gray-500 dark:group-hover:text-red-400 transition-colors duration-200" />
       </Button>
     </div>
   );
