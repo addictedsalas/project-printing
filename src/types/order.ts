@@ -18,8 +18,8 @@ export const orderFormSchema = z.object({
   printLocations: z.array(z.string()),
   designs: z.record(z.string()),
   fabricQuality: z.string(),
+  itemIndex: z.number().optional(), // To track which item is being customized
 });
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;
 export type SizesKey = "xsmall" | "small" | "medium" | "large" | "xlarge" | "xxlarge" | "youth_s" | "youth_m" | "youth_l";
-

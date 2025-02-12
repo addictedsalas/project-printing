@@ -36,6 +36,7 @@ export const useOrderForm = () => {
       printLocations: [],
       designs: {},
       fabricQuality: "",
+      itemIndex: 0,
     },
   });
 
@@ -167,6 +168,7 @@ export const useOrderForm = () => {
       printLocations: [],
       designs: {},
       fabricQuality: "",
+      itemIndex: savedItems.length + 1,
     });
 
     setShowContinueModal(false);

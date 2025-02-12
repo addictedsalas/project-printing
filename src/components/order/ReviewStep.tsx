@@ -111,15 +111,26 @@ export const ReviewStep = ({ form, savedItems }: ReviewStepProps) => {
               <Printer className="w-5 h-5 text-brand-blue dark:text-brand-yellow" />
               <h3>Print Locations</h3>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid gap-4">
               {item.printLocations.map((location) => (
-                <Badge 
+                <div 
                   key={location}
-                  variant="outline" 
-                  className="bg-brand-blue/5 border-brand-blue/20"
+                  className="bg-gray-50 dark:bg-brand-navy-light/20 p-4 rounded-lg"
                 >
-                  {location.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </Badge>
+                  <div className="flex items-center justify-between">
+                    <Badge 
+                      variant="outline" 
+                      className="bg-brand-blue/5 border-brand-blue/20"
+                    >
+                      {location.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </Badge>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {item.designs[location] === "design-help-requested" 
+                        ? "Design Help Requested" 
+                        : "Design Uploaded"}
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
