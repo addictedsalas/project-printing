@@ -19,13 +19,24 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <motion.h2 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-brand-navy dark:text-white"
-        >
-          Customization
-        </motion.h2>
+        <div className="flex items-center justify-center gap-4 mb-2">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl font-bold text-brand-navy dark:text-white"
+          >
+            Customization
+          </motion.h2>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowDesignHelp(true)}
+            className="flex items-center gap-2 py-2 px-4 border-2 border-dashed hover:border-solid transition-all duration-300"
+          >
+            <Wand2 className="w-5 h-5" />
+            I need help with my design
+          </Button>
+        </div>
         <p className="text-gray-600 dark:text-gray-300">Design your perfect print</p>
       </div>
 
@@ -97,18 +108,6 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
             <h3 className="text-lg font-medium text-brand-navy dark:text-white">
               Upload Your Designs
             </h3>
-            
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowDesignHelp(true)}
-                className="flex items-center gap-2 py-6 px-8 border-2 border-dashed hover:border-solid transition-all duration-300"
-              >
-                <Wand2 className="w-5 h-5" />
-                I need help with my design
-              </Button>
-            </div>
           </div>
 
           <div className="grid gap-6">
