@@ -1,3 +1,4 @@
+
 import { MapPin, Package2, Wand2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -93,7 +94,7 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
               ))}
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Select multiple locations for your design
+              You can select multiple locations for your design
             </p>
           </FormItem>
         )}
