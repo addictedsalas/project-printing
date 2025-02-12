@@ -1,4 +1,3 @@
-
 import { MapPin, Package2, Wand2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -18,27 +17,24 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
 
   return (
     <div className="space-y-6">
-      <div className="relative py-8">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/5 via-brand-blue/5 to-brand-navy/5 dark:from-brand-yellow/5 dark:via-brand-blue/5 dark:to-brand-yellow/5" />
-        <div className="relative flex flex-col items-center justify-center gap-4">
-          <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-bold bg-gradient-to-r from-brand-navy via-brand-navy-light to-brand-navy bg-clip-text text-transparent dark:from-white dark:via-brand-yellow dark:to-white"
-          >
-            Customization
-          </motion.h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">Design your perfect print</p>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setShowDesignHelp(true)}
-            className="flex items-center gap-2 py-2 px-4 bg-white/50 dark:bg-brand-navy-dark/50 backdrop-blur-sm border-2 border-brand-blue/20 dark:border-brand-yellow/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-          >
-            <Wand2 className="w-5 h-5 text-brand-navy dark:text-brand-yellow" />
-            <span className="text-brand-navy dark:text-white">I need help with my design</span>
-          </Button>
-        </div>
+      <div className="text-center py-4">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl font-bold text-brand-navy dark:text-white mb-2"
+        >
+          Customization
+        </motion.h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">Design your perfect print</p>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setShowDesignHelp(true)}
+          className="flex items-center gap-2 py-2 px-4 bg-white/50 dark:bg-brand-navy-dark/50 border-2 border-brand-blue/20 dark:border-brand-yellow/20 hover:border-brand-navy dark:hover:border-brand-yellow transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+        >
+          <Wand2 className="w-5 h-5 text-brand-navy dark:text-brand-yellow" />
+          <span className="text-brand-navy dark:text-white">I need help with my design</span>
+        </Button>
       </div>
 
       <FormField
