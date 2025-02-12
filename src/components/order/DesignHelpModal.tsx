@@ -33,6 +33,15 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
       return;
     }
     
+    if (!idea.trim()) {
+      toast({
+        title: "Please describe your design idea",
+        description: "Tell us what you'd like for your design",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Design help requested!",
       description: `We'll help with your design for the ${selectedLocation.split('-').join(' ')}`,
@@ -94,7 +103,6 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
             value={idea}
             onChange={(e) => setIdea(e.target.value)}
             className="min-h-[150px] resize-none"
-            required
           />
           <Button 
             type="submit"
