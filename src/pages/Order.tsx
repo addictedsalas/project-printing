@@ -24,6 +24,7 @@ export default function Order() {
   const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showContinueModal, setShowContinueModal] = useState(false);
+  const [savedItems, setSavedItems] = useState<OrderFormValues[]>([]);
   const { theme } = useTheme();
   const { toast } = useToast();
 
@@ -93,7 +94,9 @@ export default function Order() {
       return;
     }
 
-    console.log("Form submitted:", data);
+    // Add current items to saved items before submitting
+    const allItems = [...savedItems, data];
+    console.log("All items submitted:", allItems);
     setIsSubmitted(true);
   };
 
@@ -123,7 +126,56 @@ export default function Order() {
   };
 
   const handleAddMore = () => {
+    // Save current form data
+    const currentData = form.getValues();
+    const anyQuantityGreaterThanZero = Object.values(currentData.sizes).some(sizeColors =>
+      sizeColors.some(item => Number(item.quantity) > 0)
+    );
+
+    if (!anyQuantityGreaterThanZero) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please add at least one item before adding more",
+      });
+      return;
+    }
+
+    // Add current data to saved items
+    setSavedItems([...savedItems, currentData]);
+
+    // Reset form to default values
+    form.reset({
+      garmentType: "",
+      cottonType: "",
+      materialType: "cotton",
+      brand: "",
+      sizeType: "adult",
+      sizes: {
+        xsmall: [],
+        small: [],
+        medium: [],
+        large: [],
+        xlarge: [],
+        xxlarge: [],
+        youth_s: [],
+        youth_m: [],
+        youth_l: [],
+      },
+      printLocations: [],
+      designs: {},
+      fabricQuality: "",
+    });
+
+    // Close modal and reset step
     setShowContinueModal(false);
+    setStep(1);
+    setSizeType("adult");
+
+    toast({
+      title: "Success",
+      description: "Items saved! You can now add more garments.",
+    });
   };
 
   if (!mounted) return null;
@@ -161,7 +213,12 @@ export default function Order() {
                     />
                   )}
 
-                  {step === 3 && <ReviewStep form={form} />}
+                  {step === 3 && (
+                    <ReviewStep 
+                      form={form} 
+                      savedItems={savedItems}
+                    />
+                  )}
                 </motion.div>
               </AnimatePresence>
 
