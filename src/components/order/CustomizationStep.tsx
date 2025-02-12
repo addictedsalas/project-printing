@@ -93,9 +93,24 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
 
       {form.watch("printLocations").length > 0 && (
         <div className="space-y-4 mt-8">
-          <h3 className="text-lg font-medium text-brand-navy dark:text-white">
-            Upload Your Designs
-          </h3>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-brand-navy dark:text-white">
+              Upload Your Designs
+            </h3>
+            
+            <div className="flex justify-center">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowDesignHelp(true)}
+                className="flex items-center gap-2 py-6 px-8 border-2 border-dashed hover:border-solid transition-all duration-300"
+              >
+                <Wand2 className="w-5 h-5" />
+                I need help with my design
+              </Button>
+            </div>
+          </div>
+
           <div className="grid gap-6">
             {form.watch("printLocations").map((location) => (
               <FormField
@@ -172,18 +187,6 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
                 )}
               />
             ))}
-          </div>
-          
-          <div className="flex justify-center mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowDesignHelp(true)}
-              className="flex items-center gap-2 py-6 px-8 border-2 border-dashed hover:border-solid transition-all duration-300"
-            >
-              <Wand2 className="w-5 h-5" />
-              I need help with my design
-            </Button>
           </div>
         </div>
       )}
