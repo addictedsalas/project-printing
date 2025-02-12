@@ -40,7 +40,14 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                     field.onChange("");
                   }
                 }}
-                onKeyDown={(e) => onKeyDown(e, id, index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.currentTarget.blur();
+                  } else {
+                    onKeyDown(e, id, index);
+                  }
+                }}
                 value={field.value?.toString()}
                 min="0"
                 className="h-8 text-sm font-medium bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
