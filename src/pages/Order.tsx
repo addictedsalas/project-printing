@@ -59,6 +59,11 @@ export default function Order() {
   }, []);
 
   const onSubmit = async (data: OrderFormValues) => {
+    if (step < totalSteps) {
+      setStep(step + 1);
+      return;
+    }
+
     const anyQuantityGreaterThanZero = Object.values(data.sizes).some(sizeColors =>
       sizeColors.some(item => Number(item.quantity) > 0)
     );
@@ -116,6 +121,26 @@ export default function Order() {
       }
       setShowContinueModal(true);
     } else {
+      const formData = form.getValues();
+      
+      if (step === 2 && formData.printLocations.length === 0) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please select at least one print location",
+        });
+        return;
+      }
+      
+      if (step === 2 && !formData.printLocations.every(location => formData.designs[location])) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please upload designs for all selected print locations",
+        });
+        return;
+      }
+      
       setStep(step + 1);
     }
   };
