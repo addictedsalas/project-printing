@@ -22,6 +22,10 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const { toast } = useToast();
 
+  const handleLocationSelect = (value: string) => {
+    setSelectedLocation(value);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedLocation) {
@@ -82,11 +86,10 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
             </label>
             <div className="grid grid-cols-3 gap-2">
               {locations.map(({ value, label, icon }) => (
-                <button
+                <div
                   key={value}
-                  type="button"
-                  onClick={() => setSelectedLocation(value)}
-                  className={`p-2 border-2 rounded-md flex flex-col items-center justify-center transition-all duration-200 ${
+                  onClick={() => handleLocationSelect(value)}
+                  className={`p-2 border-2 rounded-md flex flex-col items-center justify-center transition-all duration-200 cursor-pointer ${
                     selectedLocation === value
                       ? "border-brand-navy bg-brand-blue-light/20 dark:border-brand-yellow dark:bg-brand-yellow/20"
                       : "border-gray-200 hover:border-brand-blue dark:border-gray-700 dark:hover:border-brand-yellow/50"
@@ -94,7 +97,7 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
                 >
                   <span className="text-lg">{icon}</span>
                   <span className="text-xs mt-1 text-center">{label}</span>
-                </button>
+                </div>
               ))}
             </div>
           </div>
