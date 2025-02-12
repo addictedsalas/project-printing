@@ -86,6 +86,15 @@ export const useOrderForm = () => {
       return;
     }
 
+    if (!data.contactInfo?.fullName || !data.contactInfo?.email || !data.contactInfo?.phone) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all required contact information",
+      });
+      return;
+    }
+
     const anyQuantityGreaterThanZero = Object.values(data.sizes).some(sizeColors =>
       sizeColors.some(item => Number(item.quantity) > 0)
     );

@@ -8,6 +8,16 @@ export const sizeColorSchema = z.object({
 
 export type SizeColor = z.infer<typeof sizeColorSchema>;
 
+export const contactInfoSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  company: z.string().optional(),
+  message: z.string().optional(),
+});
+
+export type ContactInfo = z.infer<typeof contactInfoSchema>;
+
 export const orderFormSchema = z.object({
   garmentType: z.string(),
   cottonType: z.string(),
@@ -18,7 +28,8 @@ export const orderFormSchema = z.object({
   printLocations: z.array(z.string()),
   designs: z.record(z.string()),
   fabricQuality: z.string(),
-  itemIndex: z.number().optional(), // To track which item is being customized
+  itemIndex: z.number().optional(),
+  contactInfo: contactInfoSchema.optional(),
 });
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;

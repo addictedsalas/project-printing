@@ -4,6 +4,7 @@ import { OrderFormValues } from "@/types/order";
 import { Package2, Shirt, Palette, Printer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ContactForm } from "./ContactForm";
 
 interface ReviewStepProps {
   form: ReturnType<typeof useForm<OrderFormValues>>;
@@ -146,6 +147,12 @@ export const ReviewStep = ({ form, savedItems }: ReviewStepProps) => {
           </div>
           <span className="text-2xl font-bold">{getTotalQuantity(allItems)}</span>
         </div>
+      </div>
+
+      <Separator className="my-8" />
+      
+      <div className="bg-white/80 dark:bg-brand-navy-dark/80 rounded-xl p-6 shadow-sm border-2 border-brand-blue/10 dark:border-brand-blue/20">
+        <ContactForm />
       </div>
     </div>
   );
