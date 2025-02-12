@@ -21,7 +21,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
         control={control}
         name={`sizes.${id}.${index}.quantity`}
         render={({ field }) => (
-          <FormItem className="flex-1">
+          <FormItem className="w-24">
             <FormLabel className="text-[11px] font-semibold text-brand-navy dark:text-white/90">Qty</FormLabel>
             <FormControl>
               <Input
@@ -43,7 +43,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 onKeyDown={(e) => onKeyDown(e, id, index)}
                 value={field.value?.toString()}
                 min="0"
-                className="h-8 text-sm bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20"
+                className="h-8 text-sm font-medium bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </FormControl>
           </FormItem>
