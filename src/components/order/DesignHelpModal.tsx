@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useFormContext } from "react-hook-form";
+import type { OrderFormValues } from "@/types/order";
 
 interface DesignHelpModalProps {
   isOpen: boolean;
@@ -21,9 +23,15 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [idea, setIdea] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const { toast } = useToast();
+  const form = useFormContext<OrderFormValues>();
 
   const handleLocationSelect = (value: string) => {
     setSelectedLocation(value);
+    // Add the selected location to the form's print locations if it's not already there
+    const currentLocations = form.getValues("printLocations");
+    if (!currentLocations.includes(value)) {
+      form.setValue("printLocations", [...currentLocations, value]);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,6 +54,9 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
       return;
     }
 
+    // Add design placeholder for the selected location
+    form.setValue(`designs.${selectedLocation}`, "design-help-requested");
+
     toast({
       title: "Design help requested!",
       description: `We'll help with your design for the ${selectedLocation.split('-').join(' ')}`,
@@ -53,6 +64,7 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
     });
     setIdea("");
     setSelectedLocation("");
+    onClose();
   };
 
   const locations = [
