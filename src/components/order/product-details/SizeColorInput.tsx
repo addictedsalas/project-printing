@@ -53,8 +53,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 }}
                 value={field.value?.toString() || ""}
                 placeholder="Qty"
-                className="touch-manipulation h-7 text-xs font-semibold bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 text-center opacity-100 visible"
-                style={{ color: 'inherit', opacity: '1 !important' }}
+                className="touch-manipulation h-7 text-xs font-semibold bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </FormControl>
           </FormItem>
