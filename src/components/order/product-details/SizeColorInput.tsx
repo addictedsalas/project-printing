@@ -53,7 +53,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 inputMode="numeric"
                 pattern="[0-9]*"
                 placeholder="Qty"
-                className="touch-manipulation h-7 text-xs font-medium bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="touch-manipulation h-7 text-xs font-semibold bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-center"
               />
             </FormControl>
           </FormItem>
