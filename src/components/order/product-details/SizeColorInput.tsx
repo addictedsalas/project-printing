@@ -31,7 +31,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 {...field}
                 onChange={(e) => {
                   const value = e.target.value.replace(/[^0-9]/g, '');
-                  if (value === "0" && value !== "") {
+                  if (value === "0") {
                     field.onChange("");
                   } else {
                     field.onChange(value);
