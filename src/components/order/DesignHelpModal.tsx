@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useFormContext } from "react-hook-form";
@@ -25,17 +25,21 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const { toast } = useToast();
   const form = useFormContext<OrderFormValues>();
+  const printLocations = form.watch("printLocations");
+
+  // Reset selected locations when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedLocations([]);
+      setIdea("");
+    }
+  }, [isOpen]);
 
   const handleLocationToggle = (value: string) => {
     setSelectedLocations(prev => {
       if (prev.includes(value)) {
         return prev.filter(loc => loc !== value);
       } else {
-        // Add the selected location to the form's print locations if it's not already there
-        const currentLocations = form.getValues("printLocations");
-        if (!currentLocations.includes(value)) {
-          form.setValue("printLocations", [...currentLocations, value]);
-        }
         return [...prev, value];
       }
     });
@@ -61,7 +65,11 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
       return;
     }
 
-    // Add design placeholder for all selected locations
+    // Update print locations first
+    const newPrintLocations = Array.from(new Set([...printLocations, ...selectedLocations]));
+    form.setValue("printLocations", newPrintLocations);
+
+    // Then add design placeholders
     selectedLocations.forEach(location => {
       form.setValue(`designs.${location}`, "design-help-requested");
     });
