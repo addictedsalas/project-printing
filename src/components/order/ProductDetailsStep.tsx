@@ -20,6 +20,9 @@ interface ProductDetailsStepProps {
 
 export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: ProductDetailsStepProps) => {
   const watchMaterialType = form.watch("materialType");
+  const garmentType = form.watch("garmentType");
+
+  const isStandardGarment = garmentType === "tshirt" || garmentType === "hoodie";
 
   const addColorToSize = (size: string) => {
     const currentSizes = form.getValues("sizes");
@@ -137,116 +140,122 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
         <GarmentTypeField control={form.control} />
         <MaterialTypeField control={form.control} />
 
-        {/* Cotton Type */}
-        <FormField
-          control={form.control}
-          name="cottonType"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
-                <Package2 className="w-4 h-4" />
-                {watchMaterialType === "cotton" ? "Cotton Type" : 
-                 watchMaterialType === "5050" ? "Blend Type" : 
-                 "Polyester Type"}
-              </FormLabel>
-              <Select 
-                onValueChange={field.onChange} 
-                defaultValue={field.value}
-                value={field.value || undefined}
-              >
-                <FormControl>
-                  <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
-                    <SelectValue placeholder={`Select ${watchMaterialType === "cotton" ? "cotton" : watchMaterialType === "5050" ? "blend" : "polyester"} type`} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                  {materialTypeOptions[watchMaterialType as keyof typeof materialTypeOptions]?.map(({ value, label }) => (
-                    <SelectItem 
-                      key={value} 
-                      value={value}
-                      className="hover:bg-brand-yellow/5"
-                    >
-                      {label}
-                    </SelectItem>
+        {/* Cotton Type - Only show for standard garments */}
+        {isStandardGarment && (
+          <FormField
+            control={form.control}
+            name="cottonType"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
+                  <Package2 className="w-4 h-4" />
+                  {watchMaterialType === "cotton" ? "Cotton Type" : 
+                   watchMaterialType === "5050" ? "Blend Type" : 
+                   "Polyester Type"}
+                </FormLabel>
+                <Select 
+                  onValueChange={field.onChange} 
+                  defaultValue={field.value}
+                  value={field.value || undefined}
+                >
+                  <FormControl>
+                    <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
+                      <SelectValue placeholder={`Select ${watchMaterialType === "cotton" ? "cotton" : watchMaterialType === "5050" ? "blend" : "polyester"} type`} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
+                    {materialTypeOptions[watchMaterialType as keyof typeof materialTypeOptions]?.map(({ value, label }) => (
+                      <SelectItem 
+                        key={value} 
+                        value={value}
+                        className="hover:bg-brand-yellow/5"
+                      >
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+        )}
+
+        {/* Brand - Only show for standard garments */}
+        {isStandardGarment && (
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
+                  <Shirt className="w-4 h-4" />
+                  Brand
+                </FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
+                      <SelectValue placeholder="Select brand" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
+                    <SelectItem value="gildan">Gildan Classic</SelectItem>
+                    <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
+                    <SelectItem value="american-apparel">American Apparel</SelectItem>
+                    <SelectItem value="bella-canvas">Bella + Canvas</SelectItem>
+                    <SelectItem value="next-level">Next Level</SelectItem>
+                    <SelectItem value="port-company">Port & Company</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+        )}
+
+        {/* Size Category - Only show for standard garments */}
+        {isStandardGarment && (
+          <FormField
+            control={form.control}
+            name="sizeType"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-white">Size Category</FormLabel>
+                <RadioGroup
+                  onValueChange={(value: "adult" | "youth") => {
+                    field.onChange(value);
+                    setSizeType(value);
+                  }}
+                  defaultValue={field.value}
+                  className="flex gap-3"
+                >
+                  {[
+                    { value: "adult", label: "Adult Sizes" },
+                    { value: "youth", label: "Youth Sizes" },
+                  ].map(({ value, label }) => (
+                    <div key={value} className="relative">
+                      <RadioGroupItem
+                        value={value}
+                        id={`size-${value}`}
+                        className="peer sr-only"
+                      />
+                      <label
+                        htmlFor={`size-${value}`}
+                        className={`flex items-center justify-center px-4 py-2 bg-white dark:bg-brand-navy-dark/80 border rounded-lg cursor-pointer transition-all duration-300
+                          ${
+                            field.value === value
+                              ? "border-brand-yellow shadow-sm"
+                              : "border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow"
+                          }
+                        `}
+                      >
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
+                      </label>
+                    </div>
                   ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-
-        {/* Brand */}
-        <FormField
-          control={form.control}
-          name="brand"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
-                <Shirt className="w-4 h-4" />
-                Brand
-              </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
-                    <SelectValue placeholder="Select brand" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                  <SelectItem value="gildan">Gildan Classic</SelectItem>
-                  <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
-                  <SelectItem value="american-apparel">American Apparel</SelectItem>
-                  <SelectItem value="bella-canvas">Bella + Canvas</SelectItem>
-                  <SelectItem value="next-level">Next Level</SelectItem>
-                  <SelectItem value="port-company">Port & Company</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-
-        {/* Size Category */}
-        <FormField
-          control={form.control}
-          name="sizeType"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium text-gray-700 dark:text-white">Size Category</FormLabel>
-              <RadioGroup
-                onValueChange={(value: "adult" | "youth") => {
-                  field.onChange(value);
-                  setSizeType(value);
-                }}
-                defaultValue={field.value}
-                className="flex gap-3"
-              >
-                {[
-                  { value: "adult", label: "Adult Sizes" },
-                  { value: "youth", label: "Youth Sizes" },
-                ].map(({ value, label }) => (
-                  <div key={value} className="relative">
-                    <RadioGroupItem
-                      value={value}
-                      id={`size-${value}`}
-                      className="peer sr-only"
-                    />
-                    <label
-                      htmlFor={`size-${value}`}
-                      className={`flex items-center justify-center px-4 py-2 bg-white dark:bg-brand-navy-dark/80 border rounded-lg cursor-pointer transition-all duration-300
-                        ${
-                          field.value === value
-                            ? "border-brand-yellow shadow-sm"
-                            : "border-gray-200 hover:border-brand-yellow dark:border-brand-blue/20 dark:hover:border-brand-yellow"
-                        }
-                      `}
-                    >
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FormItem>
-          )}
-        />
+                </RadioGroup>
+              </FormItem>
+            )}
+          />
+        )}
 
         {/* Size Inputs */}
         <div className="space-y-3">
