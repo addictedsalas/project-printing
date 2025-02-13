@@ -50,8 +50,10 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 }}
                 value={field.value?.toString()}
                 min="0"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="Qty"
-                className="h-7 text-xs font-medium bg-transparent border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="h-7 text-xs font-medium bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </FormControl>
           </FormItem>
@@ -67,7 +69,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
               defaultValue={field.value}
             >
               <FormControl>
-                <SelectTrigger className="h-7 text-xs bg-transparent border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white focus:border-brand-yellow focus:ring-brand-yellow/20">
+                <SelectTrigger className="h-7 text-xs bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white focus:border-brand-yellow focus:ring-brand-yellow/20">
                   <SelectValue placeholder="Color">
                     {field.value && (
                       <div className="flex items-center gap-1.5">
