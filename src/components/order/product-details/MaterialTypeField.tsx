@@ -2,12 +2,22 @@
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Package2 } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import type { OrderFormValues } from "@/types/order";
 
 interface MaterialTypeFieldProps {
   control: any;
 }
 
 export const MaterialTypeField = ({ control }: MaterialTypeFieldProps) => {
+  const { watch } = useFormContext<OrderFormValues>();
+  const garmentType = watch("garmentType");
+
+  // Only show for tshirt or hoodie
+  if (garmentType !== "tshirt" && garmentType !== "hoodie") {
+    return null;
+  }
+
   return (
     <FormField
       control={control}
