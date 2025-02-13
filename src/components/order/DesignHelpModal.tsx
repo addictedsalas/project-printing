@@ -22,33 +22,23 @@ interface DesignHelpModalProps {
 
 export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [idea, setIdea] = useState("");
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { toast } = useToast();
   const form = useFormContext<OrderFormValues>();
 
-  // Reset selected locations when modal closes
+  // Reset selected location when modal closes
   useEffect(() => {
     if (!isOpen) {
-      setSelectedLocations([]);
+      setSelectedLocation(null);
       setIdea("");
     }
   }, [isOpen]);
 
-  const handleLocationToggle = (value: string) => {
-    setSelectedLocations(prev => {
-      if (prev.includes(value)) {
-        return prev.filter(loc => loc !== value);
-      } else {
-        return [...prev, value];
-      }
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedLocations.length === 0) {
+    if (!selectedLocation) {
       toast({
-        title: "Please select at least one location",
+        title: "Please select a location",
         description: "Choose where you need help with the design",
         variant: "destructive",
       });
@@ -67,33 +57,26 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
     // Get current print locations
     const currentPrintLocations = form.getValues("printLocations");
     
-    // Update print locations with new ones
-    const newPrintLocations = Array.from(new Set([...currentPrintLocations, ...selectedLocations]));
+    // Update print locations if needed
+    if (!currentPrintLocations.includes(selectedLocation)) {
+      form.setValue("printLocations", [...currentPrintLocations, selectedLocation]);
+    }
     
-    // Batch our form updates
-    const updates = {
-      printLocations: newPrintLocations,
-      designs: {
-        ...form.getValues("designs"),
-        ...Object.fromEntries(
-          selectedLocations.map(location => [location, "design-help-requested"])
-        ),
-      },
-    };
-
-    // Apply all updates at once
-    Object.entries(updates).forEach(([key, value]) => {
-      form.setValue(key as keyof OrderFormValues, value);
+    // Update designs for the selected location
+    const currentDesigns = form.getValues("designs");
+    form.setValue("designs", {
+      ...currentDesigns,
+      [selectedLocation]: "design-help-requested"
     });
 
     toast({
       title: "Design help requested!",
-      description: `We'll help with your designs for the selected locations`,
+      description: `We'll help with your design for the selected location`,
       duration: 5000,
     });
     
     setIdea("");
-    setSelectedLocations([]);
+    setSelectedLocation(null);
     onClose();
   };
 
@@ -124,15 +107,15 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Select locations for this design
+              Select a location for this design
             </label>
             <div className="grid grid-cols-3 gap-2">
               {locations.map(({ value, label, icon }) => (
                 <div
                   key={value}
-                  onClick={() => handleLocationToggle(value)}
+                  onClick={() => setSelectedLocation(value)}
                   className={`p-2 border-2 rounded-md flex flex-col items-center justify-center transition-all duration-200 cursor-pointer ${
-                    selectedLocations.includes(value)
+                    selectedLocation === value
                       ? "border-brand-navy bg-brand-blue-light/20 dark:border-brand-yellow dark:bg-brand-yellow/20"
                       : "border-gray-200 hover:border-brand-blue dark:border-gray-700 dark:hover:border-brand-yellow/50"
                   }`}
@@ -140,9 +123,9 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
                   <span className="text-lg">{icon}</span>
                   <span className="text-xs mt-1 text-center">{label}</span>
                   <Checkbox
-                    checked={selectedLocations.includes(value)}
+                    checked={selectedLocation === value}
                     className="mt-2"
-                    onCheckedChange={() => handleLocationToggle(value)}
+                    onCheckedChange={() => setSelectedLocation(value)}
                   />
                 </div>
               ))}
