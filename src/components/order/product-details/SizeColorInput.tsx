@@ -25,13 +25,16 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
           <FormItem className="w-14 relative">
             <FormControl>
               <Input
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 {...field}
                 onChange={(e) => {
-                  if (field.value === "0" && e.target.value !== "") {
+                  const value = e.target.value.replace(/[^0-9]/g, '');
+                  if (value === "0" && value !== "") {
                     field.onChange("");
                   } else {
-                    field.onChange(e.target.value);
+                    field.onChange(value);
                   }
                 }}
                 onFocus={(e) => {
@@ -48,12 +51,9 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                     onKeyDown(e, id, index);
                   }
                 }}
-                value={field.value?.toString()}
-                min="0"
-                inputMode="numeric"
-                pattern="[0-9]*"
+                value={field.value?.toString() || ""}
                 placeholder="Qty"
-                className="touch-manipulation h-7 text-xs font-semibold bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-center"
+                className="touch-manipulation h-7 text-xs font-semibold bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 text-center"
               />
             </FormControl>
           </FormItem>
