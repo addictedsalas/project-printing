@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { OrderFormValues } from "@/types/order";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DesignHelpModal } from "./DesignHelpModal";
 
 interface CustomizationStepProps {
@@ -15,6 +15,22 @@ interface CustomizationStepProps {
 
 export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
   const [showDesignHelp, setShowDesignHelp] = useState(false);
+  const printLocations = form.watch("printLocations");
+
+  // Effect to clean up designs when locations are removed
+  useEffect(() => {
+    const currentDesigns = form.getValues("designs");
+    const newDesigns = { ...currentDesigns };
+    
+    // Remove designs for locations that are no longer selected
+    Object.keys(newDesigns).forEach(location => {
+      if (!printLocations.includes(location)) {
+        delete newDesigns[location];
+      }
+    });
+
+    form.setValue("designs", newDesigns);
+  }, [printLocations, form]);
 
   return (
     <div className="space-y-6">
@@ -66,9 +82,10 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
                     checked={field.value?.includes(value)}
                     onChange={(e) => {
                       const checked = e.target.checked;
+                      const currentValue = field.value || [];
                       const newValue = checked
-                        ? [...(field.value || []), value]
-                        : (field.value || []).filter((v) => v !== value);
+                        ? [...currentValue, value]
+                        : currentValue.filter((v) => v !== value);
                       field.onChange(newValue);
                     }}
                     className="peer sr-only"
@@ -100,7 +117,7 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
         )}
       />
 
-      {form.watch("printLocations").length > 0 && (
+      {printLocations.length > 0 && (
         <div className="space-y-4 mt-8">
           <div className="space-y-4">
             <h3 className="text-lg font-medium text-brand-navy dark:text-white">
@@ -109,7 +126,7 @@ export const CustomizationStep = ({ form, isDark }: CustomizationStepProps) => {
           </div>
 
           <div className="grid gap-6">
-            {form.watch("printLocations").map((location) => (
+            {printLocations.map((location) => (
               <FormField
                 key={location}
                 control={form.control}
