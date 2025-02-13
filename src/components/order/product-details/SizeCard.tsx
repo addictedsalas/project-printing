@@ -64,13 +64,20 @@ export const SizeCard = ({
       <SizeInputDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        onSubmit={(quantity, color) => {
-          onAddColor(id);
-          // Update the last added item with the selected values
-          const lastIndex = sizeColors.length;
-          onRemoveColor(id, lastIndex); // Remove the default values
-          const updatedSizeColor: SizeColor = { quantity, color };
-          sizeColors.push(updatedSizeColor);
+        onSubmit={(newSizeColors) => {
+          // Add each new color entry
+          newSizeColors.forEach(() => onAddColor(id));
+          
+          // Remove the default values that were added
+          const startIndex = sizeColors.length;
+          for (let i = 0; i < newSizeColors.length; i++) {
+            onRemoveColor(id, startIndex + i);
+          }
+          
+          // Add the new entries to sizeColors
+          newSizeColors.forEach(sizeColor => {
+            sizeColors.push(sizeColor);
+          });
         }}
       />
     </div>
