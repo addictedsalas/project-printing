@@ -12,6 +12,7 @@ interface GarmentTypeFieldProps {
 
 export const GarmentTypeField = ({ control }: GarmentTypeFieldProps) => {
   const [customItem, setCustomItem] = useState("");
+  const [showCustomInput, setShowCustomInput] = useState(false);
   
   return (
     <FormField
@@ -25,9 +26,15 @@ export const GarmentTypeField = ({ control }: GarmentTypeFieldProps) => {
           </FormLabel>
           <RadioGroup
             onValueChange={(value) => {
-              if (value === "custom" && customItem) {
-                field.onChange(customItem);
+              if (value === "custom") {
+                setShowCustomInput(true);
+                if (customItem) {
+                  field.onChange(customItem);
+                } else {
+                  field.onChange(value);
+                }
               } else {
+                setShowCustomInput(false);
                 field.onChange(value);
                 setCustomItem("");
               }
@@ -60,7 +67,7 @@ export const GarmentTypeField = ({ control }: GarmentTypeFieldProps) => {
                     <Shirt className="w-6 h-6" />
                   )}
                   <span className="text-sm font-medium mt-2 text-gray-700 dark:text-gray-300">{label}</span>
-                  {value === "custom" && (
+                  {value === "custom" && showCustomInput && (
                     <Input
                       type="text"
                       placeholder="Type your item..."
@@ -68,7 +75,7 @@ export const GarmentTypeField = ({ control }: GarmentTypeFieldProps) => {
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => {
                         setCustomItem(e.target.value);
-                        if (e.target.value && field.value === "custom") {
+                        if (e.target.value) {
                           field.onChange(e.target.value);
                         }
                       }}
