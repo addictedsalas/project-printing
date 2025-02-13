@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
 
 export default function Footer() {
@@ -20,7 +19,7 @@ export default function Footer() {
               </a>
               <div className="flex items-center gap-2 justify-center md:justify-start text-sm">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>123 Design Avenue, Miami, FL 33101</span>
+                <span>Miami, FL</span>
               </div>
             </div>
           </div>

@@ -91,8 +91,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="font-medium text-brand-navy dark:text-white">Address</p>
-                      <p>123 Design Avenue</p>
-                      <p>Miami, FL 33101</p>
+                      <p>Miami, FL</p>
                     </div>
                   </div>
                 </div>
