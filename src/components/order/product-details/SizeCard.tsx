@@ -33,7 +33,7 @@ export const SizeCard = ({
           <span className="text-sm font-medium text-white">{label}</span>
           {totalQuantity > 0 && (
             <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-brand-yellow/10 text-brand-yellow">
-              {totalQuantity}
+              Total: {totalQuantity}
             </span>
           )}
         </div>
@@ -49,7 +49,8 @@ export const SizeCard = ({
         </Button>
 
         {sizeColors.length > 0 && (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-2 bg-brand-navy-light/30 rounded-md p-2">
+            <div className="text-xs text-brand-yellow/80 font-medium mb-1">Quantities Added:</div>
             {sizeColors.map((sizeColor, index) => (
               <div 
                 key={index} 
@@ -57,7 +58,9 @@ export const SizeCard = ({
               >
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ring-1 ring-white/10 ${colorStyles[sizeColor.color]}`} />
-                  <span className="text-sm font-medium text-white">{sizeColor.quantity}</span>
+                  <span className="text-sm font-medium text-white">
+                    {sizeColor.quantity} {sizeColor.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </span>
                 </div>
                 <Button
                   type="button"
