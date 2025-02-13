@@ -72,7 +72,9 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                     {field.value && (
                       <div className="flex items-center gap-1.5">
                         <div className={`w-2.5 h-2.5 rounded-full ring-1 ring-black/5 dark:ring-white/10 ${colorStyles[field.value]}`} />
-                        <span className="truncate">{field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                        <span className="hidden sm:inline truncate">
+                          {field.value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        </span>
                       </div>
                     )}
                   </SelectValue>
