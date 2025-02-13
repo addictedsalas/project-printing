@@ -1,4 +1,3 @@
-
 import { Mail, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -92,8 +91,8 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="font-medium text-brand-navy dark:text-white">Address</p>
-                      <p>123 Print Street</p>
-                      <p>Design City, ST 12345</p>
+                      <p>123 Design Avenue</p>
+                      <p>Miami, FL 33101</p>
                     </div>
                   </div>
                 </div>

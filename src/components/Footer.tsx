@@ -20,7 +20,7 @@ export default function Footer() {
               </a>
               <div className="flex items-center gap-2 justify-center md:justify-start text-sm">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>123 Print Street, Design City, ST 12345</span>
+                <span>123 Design Avenue, Miami, FL 33101</span>
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function Footer() {
         </div>
         
         <div className="mt-6 pt-4 border-t border-white/10 text-center text-xs text-white/60">
-          <p>&copy; {new Date().getFullYear()} Project Printing. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Project Printing by 2FR Group. All rights reserved.</p>
         </div>
       </div>
     </footer>
