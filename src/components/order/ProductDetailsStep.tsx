@@ -257,15 +257,17 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           />
         )}
 
-        {/* Size Inputs */}
-        <div className="space-y-3">
-          <FormLabel className="text-sm font-medium text-gray-700 dark:text-white">
-            {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
-          </FormLabel>
-          <div className="bg-white dark:bg-brand-navy-dark/80 p-6 rounded-lg border border-gray-200 dark:border-brand-blue/20">
-            {renderSizeInputs(sizeType)}
+        {/* Size Inputs - Only show for standard garments */}
+        {isStandardGarment && (
+          <div className="space-y-3">
+            <FormLabel className="text-sm font-medium text-gray-700 dark:text-white">
+              {sizeType === "adult" ? "Adult Sizes" : "Youth Sizes"}
+            </FormLabel>
+            <div className="bg-white dark:bg-brand-navy-dark/80 p-6 rounded-lg border border-gray-200 dark:border-brand-blue/20">
+              {renderSizeInputs(sizeType)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
