@@ -39,7 +39,12 @@ export const SizeInputDialog = ({ isOpen, onClose, onSubmit }: SizeInputDialogPr
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) {
+        setColorEntries([{ quantity: "", color: "white" }]);
+      }
+      onClose();
+    }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-center text-brand-navy dark:text-white">
