@@ -84,7 +84,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
   const renderSizeInputs = (type: "adult" | "youth") => {
     const sizes = type === "adult" 
       ? [
-          { id: "xsmall" as SizesKey, label: "Extra Small" },
+          { id: "xsmall" as SizesKey, label: "X-Small" },
           { id: "small" as SizesKey, label: "Small" },
           { id: "medium" as SizesKey, label: "Medium" },
           { id: "large" as SizesKey, label: "Large" },
