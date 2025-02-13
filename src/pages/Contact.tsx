@@ -73,7 +73,7 @@ export default function Contact() {
                   </a>
                   
                   <a 
-                    href="mailto:info@projectprinting.com"
+                    href="mailto:info@projectprinting.org"
                     className="flex items-center gap-4 text-gray-600 dark:text-gray-300 hover:text-brand-yellow transition-colors duration-300"
                   >
                     <div className="w-12 h-12 rounded-full bg-brand-blue-light/20 dark:bg-brand-yellow/20 flex items-center justify-center">
@@ -81,7 +81,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="font-medium text-brand-navy dark:text-white">Email</p>
-                      <p>info@projectprinting.com</p>
+                      <p>info@projectprinting.org</p>
                     </div>
                   </a>
                   

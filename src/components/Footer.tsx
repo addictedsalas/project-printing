@@ -13,9 +13,9 @@ export default function Footer() {
                 <Phone className="w-3.5 h-3.5" />
                 (123) 456-7890
               </a>
-              <a href="mailto:info@projectprinting.com" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start text-sm">
+              <a href="mailto:info@projectprinting.org" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start text-sm">
                 <Mail className="w-3.5 h-3.5" />
-                info@projectprinting.com
+                info@projectprinting.org
               </a>
               <div className="flex items-center gap-2 justify-center md:justify-start text-sm">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
