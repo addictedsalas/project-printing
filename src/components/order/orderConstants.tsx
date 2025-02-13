@@ -22,9 +22,7 @@ export const materialTypeOptions = {
 export const garmentIcons = {
   tshirt: <Shirt className="w-6 h-6" />,
   hoodie: <Package2 className="w-6 h-6" />,
-  sweatshirt: <Shirt className="w-6 h-6" />,
-  tank: <Shirt className="w-6 h-6" />,
-};
+} as const;
 
 export const colorStyles = {
   "white": "bg-white border-slate-400",
