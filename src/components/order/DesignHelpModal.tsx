@@ -25,7 +25,6 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const { toast } = useToast();
   const form = useFormContext<OrderFormValues>();
-  const printLocations = form.watch("printLocations");
 
   // Reset selected locations when modal closes
   useEffect(() => {
@@ -65,13 +64,26 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
       return;
     }
 
-    // Update print locations first
-    const newPrintLocations = Array.from(new Set([...printLocations, ...selectedLocations]));
-    form.setValue("printLocations", newPrintLocations);
+    // Get current print locations
+    const currentPrintLocations = form.getValues("printLocations");
+    
+    // Update print locations with new ones
+    const newPrintLocations = Array.from(new Set([...currentPrintLocations, ...selectedLocations]));
+    
+    // Batch our form updates
+    const updates = {
+      printLocations: newPrintLocations,
+      designs: {
+        ...form.getValues("designs"),
+        ...Object.fromEntries(
+          selectedLocations.map(location => [location, "design-help-requested"])
+        ),
+      },
+    };
 
-    // Then add design placeholders
-    selectedLocations.forEach(location => {
-      form.setValue(`designs.${location}`, "design-help-requested");
+    // Apply all updates at once
+    Object.entries(updates).forEach(([key, value]) => {
+      form.setValue(key as keyof OrderFormValues, value);
     });
 
     toast({
