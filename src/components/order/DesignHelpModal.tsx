@@ -12,7 +12,6 @@ import { useState, useEffect } from "react";
 import { Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useFormContext } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
 import type { OrderFormValues } from "@/types/order";
 
 interface DesignHelpModalProps {
@@ -122,11 +121,6 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
                 >
                   <span className="text-lg">{icon}</span>
                   <span className="text-xs mt-1 text-center">{label}</span>
-                  <Checkbox
-                    checked={selectedLocation === value}
-                    className="mt-2"
-                    onCheckedChange={() => setSelectedLocation(value)}
-                  />
                 </div>
               ))}
             </div>
