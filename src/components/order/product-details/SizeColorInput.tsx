@@ -1,6 +1,6 @@
 
 import { Input } from "@/components/ui/input";
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { SizeColor, SizesKey } from "@/types/order";
@@ -17,13 +17,12 @@ interface SizeColorInputProps {
 
 export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: SizeColorInputProps) => {
   return (
-    <div className="flex items-end gap-1.5 p-1.5 rounded bg-white dark:bg-brand-navy-light/20 border-2 border-brand-blue/10 dark:border-brand-blue/20">
+    <div className="flex items-center gap-1.5">
       <FormField
         control={control}
         name={`sizes.${id}.${index}.quantity`}
         render={({ field }) => (
-          <FormItem className="w-16">
-            <FormLabel className="text-[10px] font-semibold text-brand-navy dark:text-white/90">Qty</FormLabel>
+          <FormItem className="w-14">
             <FormControl>
               <Input
                 type="number"
@@ -51,7 +50,8 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 }}
                 value={field.value?.toString()}
                 min="0"
-                className="h-7 text-sm font-medium bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                placeholder="Qty"
+                className="h-7 text-xs font-medium bg-transparent border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </FormControl>
           </FormItem>
@@ -62,14 +62,13 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
         name={`sizes.${id}.${index}.color`}
         render={({ field }) => (
           <FormItem className="flex-1">
-            <FormLabel className="text-[10px] font-semibold text-brand-navy dark:text-white/90">Color</FormLabel>
             <Select 
               onValueChange={field.onChange} 
               defaultValue={field.value}
             >
               <FormControl>
-                <SelectTrigger className="h-7 text-xs bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white focus:border-brand-yellow focus:ring-brand-yellow/20">
-                  <SelectValue>
+                <SelectTrigger className="h-7 text-xs bg-transparent border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white focus:border-brand-yellow focus:ring-brand-yellow/20">
+                  <SelectValue placeholder="Color">
                     {field.value && (
                       <div className="flex items-center gap-1.5">
                         <div className={`w-2.5 h-2.5 rounded-full ring-1 ring-black/5 dark:ring-white/10 ${colorStyles[field.value]}`} />
@@ -79,7 +78,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                   </SelectValue>
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-white dark:bg-brand-navy-dark border-2 border-brand-blue/20 dark:border-brand-blue/30">
+              <SelectContent className="bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30">
                 {Object.entries(colorStyles).map(([color, bgClass]) => (
                   <SelectItem key={color} value={color} className="flex items-center gap-2">
                     <div className={`w-2.5 h-2.5 rounded-full ring-1 ring-black/5 dark:ring-white/10 ${bgClass}`} />
@@ -96,7 +95,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
         variant="ghost"
         size="sm"
         onClick={() => onRemove(index)}
-        className="h-7 w-7 px-0 mb-[2px] rounded-full transition-all duration-200 hover:scale-110 hover:bg-red-100 dark:hover:bg-red-900/30 group"
+        className="h-7 w-7 px-0 rounded-full transition-all duration-200 hover:scale-110 hover:bg-red-500/10 dark:hover:bg-red-500/20 group"
       >
         <X className="w-3.5 h-3.5 text-gray-400 group-hover:text-red-500 dark:text-gray-500 dark:group-hover:text-red-400 transition-colors duration-200" />
       </Button>
