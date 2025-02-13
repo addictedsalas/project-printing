@@ -137,9 +137,59 @@ export const useOrderForm = () => {
       return;
     }
 
-    const allItems = [...savedItems, data];
-    console.log("All items submitted:", allItems);
-    setIsSubmitted(true);
+    try {
+      const allItems = [...savedItems, data];
+      
+      // Create a more readable format for the email
+      const formattedOrder = allItems.map((item, index) => ({
+        itemNumber: index + 1,
+        garmentType: item.garmentType,
+        materialType: item.materialType,
+        brand: item.brand,
+        sizes: Object.entries(item.sizes)
+          .filter(([_, sizeColors]) => sizeColors.length > 0)
+          .map(([size, sizeColors]) => ({
+            size,
+            colors: sizeColors.map(sc => ({
+              color: sc.color,
+              quantity: sc.quantity
+            }))
+          })),
+        printLocations: item.printLocations,
+        designs: item.designs
+      }));
+
+      const orderData = {
+        order: formattedOrder,
+        contactInfo: data.contactInfo,
+        to: "orders@projectprinting.org"
+      };
+
+      const response = await fetch("/api/submit-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit order");
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Success!",
+        description: "Your order has been submitted successfully.",
+      });
+    } catch (error) {
+      console.error("Order submission error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to submit your order. Please try again.",
+      });
+    }
   };
 
   const handleContinue = () => {
