@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useFormContext } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { OrderFormValues } from "@/types/order";
 
 interface DesignHelpModalProps {
@@ -21,24 +22,30 @@ interface DesignHelpModalProps {
 
 export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
   const [idea, setIdea] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const { toast } = useToast();
   const form = useFormContext<OrderFormValues>();
 
-  const handleLocationSelect = (value: string) => {
-    setSelectedLocation(value);
-    // Add the selected location to the form's print locations if it's not already there
-    const currentLocations = form.getValues("printLocations");
-    if (!currentLocations.includes(value)) {
-      form.setValue("printLocations", [...currentLocations, value]);
-    }
+  const handleLocationToggle = (value: string) => {
+    setSelectedLocations(prev => {
+      if (prev.includes(value)) {
+        return prev.filter(loc => loc !== value);
+      } else {
+        // Add the selected location to the form's print locations if it's not already there
+        const currentLocations = form.getValues("printLocations");
+        if (!currentLocations.includes(value)) {
+          form.setValue("printLocations", [...currentLocations, value]);
+        }
+        return [...prev, value];
+      }
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedLocation) {
+    if (selectedLocations.length === 0) {
       toast({
-        title: "Please select a location",
+        title: "Please select at least one location",
         description: "Choose where you need help with the design",
         variant: "destructive",
       });
@@ -54,16 +61,19 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
       return;
     }
 
-    // Add design placeholder for the selected location
-    form.setValue(`designs.${selectedLocation}`, "design-help-requested");
+    // Add design placeholder for all selected locations
+    selectedLocations.forEach(location => {
+      form.setValue(`designs.${location}`, "design-help-requested");
+    });
 
     toast({
       title: "Design help requested!",
-      description: `We'll help with your design for the ${selectedLocation.split('-').join(' ')}`,
+      description: `We'll help with your designs for the selected locations`,
       duration: 5000,
     });
+    
     setIdea("");
-    setSelectedLocation("");
+    setSelectedLocations([]);
     onClose();
   };
 
@@ -94,21 +104,26 @@ export const DesignHelpModal = ({ isOpen, onClose }: DesignHelpModalProps) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Select location for this design
+              Select locations for this design
             </label>
             <div className="grid grid-cols-3 gap-2">
               {locations.map(({ value, label, icon }) => (
                 <div
                   key={value}
-                  onClick={() => handleLocationSelect(value)}
+                  onClick={() => handleLocationToggle(value)}
                   className={`p-2 border-2 rounded-md flex flex-col items-center justify-center transition-all duration-200 cursor-pointer ${
-                    selectedLocation === value
+                    selectedLocations.includes(value)
                       ? "border-brand-navy bg-brand-blue-light/20 dark:border-brand-yellow dark:bg-brand-yellow/20"
                       : "border-gray-200 hover:border-brand-blue dark:border-gray-700 dark:hover:border-brand-yellow/50"
                   }`}
                 >
                   <span className="text-lg">{icon}</span>
                   <span className="text-xs mt-1 text-center">{label}</span>
+                  <Checkbox
+                    checked={selectedLocations.includes(value)}
+                    className="mt-2"
+                    onCheckedChange={() => handleLocationToggle(value)}
+                  />
                 </div>
               ))}
             </div>
