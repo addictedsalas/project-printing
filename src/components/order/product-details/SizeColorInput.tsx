@@ -17,12 +17,12 @@ interface SizeColorInputProps {
 
 export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: SizeColorInputProps) => {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1.5 relative z-10">
       <FormField
         control={control}
         name={`sizes.${id}.${index}.quantity`}
         render={({ field }) => (
-          <FormItem className="w-14">
+          <FormItem className="w-14 relative">
             <FormControl>
               <Input
                 type="number"
@@ -53,7 +53,7 @@ export const SizeColorInput = ({ id, index, control, onRemove, onKeyDown }: Size
                 inputMode="numeric"
                 pattern="[0-9]*"
                 placeholder="Qty"
-                className="h-7 text-xs font-medium bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="touch-manipulation h-7 text-xs font-medium bg-white dark:bg-brand-navy-dark border border-brand-blue/20 dark:border-brand-blue/30 text-brand-navy dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-brand-yellow focus:ring-brand-yellow/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </FormControl>
           </FormItem>
