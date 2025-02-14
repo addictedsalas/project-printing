@@ -4,6 +4,7 @@ import { SizeColor, SizesKey } from "@/types/order";
 import { useState } from "react";
 import { SizeInputDialog } from "./SizeInputDialog";
 import { colorStyles } from "../orderConstants";
+import { useFormContext } from "react-hook-form";
 
 interface SizeCardProps {
   id: SizesKey;
@@ -23,21 +24,24 @@ export const SizeCard = ({
   onRemoveColor
 }: SizeCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { setValue } = useFormContext();
 
   const totalQuantity = sizeColors.reduce((sum, color) => sum + Number(color.quantity), 0);
 
   const handleSizeColorSubmit = (newSizeColors: SizeColor[]) => {
     // Primero removemos los colores existentes
     sizeColors.forEach((_, index) => {
-      onRemoveColor(id, 0); // Siempre removemos el índice 0 porque el array se va reduciendo
+      onRemoveColor(id, 0);
     });
     
-    // Luego agregamos los nuevos colores
-    newSizeColors.forEach((color) => {
+    // Luego agregamos los nuevos colores y actualizamos sus valores
+    newSizeColors.forEach((color, index) => {
       onAddColor(id);
+      // Actualizamos los valores en el formulario
+      setValue(`sizes.${id}.${index}.quantity`, color.quantity);
+      setValue(`sizes.${id}.${index}.color`, color.color);
     });
 
-    // Cerramos el diálogo
     setIsDialogOpen(false);
   };
 
