@@ -26,6 +26,22 @@ export const SizeCard = ({
 
   const totalQuantity = sizeColors.reduce((sum, color) => sum + Number(color.quantity), 0);
 
+  const handleSizeColorSubmit = (newSizeColors: SizeColor[]) => {
+    // Agregamos cada nuevo color
+    newSizeColors.forEach(() => onAddColor(id));
+    
+    // Esperamos al siguiente ciclo para asegurarnos que los colores se agregaron
+    setTimeout(() => {
+      // Ahora actualizamos los valores
+      for (let i = sizeColors.length; i < sizeColors.length + newSizeColors.length; i++) {
+        const newColor = newSizeColors[i - sizeColors.length];
+        onRemoveColor(id, i);
+        onAddColor(id);
+        sizeColors[i] = newColor;
+      }
+    }, 0);
+  };
+
   return (
     <div className="relative bg-brand-navy dark:bg-brand-navy-dark border border-brand-blue/10 dark:border-brand-blue/20 rounded-lg transition-all duration-300">
       <div className="flex flex-col p-4 gap-3">
@@ -83,21 +99,7 @@ export const SizeCard = ({
       <SizeInputDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        onSubmit={(newSizeColors) => {
-          // Add each new color entry
-          newSizeColors.forEach(() => onAddColor(id));
-          
-          // Remove the default values that were added
-          const startIndex = sizeColors.length;
-          for (let i = 0; i < newSizeColors.length; i++) {
-            onRemoveColor(id, startIndex + i);
-          }
-          
-          // Add the new entries to sizeColors
-          newSizeColors.forEach(sizeColor => {
-            sizeColors.push(sizeColor);
-          });
-        }}
+        onSubmit={handleSizeColorSubmit}
       />
     </div>
   );
