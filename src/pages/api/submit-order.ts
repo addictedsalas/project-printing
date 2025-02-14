@@ -78,7 +78,7 @@ export async function POST(req: Request) {
     // Enviar el correo
     const mailOptions = {
       from: process.env.SMTP_USER,
-      to: "info@projectprinting.org", // Correo fijo de la empresa
+      to: "neworder@projectprinting.org", // Correo de destino actualizado
       subject: `New Order from ${data.contactInfo.fullName}`,
       html: htmlContent,
     };
