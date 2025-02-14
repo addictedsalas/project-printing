@@ -27,19 +27,18 @@ export const SizeCard = ({
   const totalQuantity = sizeColors.reduce((sum, color) => sum + Number(color.quantity), 0);
 
   const handleSizeColorSubmit = (newSizeColors: SizeColor[]) => {
-    // Agregamos cada nuevo color
-    newSizeColors.forEach(() => onAddColor(id));
+    // Primero removemos los colores existentes
+    sizeColors.forEach((_, index) => {
+      onRemoveColor(id, 0); // Siempre removemos el índice 0 porque el array se va reduciendo
+    });
     
-    // Esperamos al siguiente ciclo para asegurarnos que los colores se agregaron
-    setTimeout(() => {
-      // Ahora actualizamos los valores
-      for (let i = sizeColors.length; i < sizeColors.length + newSizeColors.length; i++) {
-        const newColor = newSizeColors[i - sizeColors.length];
-        onRemoveColor(id, i);
-        onAddColor(id);
-        sizeColors[i] = newColor;
-      }
-    }, 0);
+    // Luego agregamos los nuevos colores
+    newSizeColors.forEach((color) => {
+      onAddColor(id);
+    });
+
+    // Cerramos el diálogo
+    setIsDialogOpen(false);
   };
 
   return (
