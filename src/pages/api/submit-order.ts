@@ -32,14 +32,14 @@ export async function POST(req: Request) {
   try {
     const data: OrderRequest = await req.json();
 
-    // Configurar el transportador de correo
+    // Configurar el transportador de correo para Hostinger
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // true para puerto 465, false para otros puertos
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
@@ -77,8 +77,8 @@ export async function POST(req: Request) {
 
     // Enviar el correo
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: data.to,
+      from: process.env.SMTP_USER,
+      to: "info@projectprinting.org", // Correo fijo de la empresa
       subject: `New Order from ${data.contactInfo.fullName}`,
       html: htmlContent,
     };
