@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +18,6 @@ export const useOrderForm = () => {
     defaultValues: {
       garmentType: "",
       cottonType: "",
-      materialType: "cotton",
       brand: "",
       sizeType: "adult",
       sizes: {
@@ -144,7 +142,6 @@ export const useOrderForm = () => {
       const formattedOrder = allItems.map((item, index) => ({
         itemNumber: index + 1,
         garmentType: item.garmentType,
-        materialType: item.materialType,
         brand: item.brand,
         sizes: Object.entries(item.sizes)
           .filter(([_, sizeColors]) => sizeColors.length > 0)
@@ -217,7 +214,6 @@ export const useOrderForm = () => {
     form.reset({
       garmentType: "",
       cottonType: "",
-      materialType: "cotton",
       brand: "",
       sizeType: "adult",
       sizes: {

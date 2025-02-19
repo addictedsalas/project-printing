@@ -21,7 +21,6 @@ export type ContactInfo = z.infer<typeof contactInfoSchema>;
 export const orderFormSchema = z.object({
   garmentType: z.string(),
   cottonType: z.string(),
-  materialType: z.enum(["cotton", "5050", "polyester"]),
   brand: z.string(),
   sizeType: z.enum(["adult", "youth"]),
   sizes: z.record(z.array(sizeColorSchema)),
