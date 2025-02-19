@@ -26,11 +26,7 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
               { value: "right-chest", label: "Right Chest", icon: "👕" },
               { value: "full-front", label: "Full Front", icon: "👕" },
               { value: "full-back", label: "Full Back", icon: "👕" },
-              { value: "left-sleeve", label: "Left Sleeve", icon: "👔" },
-              { value: "right-sleeve", label: "Right Sleeve", icon: "👔" },
-              { value: "neck-label", label: "Neck Label", icon: "🏷️" },
-              { value: "bottom-hem", label: "Bottom Hem", icon: "👕" },
-              { value: "hood", label: "Hood", icon: "🧥" },
+              { value: "custom", label: "Custom Location", icon: "✨" },
             ].map(({ value, label, icon }) => (
               <div key={value} className="relative">
                 <input
