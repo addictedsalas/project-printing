@@ -69,7 +69,7 @@ export default function Footer() {
               >
                 <Button 
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-brand-navy"
+                  className="bg-brand-yellow text-brand-navy hover:bg-white hover:text-brand-navy border-brand-yellow font-medium transition-colors duration-300"
                 >
                   Rate us
                 </Button>
