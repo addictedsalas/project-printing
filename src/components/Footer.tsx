@@ -1,4 +1,6 @@
-import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
+
+import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function Footer() {
   return (
@@ -40,13 +42,7 @@ export default function Footer() {
             <h3 className="text-base font-bold mb-2">Connect With Us</h3>
             <div className="flex justify-center md:justify-start space-x-4">
               <a href="#" className="hover:text-brand-yellow transition-colors">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="#" className="hover:text-brand-yellow transition-colors">
                 <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="hover:text-brand-yellow transition-colors">
-                <Twitter className="w-4 h-4" />
               </a>
             </div>
             <div className="mt-4">
@@ -63,6 +59,21 @@ export default function Footer() {
                   Subscribe
                 </button>
               </form>
+            </div>
+            <div className="mt-2 flex justify-center md:justify-start">
+              <a 
+                href="https://g.co/kgs/BTDgGjs" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <Button 
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-brand-navy"
+                >
+                  Rate us
+                </Button>
+              </a>
             </div>
           </div>
         </div>
