@@ -32,6 +32,7 @@ export default function Footer() {
             <div className="space-y-2">
               <a href="/order" className="block hover:text-brand-yellow transition-colors text-sm">Custom Orders</a>
               <a href="/shop" className="block hover:text-brand-yellow transition-colors text-sm">Shop</a>
+              <a href="/portfolio" className="block hover:text-brand-yellow transition-colors text-sm">Portfolio</a>
               <a href="/blog" className="block hover:text-brand-yellow transition-colors text-sm">Blog</a>
               <a href="/contact" className="block hover:text-brand-yellow transition-colors text-sm">Contact</a>
             </div>
@@ -41,7 +42,12 @@ export default function Footer() {
           <div className="space-y-3 text-center md:text-left">
             <h3 className="text-base font-bold mb-2">Connect With Us</h3>
             <div className="flex justify-center md:justify-start space-x-4">
-              <a href="#" className="hover:text-brand-yellow transition-colors">
+              <a 
+                href="https://www.instagram.com/projectprinting_miami/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-brand-yellow transition-colors"
+              >
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
