@@ -1,3 +1,4 @@
+
 import { OrderFormValues } from "@/types/order";
 
 interface ReviewStepProps {
@@ -5,6 +6,18 @@ interface ReviewStepProps {
 }
 
 export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
+  const formatCottonType = (type: string) => {
+    switch (type) {
+      case 'standard':
+      case 'ringspun':
+      case 'organic':
+      case 'combed':
+        return '100% Cotton';
+      default:
+        return type;
+    }
+  };
+
   return (
     <div className="space-y-8">
       {savedItems.map((item, index) => (
@@ -12,7 +25,7 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
           <h3 className="font-medium text-lg text-gray-900 dark:text-white">
             Item {index + 1}: {item.garmentType} - {item.brand}
           </h3>
-          <p className="text-gray-500 dark:text-gray-400">Cotton Type: {item.cottonType}</p>
+          <p className="text-gray-500 dark:text-gray-400">Material: {formatCottonType(item.cottonType)}</p>
           <p className="text-gray-500 dark:text-gray-400">Sizes:</p>
           <ul className="list-disc list-inside">
             {Object.entries(item.sizes).map(([size, sizeColors]) => (

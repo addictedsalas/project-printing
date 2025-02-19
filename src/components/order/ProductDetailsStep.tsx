@@ -1,4 +1,3 @@
-
 import { Shirt, Package2, Palette, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -144,7 +143,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
               <FormItem className="space-y-3">
                 <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
                   <Package2 className="w-4 h-4" />
-                  Cotton Type
+                  Material
                 </FormLabel>
                 <Select 
                   onValueChange={field.onChange} 
@@ -153,14 +152,13 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                 >
                   <FormControl>
                     <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
-                      <SelectValue placeholder="Select cotton type" />
+                      <SelectValue placeholder="Select material" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                    <SelectItem value="standard">Standard Cotton</SelectItem>
-                    <SelectItem value="ringspun">Ring-Spun Cotton</SelectItem>
-                    <SelectItem value="organic">Organic Cotton</SelectItem>
-                    <SelectItem value="combed">Combed Cotton</SelectItem>
+                    <SelectItem value="standard">100% Cotton</SelectItem>
+                    <SelectItem value="polyester">100% Polyester</SelectItem>
+                    <SelectItem value="blend">Cotton/Poly Blend</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
