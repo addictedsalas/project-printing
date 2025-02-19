@@ -11,9 +11,9 @@ export default function Footer() {
           <div className="space-y-3 text-center md:text-left">
             <h3 className="text-base font-bold mb-2">Contact Us</h3>
             <div className="space-y-2">
-              <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start text-sm">
+              <a href="tel:+17865704081" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start text-sm">
                 <Phone className="w-3.5 h-3.5" />
-                (123) 456-7890
+                (786) 570-4081
               </a>
               <a href="mailto:info@projectprinting.org" className="flex items-center gap-2 hover:text-brand-yellow transition-colors justify-center md:justify-start text-sm">
                 <Mail className="w-3.5 h-3.5" />
