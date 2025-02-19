@@ -6,9 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { OrderFormValues, SizesKey, SizeColor } from "@/types/order";
-import { materialTypeOptions } from "./orderConstants";
 import { GarmentTypeField } from "./product-details/GarmentTypeField";
-import { MaterialTypeField } from "./product-details/MaterialTypeField";
 import { SizeCard } from "./product-details/SizeCard";
 
 interface ProductDetailsStepProps {
@@ -19,9 +17,7 @@ interface ProductDetailsStepProps {
 }
 
 export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: ProductDetailsStepProps) => {
-  const watchMaterialType = form.watch("materialType");
   const garmentType = form.watch("garmentType");
-
   const isStandardGarment = garmentType === "tshirt" || garmentType === "hoodie";
 
   const addColorToSize = (size: string) => {
@@ -138,7 +134,6 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
 
       <div className="grid gap-8">
         <GarmentTypeField control={form.control} />
-        <MaterialTypeField control={form.control} />
 
         {/* Cotton Type - Only show for standard garments */}
         {isStandardGarment && (
@@ -149,9 +144,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
               <FormItem className="space-y-3">
                 <FormLabel className="text-sm font-medium flex items-center gap-2 text-gray-700 dark:text-white">
                   <Package2 className="w-4 h-4" />
-                  {watchMaterialType === "cotton" ? "Cotton Type" : 
-                   watchMaterialType === "5050" ? "Blend Type" : 
-                   "Polyester Type"}
+                  Cotton Type
                 </FormLabel>
                 <Select 
                   onValueChange={field.onChange} 
@@ -160,19 +153,14 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                 >
                   <FormControl>
                     <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
-                      <SelectValue placeholder={`Select ${watchMaterialType === "cotton" ? "cotton" : watchMaterialType === "5050" ? "blend" : "polyester"} type`} />
+                      <SelectValue placeholder="Select cotton type" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                    {materialTypeOptions[watchMaterialType as keyof typeof materialTypeOptions]?.map(({ value, label }) => (
-                      <SelectItem 
-                        key={value} 
-                        value={value}
-                        className="hover:bg-brand-yellow/5"
-                      >
-                        {label}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="standard">Standard Cotton</SelectItem>
+                    <SelectItem value="ringspun">Ring-Spun Cotton</SelectItem>
+                    <SelectItem value="organic">Organic Cotton</SelectItem>
+                    <SelectItem value="combed">Combed Cotton</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
