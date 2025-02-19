@@ -1,8 +1,10 @@
 
 import { MapPin } from "lucide-react";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import type { UseFormReturn } from "react-hook-form";
 import type { OrderFormValues } from "@/types/order";
+import { useState } from "react";
 
 interface PrintLocationSelectorProps {
   form: UseFormReturn<OrderFormValues>;
@@ -10,6 +12,18 @@ interface PrintLocationSelectorProps {
 }
 
 export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorProps) => {
+  const [customLocation, setCustomLocation] = useState("");
+
+  const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomLocation(e.target.value);
+    // Update the designs record to include the custom location description
+    const currentDesigns = form.getValues("designs");
+    form.setValue("designs", {
+      ...currentDesigns,
+      custom: `Custom Location: ${e.target.value}`,
+    });
+  };
+
   return (
     <FormField
       control={form.control}
@@ -40,6 +54,14 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
                       ? [...currentValue, value]
                       : currentValue.filter((v) => v !== value);
                     field.onChange(newValue);
+                    
+                    // Reset custom location when unchecking
+                    if (value === "custom" && !checked) {
+                      setCustomLocation("");
+                      const currentDesigns = form.getValues("designs");
+                      delete currentDesigns.custom;
+                      form.setValue("designs", currentDesigns);
+                    }
                   }}
                   className="peer sr-only"
                 />
@@ -63,6 +85,22 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
               </div>
             ))}
           </div>
+
+          {field.value?.includes("custom") && (
+            <div className="mt-4">
+              <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Specify Custom Location
+              </FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter custom print location..."
+                value={customLocation}
+                onChange={handleCustomLocationChange}
+                className="mt-1"
+              />
+            </div>
+          )}
+
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             You can select multiple locations for your design
           </p>
