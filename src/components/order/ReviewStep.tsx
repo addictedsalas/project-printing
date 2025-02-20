@@ -51,10 +51,9 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">
-          Review Your Order
+        <h2 className="text 2xl font-semibold text-gray-800 dark:text-gray-100">
+          Please review your order details below
         </h2>
-        <p className="text-gray-500">Please review your order details below</p>
       </div>
 
       <ScrollArea className="h-[500px] w-full rounded-lg">
@@ -64,39 +63,43 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white rounded-lg p-6 mb-4 shadow-sm"
+            className="bg-white rounded-lg p-6 mb-4 shadow-sm dark:bg-gray-800"
           >
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <Shirt className="w-6 h-6 text-gray-600" />
+                  <Shirt className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                   <div>
-                    <h3 className="text-xl font-medium">
+                    <h3 className="text-xl font-semibold text-brand-navy dark:text-white">
                       Item {index + 1}: {item.garmentType.charAt(0).toUpperCase() + item.garmentType.slice(1)}
                     </h3>
-                    <p className="text-gray-600 mt-1">
+                    <p className="text-gray-600 dark:text-gray-400 mt-1">
                       Brand: {item.brand.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 bg-brand-yellow/10 px-3 py-1 rounded-full">
+                <div className="flex items-center gap-2 bg-brand-yellow/10 px-4 py-2 rounded-full">
                   <Package2 className="w-4 h-4 text-brand-yellow" />
                   <span className="text-brand-yellow font-medium">{getTotalQuantity(item.sizes)} items</span>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <p className="text-gray-700">
-                  <span className="font-medium">Material:</span> {formatCottonType(item.cottonType)}
-                </p>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-gray-800 dark:text-gray-200">
+                    Material: {formatCottonType(item.cottonType)}
+                  </p>
+                </div>
 
                 <div>
-                  <p className="font-medium text-gray-700 mb-1">Sizes & Colors:</p>
-                  <ul className="space-y-1">
+                  <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">
+                    Sizes & Colors:
+                  </p>
+                  <ul className="space-y-1 pl-4">
                     {Object.entries(item.sizes).map(([size, sizeColors]) => (
                       sizeColors.map((sc, idx) => (
                         Number(sc.quantity) > 0 && (
-                          <li key={`${size}-${idx}`} className="text-gray-600">
+                          <li key={`${size}-${idx}`} className="text-gray-600 dark:text-gray-400">
                             {size.replace('_', ' ').toUpperCase()}: {sc.quantity} {sc.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                           </li>
                         )
@@ -107,10 +110,12 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
 
                 {item.printLocations && item.printLocations.length > 0 && (
                   <div>
-                    <p className="font-medium text-gray-700 mb-1">Print Locations:</p>
-                    <ul className="space-y-1">
+                    <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">
+                      Print Locations:
+                    </p>
+                    <ul className="space-y-1 pl-4">
                       {item.printLocations.map((location, idx) => (
-                        <li key={idx} className="text-gray-600">
+                        <li key={idx} className="text-gray-600 dark:text-gray-400">
                           {formatPrintLocation(location)}
                         </li>
                       ))}
