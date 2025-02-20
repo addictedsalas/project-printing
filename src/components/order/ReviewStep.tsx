@@ -108,20 +108,22 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                   </ul>
                 </div>
 
-                {item.printLocations && item.printLocations.length > 0 && (
-                  <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                    <p className="text-gray-800 dark:text-gray-200 font-medium mb-3">
-                      Print Locations:
-                    </p>
-                    <ul className="space-y-2 pl-4">
-                      {item.printLocations.map((location, idx) => (
-                        <li key={idx} className="text-gray-600 dark:text-gray-400">
-                          {formatPrintLocation(location)}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                  <p className="text-gray-800 dark:text-gray-200 font-medium mb-3">
+                    Print Locations:
+                  </p>
+                  <ul className="space-y-2 pl-4">
+                    {item.printLocations?.map((location, idx) => (
+                      <li key={idx} className="text-gray-600 dark:text-gray-400">
+                        {formatPrintLocation(location)}
+                      </li>
+                    )) || (
+                      <li className="text-gray-600 dark:text-gray-400">
+                        No print locations selected
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           </motion.div>
