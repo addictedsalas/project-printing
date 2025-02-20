@@ -34,7 +34,7 @@ export const useOrderForm = () => {
       printLocations: [],
       designs: {},
       fabricQuality: "",
-      itemIndex: 0,
+      itemIndex: savedItems.length,
       contactInfo: {
         fullName: "",
         email: "",
@@ -45,13 +45,18 @@ export const useOrderForm = () => {
     },
   });
 
+  const getTotalQuantity = (sizes: OrderFormValues['sizes']) => {
+    return Object.values(sizes).reduce((total, sizeColors) => {
+      return total + sizeColors.reduce((sizeTotal, sc) => sizeTotal + Number(sc.quantity), 0);
+    }, 0);
+  };
+
   const handleNext = () => {
     if (step === 1) {
-      const anyQuantityGreaterThanZero = Object.values(form.getValues().sizes).some(sizeColors =>
-        sizeColors.some(item => Number(item.quantity) > 0)
-      );
+      const currentFormData = form.getValues();
+      const totalQuantity = getTotalQuantity(currentFormData.sizes);
 
-      if (!anyQuantityGreaterThanZero) {
+      if (totalQuantity === 0) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -85,9 +90,100 @@ export const useOrderForm = () => {
     }
   };
 
+  const handleContinue = () => {
+    const currentFormData = form.getValues();
+    const totalQuantity = getTotalQuantity(currentFormData.sizes);
+
+    if (totalQuantity === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please add at least one item before continuing",
+      });
+      return;
+    }
+
+    setSavedItems(prev => [...prev, currentFormData]);
+    setShowContinueModal(false);
+    setStep(2);
+
+    toast({
+      title: "Success",
+      description: "Items saved successfully!",
+    });
+  };
+
+  const handleAddMore = () => {
+    const currentFormData = form.getValues();
+    const totalQuantity = getTotalQuantity(currentFormData.sizes);
+
+    if (totalQuantity === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please add at least one item before adding more",
+      });
+      return;
+    }
+
+    setSavedItems(prev => [...prev, currentFormData]);
+
+    // Reset form but keep contact info
+    const contactInfo = form.getValues("contactInfo");
+    form.reset({
+      garmentType: "",
+      cottonType: "",
+      brand: "",
+      sizeType: "adult",
+      sizes: {
+        xsmall: [],
+        small: [],
+        medium: [],
+        large: [],
+        xlarge: [],
+        xxlarge: [],
+        youth_s: [],
+        youth_m: [],
+        youth_l: [],
+      },
+      printLocations: [],
+      designs: {},
+      fabricQuality: "",
+      itemIndex: savedItems.length + 1,
+      contactInfo,
+    });
+
+    setShowContinueModal(false);
+    setStep(1);
+    setSizeType("adult");
+
+    toast({
+      title: "Success",
+      description: "Items saved! You can now add more garments.",
+    });
+  };
+
   const handleSubmit = async (data: OrderFormValues) => {
     if (step < totalSteps) {
       setStep(step + 1);
+      return;
+    }
+
+    const allItems = [...savedItems];
+    // Add the current form data if it has items
+    const currentFormData = form.getValues();
+    const currentTotalQuantity = getTotalQuantity(currentFormData.sizes);
+    
+    if (currentTotalQuantity > 0) {
+      allItems.push(currentFormData);
+    }
+
+    if (allItems.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please add at least one item to your order",
+      });
       return;
     }
 
@@ -100,54 +196,17 @@ export const useOrderForm = () => {
       return;
     }
 
-    const anyQuantityGreaterThanZero = Object.values(data.sizes).some(sizeColors =>
-      sizeColors.some(item => Number(item.quantity) > 0)
-    );
-
-    if (!anyQuantityGreaterThanZero) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please add at least one item to your order",
-      });
-      return;
-    }
-
-    if (data.printLocations.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please select at least one print location",
-      });
-      return;
-    }
-
-    const allLocationsHaveDesigns = data.printLocations.every(
-      location => data.designs[location]
-    );
-
-    if (!allLocationsHaveDesigns) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please upload designs for all selected print locations",
-      });
-      return;
-    }
-
     try {
-      const allItems = [...savedItems, data];
-      
       // Create a more readable format for the email
       const formattedOrder = allItems.map((item, index) => ({
         itemNumber: index + 1,
         garmentType: item.garmentType,
         brand: item.brand,
         sizes: Object.entries(item.sizes)
-          .filter(([_, sizeColors]) => sizeColors.length > 0)
+          .filter(([_, sizeColors]) => sizeColors.some(sc => Number(sc.quantity) > 0))
           .map(([size, sizeColors]) => ({
             size,
-            colors: sizeColors.map(sc => ({
+            colors: sizeColors.filter(sc => Number(sc.quantity) > 0).map(sc => ({
               color: sc.color,
               quantity: sc.quantity
             }))
@@ -187,61 +246,6 @@ export const useOrderForm = () => {
         description: "Failed to submit your order. Please try again.",
       });
     }
-  };
-
-  const handleContinue = () => {
-    setShowContinueModal(false);
-    setStep(2);
-  };
-
-  const handleAddMore = () => {
-    const currentData = form.getValues();
-    const anyQuantityGreaterThanZero = Object.values(currentData.sizes).some(sizeColors =>
-      sizeColors.some(item => Number(item.quantity) > 0)
-    );
-
-    if (!anyQuantityGreaterThanZero) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please add at least one item before adding more",
-      });
-      return;
-    }
-
-    setSavedItems([...savedItems, currentData]);
-
-    form.reset({
-      garmentType: "",
-      cottonType: "",
-      brand: "",
-      sizeType: "adult",
-      sizes: {
-        xsmall: [],
-        small: [],
-        medium: [],
-        large: [],
-        xlarge: [],
-        xxlarge: [],
-        youth_s: [],
-        youth_m: [],
-        youth_l: [],
-      },
-      printLocations: [],
-      designs: {},
-      fabricQuality: "",
-      itemIndex: savedItems.length + 1,
-      contactInfo: form.getValues().contactInfo, // Preserve contact info when adding more items
-    });
-
-    setShowContinueModal(false);
-    setStep(1);
-    setSizeType("adult");
-
-    toast({
-      title: "Success",
-      description: "Items saved! You can now add more garments.",
-    });
   };
 
   return {
