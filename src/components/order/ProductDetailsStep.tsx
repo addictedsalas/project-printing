@@ -134,7 +134,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
       <div className="grid gap-8">
         <GarmentTypeField control={form.control} />
 
-        {/* Cotton Type - Only show for standard garments */}
+        {/* Material Type - Only show for standard garments */}
         {isStandardGarment && (
           <FormField
             control={form.control}
@@ -157,7 +157,9 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
                     <SelectItem value="standard">100% Cotton</SelectItem>
-                    <SelectItem value="polyester">100% Polyester</SelectItem>
+                    <SelectItem value="moisture-wicking">100% Polyester (Moisture Wicking)</SelectItem>
+                    <SelectItem value="performance">100% Polyester (Performance)</SelectItem>
+                    <SelectItem value="micro">100% Polyester (Micro)</SelectItem>
                     <SelectItem value="blend">Cotton/Poly Blend</SelectItem>
                   </SelectContent>
                 </Select>
