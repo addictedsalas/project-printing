@@ -184,12 +184,13 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                    <SelectItem value="gildan">Gildan Classic</SelectItem>
-                    <SelectItem value="gildan-premium">Gildan Premium</SelectItem>
-                    <SelectItem value="american-apparel">American Apparel</SelectItem>
-                    <SelectItem value="bella-canvas">Bella + Canvas</SelectItem>
-                    <SelectItem value="next-level">Next Level</SelectItem>
                     <SelectItem value="port-company">Port & Company</SelectItem>
+                    <SelectItem value="gildan">Gildan</SelectItem>
+                    <SelectItem value="bella-canvas">BELLA+CANVAS</SelectItem>
+                    <SelectItem value="hanes">Hanes</SelectItem>
+                    <SelectItem value="next-level">Next Level Apparel</SelectItem>
+                    <SelectItem value="champion">Champion</SelectItem>
+                    <SelectItem value="comfort-colors">Comfort Colors</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>

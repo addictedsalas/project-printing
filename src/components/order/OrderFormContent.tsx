@@ -72,10 +72,7 @@ export const OrderFormContent = ({
             )}
 
             {step === 3 && (
-              <ReviewStep 
-                form={form} 
-                savedItems={savedItems}
-              />
+              <ReviewStep savedItems={savedItems} />
             )}
           </motion.div>
         </AnimatePresence>
