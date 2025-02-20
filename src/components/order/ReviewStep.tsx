@@ -65,8 +65,8 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
             transition={{ delay: index * 0.1 }}
             className="bg-white rounded-lg p-6 shadow-sm dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
           >
-            <div className="space-y-6">
-              <div className="flex items-start justify-between">
+            <div className="flex flex-col h-full">
+              <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <Shirt className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                   <div>
@@ -84,18 +84,18 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div>
+              <div className="flex flex-col gap-6">
+                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
                   <p className="text-gray-800 dark:text-gray-200">
                     Material: {formatCottonType(item.cottonType)}
                   </p>
                 </div>
 
-                <div>
-                  <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">
+                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                  <p className="text-gray-800 dark:text-gray-200 font-medium mb-3">
                     Sizes & Colors:
                   </p>
-                  <ul className="space-y-1 pl-4">
+                  <ul className="space-y-2 pl-4">
                     {Object.entries(item.sizes).map(([size, sizeColors]) => (
                       sizeColors.map((sc, idx) => (
                         Number(sc.quantity) > 0 && (
@@ -109,11 +109,11 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                 </div>
 
                 {item.printLocations && item.printLocations.length > 0 && (
-                  <div>
-                    <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                    <p className="text-gray-800 dark:text-gray-200 font-medium mb-3">
                       Print Locations:
                     </p>
-                    <ul className="space-y-1 pl-4">
+                    <ul className="space-y-2 pl-4">
                       {item.printLocations.map((location, idx) => (
                         <li key={idx} className="text-gray-600 dark:text-gray-400">
                           {formatPrintLocation(location)}
