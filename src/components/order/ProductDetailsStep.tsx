@@ -1,3 +1,5 @@
+
+import * as React from "react";
 import { Shirt, Package2, Palette, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
