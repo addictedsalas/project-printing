@@ -39,7 +39,7 @@ export const useOrderFormHandlers = ({
     } else {
       const formData = form.getValues();
       
-      if (step === 2 && formData.printLocations.length === 0) {
+      if (step === 2 && (!formData.printLocations || formData.printLocations.length === 0)) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -74,13 +74,16 @@ export const useOrderFormHandlers = ({
       return;
     }
 
+    // Ensure printLocations is initialized as an array
     const printLocations = Array.isArray(currentFormData.printLocations) 
       ? currentFormData.printLocations 
       : [];
 
+    // Create a new item with all the current form data including print locations
     const itemToSave = {
       ...currentFormData,
-      printLocations
+      printLocations: printLocations,
+      designs: { ...currentFormData.designs }
     };
 
     console.log("Saving item with print locations:", itemToSave.printLocations);
@@ -108,8 +111,16 @@ export const useOrderFormHandlers = ({
       return;
     }
 
-    setSavedItems(prev => [...prev, currentFormData]);
+    // Save the current item with its print locations
+    setSavedItems(prev => [...prev, {
+      ...currentFormData,
+      printLocations: Array.isArray(currentFormData.printLocations) 
+        ? [...currentFormData.printLocations]
+        : [],
+      designs: { ...currentFormData.designs }
+    }]);
 
+    // Reset the form but maintain contact info
     const contactInfo = form.getValues("contactInfo");
     form.reset({
       ...defaultFormValues,
