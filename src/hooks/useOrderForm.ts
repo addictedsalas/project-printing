@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -103,7 +104,20 @@ export const useOrderForm = () => {
       return;
     }
 
-    setSavedItems(prev => [...prev, currentFormData]);
+    // Asegurarnos de que printLocations sea un array antes de guardar
+    const printLocations = Array.isArray(currentFormData.printLocations) 
+      ? currentFormData.printLocations 
+      : [];
+
+    // Crear una copia del objeto con las ubicaciones de impresión
+    const itemToSave = {
+      ...currentFormData,
+      printLocations
+    };
+
+    console.log("Saving item with print locations:", itemToSave.printLocations);
+
+    setSavedItems(prev => [...prev, itemToSave]);
     setShowContinueModal(false);
     setStep(2);
 
