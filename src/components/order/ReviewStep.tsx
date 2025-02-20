@@ -2,7 +2,8 @@
 import { OrderFormValues } from "@/types/order";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Package2, Shirt, CircleDollarSign } from "lucide-react";
+import { Package2, Shirt, CircleDollarSign, Info } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ReviewStepProps {
   savedItems: OrderFormValues[];
@@ -27,6 +28,17 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
       return total + sizeColors.reduce((sizeTotal, sc) => sizeTotal + Number(sc.quantity), 0);
     }, 0);
   };
+
+  if (!savedItems || savedItems.length === 0) {
+    return (
+      <Alert className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-900/50">
+        <Info className="h-4 w-4 text-yellow-600 dark:text-yellow-500" />
+        <AlertDescription className="text-yellow-800 dark:text-yellow-400">
+          No items have been added to your order yet. Please go back and add some items.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -56,7 +68,7 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white dark:bg-brand-navy-dark/80 rounded-lg p-6 mb-6 last:mb-0 border border-gray-100 dark:border-brand-blue/20 shadow-sm"
+            className="bg-white dark:bg-brand-navy-dark/80 rounded-lg p-6 mb-6 last:mb-0 border border-gray-100 dark:border-brand-blue/20 shadow-sm hover:shadow-md transition-all duration-300"
           >
             <div className="space-y-4">
               <div className="flex items-start justify-between">
@@ -65,7 +77,9 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                     <Shirt className="w-5 h-5" />
                     Item {index + 1}: {item.garmentType.charAt(0).toUpperCase() + item.garmentType.slice(1)}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Brand: {item.brand}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Brand: {item.brand.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </p>
                 </div>
                 <div className="text-right">
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-yellow/10 text-brand-yellow text-sm font-medium">
@@ -76,16 +90,18 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
               </div>
 
               <div className="pt-3 border-t border-gray-100 dark:border-brand-blue/20">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Material: {formatCottonType(item.cottonType)}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Material: {formatCottonType(item.cottonType)}
+                </p>
                 
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Sizes & Colors:</p>
                   <ul className="space-y-1">
                     {Object.entries(item.sizes).map(([size, sizeColors]) => (
                       sizeColors.map((sc, idx) => (
-                        sc.quantity !== "0" && (
+                        Number(sc.quantity) > 0 && (
                           <li key={`${size}-${idx}`} className="text-sm text-gray-600 dark:text-gray-400 ml-4">
-                            • {size.replace('_', ' ').toUpperCase()}: {sc.quantity} {sc.color}
+                            • {size.replace('_', ' ').toUpperCase()}: {sc.quantity} {sc.color.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                           </li>
                         )
                       ))
