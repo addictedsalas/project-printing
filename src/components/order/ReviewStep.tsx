@@ -2,7 +2,7 @@
 import { OrderFormValues } from "@/types/order";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Package2, Shirt, Box, Palette, TShirt, MapPin } from "lucide-react";
+import { Package2, Shirt, Box, Palette, MapPin } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ReviewStepProps {
@@ -74,7 +74,7 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
                   <div className="flex items-center gap-4">
                     <div className="bg-brand-navy/5 dark:bg-brand-navy/20 p-3 rounded-lg">
-                      <TShirt className="w-6 h-6 text-brand-navy dark:text-brand-yellow" />
+                      <Shirt className="w-6 h-6 text-brand-navy dark:text-brand-yellow" />
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold text-brand-navy dark:text-white">
