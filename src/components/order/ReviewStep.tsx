@@ -56,14 +56,14 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
         </h2>
       </div>
 
-      <ScrollArea className="h-[500px] w-full rounded-lg">
+      <div className="space-y-4 min-h-[200px] max-h-[calc(100vh-300px)] overflow-y-auto pr-2">
         {savedItems.map((item, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white rounded-lg p-6 mb-4 shadow-sm dark:bg-gray-800"
+            className="bg-white rounded-lg p-6 shadow-sm dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
           >
             <div className="space-y-6">
               <div className="flex items-start justify-between">
@@ -126,7 +126,7 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
             </div>
           </motion.div>
         ))}
-      </ScrollArea>
+      </div>
     </div>
   );
 };
