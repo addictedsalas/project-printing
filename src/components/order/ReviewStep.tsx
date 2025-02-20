@@ -1,4 +1,3 @@
-
 import { OrderFormValues } from "@/types/order";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -24,6 +23,9 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
   };
 
   const formatPrintLocation = (location: string) => {
+    if (location.startsWith("custom:")) {
+      return `Custom: ${location.replace("custom:", "")}`;
+    }
     return location.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');

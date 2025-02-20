@@ -16,12 +16,20 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
 
   const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomLocation(e.target.value);
-    // Update the designs record to include the custom location description
-    const currentDesigns = form.getValues("designs");
-    form.setValue("designs", {
-      ...currentDesigns,
-      custom: `Custom Location: ${e.target.value}`,
-    });
+    
+    if (e.target.value.trim()) {
+      // Get current print locations
+      const currentLocations = form.getValues("printLocations");
+      const customLocationExists = currentLocations.find(loc => loc.startsWith("custom:"));
+      
+      // Update print locations, replacing any existing custom location
+      const newLocations = customLocationExists
+        ? currentLocations.map(loc => loc.startsWith("custom:") ? `custom:${e.target.value}` : loc)
+        : [...currentLocations];
+      
+      // Update the form
+      form.setValue("printLocations", newLocations);
+    }
   };
 
   return (
@@ -46,21 +54,32 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
                 <input
                   type="checkbox"
                   id={`location-${value}`}
-                  checked={field.value?.includes(value)}
+                  checked={value === "custom" 
+                    ? field.value?.some(loc => loc.startsWith("custom:"))
+                    : field.value?.includes(value)}
                   onChange={(e) => {
                     const checked = e.target.checked;
                     const currentValue = field.value || [];
-                    const newValue = checked
-                      ? [...currentValue, value]
-                      : currentValue.filter((v) => v !== value);
-                    field.onChange(newValue);
                     
-                    // Reset custom location when unchecking
-                    if (value === "custom" && !checked) {
-                      setCustomLocation("");
-                      const currentDesigns = form.getValues("designs");
-                      delete currentDesigns.custom;
-                      form.setValue("designs", currentDesigns);
+                    if (value === "custom") {
+                      if (checked) {
+                        // If custom is checked and there's a value, add it
+                        if (customLocation.trim()) {
+                          const newValue = [...currentValue, `custom:${customLocation}`];
+                          field.onChange(newValue);
+                        }
+                      } else {
+                        // If custom is unchecked, remove any custom locations
+                        const newValue = currentValue.filter(loc => !loc.startsWith("custom:"));
+                        field.onChange(newValue);
+                        setCustomLocation("");
+                      }
+                    } else {
+                      // Handle regular locations
+                      const newValue = checked
+                        ? [...currentValue, value]
+                        : currentValue.filter(v => v !== value);
+                      field.onChange(newValue);
                     }
                   }}
                   className="peer sr-only"
@@ -69,6 +88,7 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
                   htmlFor={`location-${value}`}
                   className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
                     ${
+                      (value === "custom" && field.value?.some(loc => loc.startsWith("custom:"))) ||
                       field.value?.includes(value)
                         ? isDark
                           ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
@@ -86,7 +106,7 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
             ))}
           </div>
 
-          {field.value?.includes("custom") && (
+          {field.value?.some(loc => loc.startsWith("custom:")) && (
             <div className="mt-4">
               <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Specify Custom Location
