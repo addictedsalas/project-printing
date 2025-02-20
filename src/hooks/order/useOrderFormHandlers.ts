@@ -1,57 +1,27 @@
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { orderFormSchema, OrderFormValues } from "@/types/order";
-import { useToast } from "@/components/ui/use-toast";
+import { OrderFormValues } from "@/types/order";
+import { UseFormReturn } from "react-hook-form";
+import { getTotalQuantity } from "./useOrderFormTypes";
 
-export const useOrderForm = () => {
-  const [step, setStep] = useState(1);
-  const totalSteps = 3;
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showContinueModal, setShowContinueModal] = useState(false);
-  const [savedItems, setSavedItems] = useState<OrderFormValues[]>([]);
-  const [sizeType, setSizeType] = useState<"adult" | "youth">("adult");
-  const { toast } = useToast();
+interface UseOrderFormHandlersProps {
+  form: UseFormReturn<OrderFormValues>;
+  step: number;
+  setStep: (step: number) => void;
+  setShowContinueModal: (show: boolean) => void;
+  setSavedItems: (items: OrderFormValues[] | ((prev: OrderFormValues[]) => OrderFormValues[])) => void;
+  setIsSubmitted: (submitted: boolean) => void;
+  toast: any;
+}
 
-  const form = useForm<OrderFormValues>({
-    resolver: zodResolver(orderFormSchema),
-    defaultValues: {
-      garmentType: "",
-      cottonType: "",
-      brand: "",
-      sizeType: "adult",
-      sizes: {
-        xsmall: [],
-        small: [],
-        medium: [],
-        large: [],
-        xlarge: [],
-        xxlarge: [],
-        youth_s: [],
-        youth_m: [],
-        youth_l: [],
-      },
-      printLocations: [],
-      designs: {},
-      fabricQuality: "",
-      itemIndex: savedItems.length,
-      contactInfo: {
-        fullName: "",
-        email: "",
-        phone: "",
-        company: "",
-        message: "",
-      },
-    },
-  });
-
-  const getTotalQuantity = (sizes: OrderFormValues['sizes']) => {
-    return Object.values(sizes).reduce((total, sizeColors) => {
-      return total + sizeColors.reduce((sizeTotal, sc) => sizeTotal + Number(sc.quantity), 0);
-    }, 0);
-  };
-
+export const useOrderFormHandlers = ({
+  form,
+  step,
+  setStep,
+  setShowContinueModal,
+  setSavedItems,
+  setIsSubmitted,
+  toast,
+}: UseOrderFormHandlersProps) => {
   const handleNext = () => {
     if (step === 1) {
       const currentFormData = form.getValues();
@@ -104,12 +74,10 @@ export const useOrderForm = () => {
       return;
     }
 
-    // Asegurarnos de que printLocations sea un array antes de guardar
     const printLocations = Array.isArray(currentFormData.printLocations) 
       ? currentFormData.printLocations 
       : [];
 
-    // Crear una copia del objeto con las ubicaciones de impresión
     const itemToSave = {
       ...currentFormData,
       printLocations
@@ -142,57 +110,27 @@ export const useOrderForm = () => {
 
     setSavedItems(prev => [...prev, currentFormData]);
 
-    // Reset form but keep contact info
     const contactInfo = form.getValues("contactInfo");
     form.reset({
-      garmentType: "",
-      cottonType: "",
-      brand: "",
-      sizeType: "adult",
-      sizes: {
-        xsmall: [],
-        small: [],
-        medium: [],
-        large: [],
-        xlarge: [],
-        xxlarge: [],
-        youth_s: [],
-        youth_m: [],
-        youth_l: [],
-      },
-      printLocations: [],
-      designs: {},
-      fabricQuality: "",
-      itemIndex: savedItems.length + 1,
+      ...defaultFormValues,
+      itemIndex: form.getValues("itemIndex") + 1,
       contactInfo,
     });
 
     setShowContinueModal(false);
     setStep(1);
-    setSizeType("adult");
-
-    toast({
-      title: "Success",
-      description: "Items saved! You can now add more garments.",
-    });
   };
 
   const handleSubmit = async (data: OrderFormValues) => {
-    if (step < totalSteps) {
+    if (step < 3) {
       setStep(step + 1);
       return;
     }
 
-    const allItems = [...savedItems];
-    // Add the current form data if it has items
-    const currentFormData = form.getValues();
-    const currentTotalQuantity = getTotalQuantity(currentFormData.sizes);
+    const allItems = form.getValues();
+    const currentTotalQuantity = getTotalQuantity(allItems.sizes);
     
-    if (currentTotalQuantity > 0) {
-      allItems.push(currentFormData);
-    }
-
-    if (allItems.length === 0) {
+    if (currentTotalQuantity === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -211,36 +149,16 @@ export const useOrderForm = () => {
     }
 
     try {
-      // Create a more readable format for the email
-      const formattedOrder = allItems.map((item, index) => ({
-        itemNumber: index + 1,
-        garmentType: item.garmentType,
-        brand: item.brand,
-        sizes: Object.entries(item.sizes)
-          .filter(([_, sizeColors]) => sizeColors.some(sc => Number(sc.quantity) > 0))
-          .map(([size, sizeColors]) => ({
-            size,
-            colors: sizeColors.filter(sc => Number(sc.quantity) > 0).map(sc => ({
-              color: sc.color,
-              quantity: sc.quantity
-            }))
-          })),
-        printLocations: item.printLocations,
-        designs: item.designs
-      }));
-
-      const orderData = {
-        order: formattedOrder,
-        contactInfo: data.contactInfo,
-        to: "orders@projectprinting.org"
-      };
-
       const response = await fetch("/api/submit-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({
+          order: allItems,
+          contactInfo: data.contactInfo,
+          to: "orders@projectprinting.org"
+        }),
       });
 
       if (!response.ok) {
@@ -263,19 +181,9 @@ export const useOrderForm = () => {
   };
 
   return {
-    form,
-    step,
-    setStep,
-    totalSteps,
-    isSubmitted,
-    showContinueModal,
-    setShowContinueModal,
-    savedItems,
-    sizeType,
-    setSizeType,
     handleNext,
-    handleSubmit,
     handleContinue,
     handleAddMore,
+    handleSubmit,
   };
 };
