@@ -2,7 +2,7 @@
 import { OrderFormValues } from "@/types/order";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Package2, Shirt, CircleDollarSign, Info } from "lucide-react";
+import { Package2, Shirt, CircleDollarSign, Info, MapPin } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ReviewStepProps {
@@ -21,6 +21,12 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
       default:
         return type;
     }
+  };
+
+  const formatPrintLocation = (location: string) => {
+    return location.split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
   };
 
   const getTotalQuantity = (sizes: OrderFormValues['sizes']) => {
@@ -109,16 +115,24 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                   </ul>
                 </div>
 
-                <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Print Locations:</p>
-                  <ul className="mt-1 space-y-1">
-                    {item.printLocations.map((location, idx) => (
-                      <li key={idx} className="text-sm text-gray-600 dark:text-gray-400 ml-4">
-                        • {location}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {item.printLocations && item.printLocations.length > 0 && (
+                  <div className="mt-4">
+                    <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <MapPin className="w-4 h-4" />
+                      Print Locations:
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {item.printLocations.map((location, idx) => (
+                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-400 ml-4 flex items-center gap-2">
+                          • {formatPrintLocation(location)}
+                          {item.designs[location] && (
+                            <span className="text-brand-yellow text-xs">(Design uploaded)</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
