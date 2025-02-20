@@ -1,7 +1,7 @@
 
 import { OrderFormValues } from "@/types/order";
 import { UseFormReturn } from "react-hook-form";
-import { getTotalQuantity } from "./useOrderFormTypes";
+import { getTotalQuantity, defaultFormValues } from "./useOrderFormTypes";
 
 interface UseOrderFormHandlersProps {
   form: UseFormReturn<OrderFormValues>;
