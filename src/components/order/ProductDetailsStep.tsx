@@ -15,9 +15,47 @@ interface ProductDetailsStepProps {
   setSizeType: (type: "adult" | "youth") => void;
 }
 
+const polyesterBrands = [
+  { value: "sport-tek", label: "Sport-Tek" },
+  { value: "a4", label: "A4" },
+  { value: "port-company", label: "Port & Company" },
+  { value: "ogio", label: "OGIO" },
+  { value: "gildan", label: "Gildan" },
+  { value: "new-era", label: "New Era" },
+  { value: "nike", label: "Nike" },
+  { value: "hanes", label: "Hanes" },
+] as const;
+
+const cottonBrands = [
+  { value: "port-company", label: "Port & Company" },
+  { value: "gildan", label: "Gildan" },
+  { value: "bella-canvas", label: "BELLA+CANVAS" },
+  { value: "hanes", label: "Hanes" },
+  { value: "next-level", label: "Next Level Apparel" },
+  { value: "champion", label: "Champion" },
+  { value: "comfort-colors", label: "Comfort Colors" },
+] as const;
+
 export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: ProductDetailsStepProps) => {
   const garmentType = form.watch("garmentType");
+  const materialType = form.watch("cottonType");
   const isStandardGarment = garmentType === "tshirt" || garmentType === "hoodie";
+
+  const getBrandOptions = () => {
+    switch (materialType) {
+      case "polyester":
+        return polyesterBrands;
+      case "standard":
+      case "blend":
+        return cottonBrands;
+      default:
+        return [];
+    }
+  };
+
+  React.useEffect(() => {
+    form.setValue("brand", "");
+  }, [materialType]);
 
   const addColorToSize = (size: string) => {
     const currentSizes = form.getValues("sizes");
@@ -134,7 +172,7 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
       <div className="grid gap-8">
         <GarmentTypeField control={form.control} />
 
-        {/* Material Type - Only show for standard garments */}
+        {/* Material Type Selection */}
         {isStandardGarment && (
           <FormField
             control={form.control}
@@ -157,10 +195,8 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
                     <SelectItem value="standard">100% Cotton</SelectItem>
-                    <SelectItem value="moisture-wicking">100% Polyester (Moisture Wicking)</SelectItem>
-                    <SelectItem value="performance">100% Polyester (Performance)</SelectItem>
-                    <SelectItem value="micro">100% Polyester (Micro)</SelectItem>
-                    <SelectItem value="blend">Cotton/Poly Blend</SelectItem>
+                    <SelectItem value="polyester">100% Polyester</SelectItem>
+                    <SelectItem value="blend">50/50 Blend</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
@@ -168,8 +204,8 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
           />
         )}
 
-        {/* Brand - Only show for standard garments */}
-        {isStandardGarment && (
+        {/* Brand Selection - Only show if material is selected */}
+        {isStandardGarment && materialType && (
           <FormField
             control={form.control}
             name="brand"
@@ -179,20 +215,22 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
                   <Shirt className="w-4 h-4" />
                   Brand
                 </FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select 
+                  onValueChange={field.onChange} 
+                  defaultValue={field.value}
+                  value={field.value || undefined}
+                >
                   <FormControl>
                     <SelectTrigger className="h-10 bg-white dark:bg-brand-navy-dark/80 border-gray-200 hover:border-brand-yellow focus:border-brand-yellow focus:ring-brand-yellow/20 dark:border-brand-blue/20 dark:hover:border-brand-yellow dark:focus:border-brand-yellow">
                       <SelectValue placeholder="Select brand" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white border-gray-200 dark:bg-brand-navy-dark dark:border-brand-blue/20">
-                    <SelectItem value="port-company">Port & Company</SelectItem>
-                    <SelectItem value="gildan">Gildan</SelectItem>
-                    <SelectItem value="bella-canvas">BELLA+CANVAS</SelectItem>
-                    <SelectItem value="hanes">Hanes</SelectItem>
-                    <SelectItem value="next-level">Next Level Apparel</SelectItem>
-                    <SelectItem value="champion">Champion</SelectItem>
-                    <SelectItem value="comfort-colors">Comfort Colors</SelectItem>
+                    {getBrandOptions().map((brand) => (
+                      <SelectItem key={brand.value} value={brand.value}>
+                        {brand.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormItem>
