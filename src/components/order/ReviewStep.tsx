@@ -48,6 +48,9 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
     );
   }
 
+  // Añadimos un console.log para debuggear
+  console.log("Saved Items Print Locations:", savedItems.map(item => item.printLocations));
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -113,11 +116,13 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                     Print Locations:
                   </p>
                   <ul className="space-y-2 pl-4">
-                    {item.printLocations?.map((location, idx) => (
-                      <li key={idx} className="text-gray-600 dark:text-gray-400">
-                        {formatPrintLocation(location)}
-                      </li>
-                    )) || (
+                    {Array.isArray(item.printLocations) && item.printLocations.length > 0 ? (
+                      item.printLocations.map((location, idx) => (
+                        <li key={idx} className="text-gray-600 dark:text-gray-400">
+                          {formatPrintLocation(location)}
+                        </li>
+                      ))
+                    ) : (
                       <li className="text-gray-600 dark:text-gray-400">
                         No print locations selected
                       </li>
