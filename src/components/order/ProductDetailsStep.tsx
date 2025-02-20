@@ -38,6 +38,15 @@ const cottonBrands = [
   { value: "comfort-colors", label: "Comfort Colors" },
 ] as const;
 
+const blendBrands = [
+  { value: "port-company", label: "Port & Company" },
+  { value: "gildan", label: "Gildan" },
+  { value: "district", label: "District" },
+  { value: "jerzees", label: "Jerzees" },
+  { value: "allmade", label: "Allmade" },
+  { value: "hanes", label: "Hanes" },
+] as const;
+
 export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: ProductDetailsStepProps) => {
   const garmentType = form.watch("garmentType");
   const materialType = form.watch("cottonType");
@@ -48,8 +57,9 @@ export const ProductDetailsStep = ({ form, isDark, sizeType, setSizeType }: Prod
       case "polyester":
         return polyesterBrands;
       case "standard":
-      case "blend":
         return cottonBrands;
+      case "blend":
+        return blendBrands;
       default:
         return [];
     }
