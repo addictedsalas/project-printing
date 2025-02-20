@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, CircleDollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -29,9 +29,22 @@ export const ThankYouScreen = () => {
         <h1 className="text-3xl font-bold text-brand-navy dark:text-white mb-4">
           Thank You for Your Order!
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md">
-          We've received your custom apparel request and will review it shortly. We'll be in touch with you soon!
-        </p>
+        <div className="space-y-4 mb-8">
+          <p className="text-gray-600 dark:text-gray-300 max-w-md">
+            We've received your custom apparel request and will review it shortly.
+          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-yellow/10 rounded-full"
+          >
+            <CircleDollarSign className="w-4 h-4 text-brand-yellow" />
+            <span className="text-sm font-medium text-brand-yellow">
+              We will send all order details, including pricing, as soon as possible
+            </span>
+          </motion.div>
+        </div>
         <Button
           onClick={handleReturnHome}
           variant="default"
