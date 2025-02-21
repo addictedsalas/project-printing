@@ -45,11 +45,7 @@ export const OrderFormContent = ({
 
   const onSubmit = async (data: OrderFormValues) => {
     console.log("Form submitted with data:", data);
-    if (step === totalSteps) {
-      await handleSubmit(data);
-    } else {
-      handleNext();
-    }
+    await handleSubmit(data);
   };
 
   return (
@@ -113,6 +109,11 @@ export const OrderFormContent = ({
           ) : (
             <Button
               type="submit"
+              onClick={(e) => {
+                e.preventDefault();
+                const data = form.getValues();
+                handleSubmit(data);
+              }}
               className="ml-auto px-8 py-6 text-lg bg-brand-yellow hover:bg-brand-yellow/90 text-brand-navy hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
             >
               Submit Order
