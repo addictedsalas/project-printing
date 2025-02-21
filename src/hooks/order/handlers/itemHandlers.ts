@@ -31,51 +31,9 @@ export const createItemHandlers = ({
       return;
     }
 
-    const printLocations = form.getValues("printLocations");
-    console.log("Current print locations:", printLocations);
-
-    if (!printLocations || printLocations.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please select at least one print location before continuing",
-      });
-      return;
-    }
-
-    // Create a clean copy of the print locations array
-    const cleanPrintLocations = printLocations.map(location => {
-      if (location.startsWith("custom:") && location.endsWith(":")) {
-        return null; // Filter out empty custom locations
-      }
-      return location;
-    }).filter(Boolean) as string[];
-
-    if (cleanPrintLocations.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please specify at least one valid print location",
-      });
-      return;
-    }
-
-    const itemToSave = {
-      ...currentFormData,
-      printLocations: cleanPrintLocations,
-      designs: { ...currentFormData.designs }
-    };
-
-    console.log("Saving item with print locations:", itemToSave.printLocations);
-
-    setSavedItems(prev => [...prev, itemToSave]);
+    // En lugar de guardar el item aquí, solo avanzamos a la pantalla de customización
     setShowContinueModal(false);
-    setStep(2);
-
-    toast({
-      title: "Success",
-      description: "Items saved successfully!",
-    });
+    setStep(2); // Ir a la pantalla de customización
   };
 
   const handleAddMore = () => {
@@ -110,12 +68,14 @@ export const createItemHandlers = ({
       return location;
     }).filter(Boolean) as string[];
 
+    // Guardar el item actual con sus ubicaciones de impresión y diseños
     setSavedItems(prev => [...prev, {
       ...currentFormData,
       printLocations: cleanPrintLocations,
       designs: { ...currentFormData.designs }
     }]);
 
+    // Resetear el formulario para un nuevo item
     const contactInfo = form.getValues("contactInfo");
     form.reset({
       ...defaultFormValues,
@@ -124,7 +84,7 @@ export const createItemHandlers = ({
     });
 
     setShowContinueModal(false);
-    setStep(1);
+    setStep(1); // Volver a la selección de productos para el nuevo item
   };
 
   return {

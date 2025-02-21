@@ -19,9 +19,10 @@ export const createNavigationHandlers = ({
   toast,
 }: NavigationHandlersProps) => {
   const handleNext = () => {
+    const formData = form.getValues();
+
     if (step === 1) {
-      const currentFormData = form.getValues();
-      const totalQuantity = getTotalQuantity(currentFormData.sizes);
+      const totalQuantity = getTotalQuantity(formData.sizes);
 
       if (totalQuantity === 0) {
         toast({
@@ -31,11 +32,12 @@ export const createNavigationHandlers = ({
         });
         return;
       }
-      setShowContinueModal(true);
-    } else {
-      const formData = form.getValues();
+      setStep(2); // Ir a la pantalla de customización
+    } 
+    else if (step === 2) {
+      const printLocations = formData.printLocations || [];
       
-      if (step === 2 && (!formData.printLocations || formData.printLocations.length === 0)) {
+      if (!printLocations.length) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -43,8 +45,16 @@ export const createNavigationHandlers = ({
         });
         return;
       }
-      
-      if (step === 2 && !formData.printLocations.every(location => location.startsWith('custom:') || formData.designs[location])) {
+
+      // Verificar que cada ubicación de impresión tenga un diseño asociado
+      const hasAllDesigns = printLocations.every(location => {
+        if (location.startsWith('custom:')) {
+          return true; // Las ubicaciones personalizadas no necesitan diseño subido
+        }
+        return formData.designs[location];
+      });
+
+      if (!hasAllDesigns) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -52,8 +62,8 @@ export const createNavigationHandlers = ({
         });
         return;
       }
-      
-      setStep(step + 1);
+
+      setStep(3); // Ir a la pantalla de resumen
     }
   };
 
