@@ -25,7 +25,7 @@ export const defaultFormValues: OrderFormValues = {
     fullName: "",
     email: "",
     phone: "",
-    company: "",
+    address: "",
     message: "",
   },
 };
