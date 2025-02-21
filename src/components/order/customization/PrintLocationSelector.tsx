@@ -1,5 +1,5 @@
 
-import { MapPin } from "lucide-react";
+import { MapPin, Sparkles } from "lucide-react";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { UseFormReturn } from "react-hook-form";
@@ -23,24 +23,47 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
     }
   }, [form]);
 
+  const handleLocationChange = (value: string, checked: boolean) => {
+    const currentLocations = form.getValues("printLocations") || [];
+    
+    if (value === "custom") {
+      if (checked) {
+        // Show input field immediately even if empty
+        const newLocations = [...currentLocations];
+        if (!newLocations.some(loc => loc.startsWith("custom:"))) {
+          newLocations.push(`custom:`);
+        }
+        form.setValue("printLocations", newLocations);
+      } else {
+        // Remove custom location
+        form.setValue(
+          "printLocations", 
+          currentLocations.filter(loc => !loc.startsWith("custom:"))
+        );
+        setCustomLocation("");
+      }
+    } else {
+      // Handle regular locations
+      const newLocations = checked
+        ? [...currentLocations, value]
+        : currentLocations.filter(v => v !== value);
+      form.setValue("printLocations", newLocations);
+    }
+  };
+
   const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCustomLocation(value);
     
     const currentLocations = form.getValues("printLocations") || [];
-    const hasCustomLocation = currentLocations.some(loc => loc.startsWith("custom:"));
-    
-    if (value && hasCustomLocation) {
-      // Update existing custom location
-      const newLocations = currentLocations.map(loc => 
-        loc.startsWith("custom:") ? `custom:${value}` : loc
-      );
-      form.setValue("printLocations", newLocations);
-    } else if (value) {
-      // Add new custom location
-      form.setValue("printLocations", [...currentLocations, `custom:${value}`]);
-    }
+    const newLocations = currentLocations.map(loc => 
+      loc.startsWith("custom:") ? `custom:${value}` : loc
+    );
+    form.setValue("printLocations", newLocations);
   };
+
+  const printLocations = form.watch("printLocations") || [];
+  const hasCustomLocation = printLocations.some(loc => loc.startsWith("custom:"));
 
   return (
     <FormField
@@ -64,40 +87,16 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
                 <input
                   type="checkbox"
                   id={`location-${value}`}
-                  checked={value === "custom" 
-                    ? field.value?.some(loc => loc.startsWith("custom:"))
-                    : field.value?.includes(value)}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    const currentValue = field.value || [];
-                    
-                    if (value === "custom") {
-                      if (checked && customLocation.trim()) {
-                        // Add custom location with current value
-                        const newValue = [...currentValue, `custom:${customLocation}`];
-                        field.onChange(newValue);
-                      } else if (!checked) {
-                        // Remove custom location
-                        const newValue = currentValue.filter(loc => !loc.startsWith("custom:"));
-                        field.onChange(newValue);
-                        setCustomLocation("");
-                      }
-                    } else {
-                      // Handle regular locations
-                      const newValue = checked
-                        ? [...currentValue, value]
-                        : currentValue.filter(v => v !== value);
-                      field.onChange(newValue);
-                    }
-                  }}
+                  checked={value === "custom" ? hasCustomLocation : printLocations.includes(value)}
+                  onChange={(e) => handleLocationChange(value, e.target.checked)}
                   className="peer sr-only"
                 />
                 <label
                   htmlFor={`location-${value}`}
                   className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300
                     ${
-                      (value === "custom" && field.value?.some(loc => loc.startsWith("custom:"))) ||
-                      field.value?.includes(value)
+                      (value === "custom" && hasCustomLocation) ||
+                      printLocations.includes(value)
                         ? isDark
                           ? "border-brand-yellow bg-brand-yellow/20 text-brand-yellow shadow-lg scale-105"
                           : "border-brand-navy bg-brand-blue-light text-brand-navy shadow-lg scale-105"
@@ -114,7 +113,7 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
             ))}
           </div>
 
-          {field.value?.some(loc => loc.startsWith("custom:")) && (
+          {hasCustomLocation && (
             <div className="mt-4">
               <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Specify Custom Location
