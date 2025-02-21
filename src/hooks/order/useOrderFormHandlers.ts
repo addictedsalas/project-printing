@@ -11,6 +11,7 @@ interface UseOrderFormHandlersProps {
   setSavedItems: (items: OrderFormValues[] | ((prev: OrderFormValues[]) => OrderFormValues[])) => void;
   setIsSubmitted: (submitted: boolean) => void;
   toast: any;
+  savedItems: OrderFormValues[];
 }
 
 export const useOrderFormHandlers = ({
@@ -21,6 +22,7 @@ export const useOrderFormHandlers = ({
   setSavedItems,
   setIsSubmitted,
   toast,
+  savedItems,
 }: UseOrderFormHandlersProps) => {
   const handleNext = () => {
     if (step === 1) {
@@ -140,11 +142,12 @@ export const useOrderFormHandlers = ({
       return;
     }
 
-    // Get all saved items and add the current form data if there are items
-    let allItems = [...form.getValues()];
-    const currentTotalQuantity = getTotalQuantity(data.sizes);
+    // Get current form data and saved items
+    const currentFormData = form.getValues();
+    const currentTotalQuantity = getTotalQuantity(currentFormData.sizes);
     
-    if (currentTotalQuantity === 0 && allItems.length === 0) {
+    // Check if we have any items
+    if (currentTotalQuantity === 0 && savedItems.length === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -170,7 +173,7 @@ export const useOrderFormHandlers = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          order: allItems,
+          order: savedItems,
           contactInfo: data.contactInfo,
           to: "orders@projectprinting.org"
         }),

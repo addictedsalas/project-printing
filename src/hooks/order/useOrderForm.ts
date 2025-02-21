@@ -32,6 +32,7 @@ export const useOrderForm = () => {
     setSavedItems,
     setIsSubmitted,
     toast,
+    savedItems,
   });
 
   return {
