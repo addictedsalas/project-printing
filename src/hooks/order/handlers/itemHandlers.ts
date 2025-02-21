@@ -31,12 +31,38 @@ export const createItemHandlers = ({
       return;
     }
 
-    const printLocations = form.getValues("printLocations") || [];
+    const printLocations = form.getValues("printLocations");
     console.log("Current print locations:", printLocations);
+
+    if (!printLocations || printLocations.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please select at least one print location before continuing",
+      });
+      return;
+    }
+
+    // Create a clean copy of the print locations array
+    const cleanPrintLocations = printLocations.map(location => {
+      if (location.startsWith("custom:") && location.endsWith(":")) {
+        return null; // Filter out empty custom locations
+      }
+      return location;
+    }).filter(Boolean) as string[];
+
+    if (cleanPrintLocations.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please specify at least one valid print location",
+      });
+      return;
+    }
 
     const itemToSave = {
       ...currentFormData,
-      printLocations: [...printLocations],
+      printLocations: cleanPrintLocations,
       designs: { ...currentFormData.designs }
     };
 
@@ -66,10 +92,27 @@ export const createItemHandlers = ({
     }
 
     const printLocations = form.getValues("printLocations") || [];
+    
+    if (!printLocations.length) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please select at least one print location before adding more items",
+      });
+      return;
+    }
+
+    // Create a clean copy of the print locations array
+    const cleanPrintLocations = printLocations.map(location => {
+      if (location.startsWith("custom:") && location.endsWith(":")) {
+        return null;
+      }
+      return location;
+    }).filter(Boolean) as string[];
 
     setSavedItems(prev => [...prev, {
       ...currentFormData,
-      printLocations: [...printLocations],
+      printLocations: cleanPrintLocations,
       designs: { ...currentFormData.designs }
     }]);
 
