@@ -24,36 +24,17 @@ export const createSubmitHandler = ({
     console.log("Submit handler called with data:", data);
 
     if (step < 3) {
-      if (step === 2) {
-        const printLocations = form.getValues("printLocations") || [];
-        if (!printLocations.length) {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Please select at least one print location",
-          });
-          return;
-        }
-      }
       setStep(step + 1);
       return;
     }
 
+    // Si no hay items guardados y el formulario actual tiene cantidades, agregarlo a los items
     const currentFormData = form.getValues();
     const currentTotalQuantity = getTotalQuantity(currentFormData.sizes);
     
     let orderItems = [...savedItems];
     
     if (currentTotalQuantity > 0) {
-      if (!currentFormData.printLocations?.length) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Please select at least one print location before submitting",
-        });
-        return;
-      }
-
       orderItems.push({
         ...currentFormData,
         printLocations: Array.isArray(currentFormData.printLocations) 
@@ -72,6 +53,7 @@ export const createSubmitHandler = ({
       return;
     }
 
+    // Verificar la información de contacto
     if (!data.contactInfo?.fullName || !data.contactInfo?.email || !data.contactInfo?.phone) {
       toast({
         variant: "destructive",
@@ -103,6 +85,8 @@ export const createSubmitHandler = ({
         to: data.contactInfo.email
       };
 
+      console.log("Sending email with data:", emailData);
+
       // Enviar el email
       const response = await fetch('/api/submit-order', {
         method: 'POST',
@@ -116,6 +100,8 @@ export const createSubmitHandler = ({
         throw new Error('Failed to send email');
       }
 
+      console.log("Order submitted successfully");
+      
       // Mostrar la pantalla de agradecimiento
       setIsSubmitted(true);
       
