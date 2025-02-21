@@ -146,8 +146,22 @@ export const useOrderFormHandlers = ({
     const currentFormData = form.getValues();
     const currentTotalQuantity = getTotalQuantity(currentFormData.sizes);
     
-    // Check if we have any items
-    if (currentTotalQuantity === 0 && savedItems.length === 0) {
+    // Prepare final order items
+    let orderItems = [...savedItems];
+    
+    // Add current form data if it has items
+    if (currentTotalQuantity > 0) {
+      orderItems.push({
+        ...currentFormData,
+        printLocations: Array.isArray(currentFormData.printLocations) 
+          ? [...currentFormData.printLocations]
+          : [],
+        designs: { ...currentFormData.designs }
+      });
+    }
+    
+    // Check if we have any items at all
+    if (orderItems.length === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -166,14 +180,14 @@ export const useOrderFormHandlers = ({
     }
 
     try {
-      console.log("Submitting order...");
+      console.log("Submitting order with items:", orderItems);
       const response = await fetch("/api/submit-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          order: savedItems,
+          order: orderItems,
           contactInfo: data.contactInfo,
           to: "orders@projectprinting.org"
         }),
