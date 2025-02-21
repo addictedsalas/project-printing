@@ -7,6 +7,7 @@ import { ProductDetailsStep } from "./ProductDetailsStep";
 import { CustomizationStep } from "./CustomizationStep";
 import { ReviewStep } from "./ReviewStep";
 import { ContinueModal } from "./ContinueModal";
+import { ContactForm } from "./ContactForm";
 import type { OrderFormValues } from "@/types/order";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -45,7 +46,11 @@ export const OrderFormContent = ({
 
   const onSubmit = async (data: OrderFormValues) => {
     console.log("Form submitted with data:", data);
-    await handleSubmit(data);
+    if (step === totalSteps) {
+      await handleSubmit(data);
+    } else {
+      handleNext();
+    }
   };
 
   return (
@@ -79,6 +84,10 @@ export const OrderFormContent = ({
             {step === 3 && (
               <ReviewStep savedItems={savedItems} />
             )}
+
+            {step === 4 && (
+              <ContactForm form={form} />
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -109,11 +118,6 @@ export const OrderFormContent = ({
           ) : (
             <Button
               type="submit"
-              onClick={(e) => {
-                e.preventDefault();
-                const data = form.getValues();
-                handleSubmit(data);
-              }}
               className="ml-auto px-8 py-6 text-lg bg-brand-yellow hover:bg-brand-yellow/90 text-brand-navy hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
             >
               Submit Order
