@@ -25,7 +25,8 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
 
   const formatPrintLocation = (location: string) => {
     if (location.startsWith("custom:")) {
-      return `Custom: ${location.replace("custom:", "")}`;
+      const customValue = location.replace("custom:", "").trim();
+      return customValue ? `Custom: ${customValue}` : "Custom Location";
     }
     return location.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
@@ -137,8 +138,8 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                           </li>
                         ))
                       ) : (
-                        <li className="text-gray-500 dark:text-gray-400 italic">
-                          No print locations selected
+                        <li className="text-red-500 dark:text-red-400 italic">
+                          Please select at least one print location
                         </li>
                       )}
                     </ul>

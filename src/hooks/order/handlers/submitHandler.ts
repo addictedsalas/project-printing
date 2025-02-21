@@ -24,6 +24,18 @@ export const createSubmitHandler = ({
     console.log("Submit handler called with data:", data);
 
     if (step < 3) {
+      // Validar ubicaciones de impresión antes de pasar al paso de revisión
+      if (step === 2) {
+        const printLocations = form.getValues("printLocations") || [];
+        if (!printLocations.length) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please select at least one print location",
+          });
+          return;
+        }
+      }
       setStep(step + 1);
       return;
     }
@@ -34,6 +46,16 @@ export const createSubmitHandler = ({
     let orderItems = [...savedItems];
     
     if (currentTotalQuantity > 0) {
+      // Validar ubicaciones de impresión antes de agregar el item
+      if (!currentFormData.printLocations?.length) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please select at least one print location before submitting",
+        });
+        return;
+      }
+
       orderItems.push({
         ...currentFormData,
         printLocations: Array.isArray(currentFormData.printLocations) 
@@ -64,7 +86,7 @@ export const createSubmitHandler = ({
     try {
       console.log("Submitting order with items:", orderItems);
       
-      // Simulamos una respuesta exitosa ya que el endpoint no está disponible
+      // Simulamos una respuesta exitosa
       setIsSubmitted(true);
       
       toast({
