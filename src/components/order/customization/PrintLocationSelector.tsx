@@ -19,13 +19,13 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
     
     if (e.target.value.trim()) {
       // Get current print locations
-      const currentLocations = form.getValues("printLocations");
+      const currentLocations = form.getValues("printLocations") || [];
       const customLocationExists = currentLocations.find(loc => loc.startsWith("custom:"));
       
       // Update print locations, replacing any existing custom location
       const newLocations = customLocationExists
         ? currentLocations.map(loc => loc.startsWith("custom:") ? `custom:${e.target.value}` : loc)
-        : [...currentLocations];
+        : [...currentLocations, `custom:${e.target.value}`];
       
       // Update the form
       form.setValue("printLocations", newLocations);
