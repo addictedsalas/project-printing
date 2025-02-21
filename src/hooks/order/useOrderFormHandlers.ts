@@ -48,7 +48,7 @@ export const useOrderFormHandlers = ({
         return;
       }
       
-      if (step === 2 && !formData.printLocations.every(location => formData.designs[location])) {
+      if (step === 2 && !formData.printLocations.every(location => location.startsWith('custom:') || formData.designs[location])) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -133,15 +133,18 @@ export const useOrderFormHandlers = ({
   };
 
   const handleSubmit = async (data: OrderFormValues) => {
+    console.log("Submit handler called with data:", data);
+
     if (step < 3) {
       setStep(step + 1);
       return;
     }
 
-    const allItems = form.getValues();
-    const currentTotalQuantity = getTotalQuantity(allItems.sizes);
+    // Get all saved items and add the current form data if there are items
+    let allItems = [...form.getValues()];
+    const currentTotalQuantity = getTotalQuantity(data.sizes);
     
-    if (currentTotalQuantity === 0) {
+    if (currentTotalQuantity === 0 && allItems.length === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -160,6 +163,7 @@ export const useOrderFormHandlers = ({
     }
 
     try {
+      console.log("Submitting order...");
       const response = await fetch("/api/submit-order", {
         method: "POST",
         headers: {
@@ -172,9 +176,14 @@ export const useOrderFormHandlers = ({
         }),
       });
 
+      console.log("Response received:", response);
+
       if (!response.ok) {
         throw new Error("Failed to submit order");
       }
+
+      const responseData = await response.json();
+      console.log("Response data:", responseData);
 
       setIsSubmitted(true);
       toast({
