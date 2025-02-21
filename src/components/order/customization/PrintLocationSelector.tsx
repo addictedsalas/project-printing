@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/for
 import { Input } from "@/components/ui/input";
 import type { UseFormReturn } from "react-hook-form";
 import type { OrderFormValues } from "@/types/order";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface PrintLocationSelectorProps {
   form: UseFormReturn<OrderFormValues>;
@@ -14,21 +14,31 @@ interface PrintLocationSelectorProps {
 export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorProps) => {
   const [customLocation, setCustomLocation] = useState("");
 
+  // Effect to initialize custom location from form data
+  useEffect(() => {
+    const printLocations = form.getValues("printLocations") || [];
+    const customLoc = printLocations.find(loc => loc.startsWith("custom:"));
+    if (customLoc) {
+      setCustomLocation(customLoc.replace("custom:", ""));
+    }
+  }, [form]);
+
   const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomLocation(e.target.value);
+    const value = e.target.value;
+    setCustomLocation(value);
     
-    if (e.target.value.trim()) {
-      // Get current print locations
-      const currentLocations = form.getValues("printLocations") || [];
-      const customLocationExists = currentLocations.find(loc => loc.startsWith("custom:"));
-      
-      // Update print locations, replacing any existing custom location
-      const newLocations = customLocationExists
-        ? currentLocations.map(loc => loc.startsWith("custom:") ? `custom:${e.target.value}` : loc)
-        : [...currentLocations, `custom:${e.target.value}`];
-      
-      // Update the form
+    const currentLocations = form.getValues("printLocations") || [];
+    const hasCustomLocation = currentLocations.some(loc => loc.startsWith("custom:"));
+    
+    if (value && hasCustomLocation) {
+      // Update existing custom location
+      const newLocations = currentLocations.map(loc => 
+        loc.startsWith("custom:") ? `custom:${value}` : loc
+      );
       form.setValue("printLocations", newLocations);
+    } else if (value) {
+      // Add new custom location
+      form.setValue("printLocations", [...currentLocations, `custom:${value}`]);
     }
   };
 
@@ -62,14 +72,12 @@ export const PrintLocationSelector = ({ form, isDark }: PrintLocationSelectorPro
                     const currentValue = field.value || [];
                     
                     if (value === "custom") {
-                      if (checked) {
-                        // If custom is checked and there's a value, add it
-                        if (customLocation.trim()) {
-                          const newValue = [...currentValue, `custom:${customLocation}`];
-                          field.onChange(newValue);
-                        }
-                      } else {
-                        // If custom is unchecked, remove any custom locations
+                      if (checked && customLocation.trim()) {
+                        // Add custom location with current value
+                        const newValue = [...currentValue, `custom:${customLocation}`];
+                        field.onChange(newValue);
+                      } else if (!checked) {
+                        // Remove custom location
                         const newValue = currentValue.filter(loc => !loc.startsWith("custom:"));
                         field.onChange(newValue);
                         setCustomLocation("");
