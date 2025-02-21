@@ -31,13 +31,12 @@ export const createItemHandlers = ({
       return;
     }
 
-    const printLocations = Array.isArray(currentFormData.printLocations) 
-      ? currentFormData.printLocations 
-      : [];
+    const printLocations = form.getValues("printLocations") || [];
+    console.log("Current print locations:", printLocations);
 
     const itemToSave = {
       ...currentFormData,
-      printLocations: printLocations,
+      printLocations: [...printLocations],
       designs: { ...currentFormData.designs }
     };
 
@@ -66,11 +65,11 @@ export const createItemHandlers = ({
       return;
     }
 
+    const printLocations = form.getValues("printLocations") || [];
+
     setSavedItems(prev => [...prev, {
       ...currentFormData,
-      printLocations: Array.isArray(currentFormData.printLocations) 
-        ? [...currentFormData.printLocations]
-        : [],
+      printLocations: [...printLocations],
       designs: { ...currentFormData.designs }
     }]);
 
