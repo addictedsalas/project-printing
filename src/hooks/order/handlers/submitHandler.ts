@@ -24,7 +24,6 @@ export const createSubmitHandler = ({
     console.log("Submit handler called with data:", data);
 
     if (step < 3) {
-      // Validar ubicaciones de impresión antes de pasar al paso de revisión
       if (step === 2) {
         const printLocations = form.getValues("printLocations") || [];
         if (!printLocations.length) {
@@ -46,7 +45,6 @@ export const createSubmitHandler = ({
     let orderItems = [...savedItems];
     
     if (currentTotalQuantity > 0) {
-      // Validar ubicaciones de impresión antes de agregar el item
       if (!currentFormData.printLocations?.length) {
         toast({
           variant: "destructive",
@@ -84,14 +82,46 @@ export const createSubmitHandler = ({
     }
 
     try {
-      console.log("Submitting order with items:", orderItems);
-      
-      // Simulamos una respuesta exitosa
+      // Preparar los datos para el email
+      const emailData = {
+        order: orderItems.map((item, index) => ({
+          itemNumber: index + 1,
+          garmentType: item.garmentType,
+          materialType: item.cottonType,
+          brand: item.brand,
+          sizes: Object.entries(item.sizes).map(([size, colors]) => ({
+            size,
+            colors: colors.map(color => ({
+              color: color.color,
+              quantity: color.quantity
+            }))
+          })),
+          printLocations: item.printLocations,
+          designs: item.designs
+        })),
+        contactInfo: data.contactInfo,
+        to: data.contactInfo.email
+      };
+
+      // Enviar el email
+      const response = await fetch('/api/submit-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Mostrar la pantalla de agradecimiento
       setIsSubmitted(true);
       
       toast({
         title: "Success!",
-        description: "Your order has been submitted successfully.",
+        description: "Your order has been submitted successfully. Check your email for confirmation.",
       });
     } catch (error) {
       console.error("Order submission error:", error);
