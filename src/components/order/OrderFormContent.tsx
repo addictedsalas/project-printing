@@ -102,19 +102,20 @@ export const OrderFormContent = ({
               Previous
             </Button>
           )}
-          {step === totalSteps ? (
+          {step < totalSteps ? (
+            <Button
+              type="button"
+              onClick={handleNext}
+              className="ml-auto px-8 py-6 text-lg bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+            >
+              Next
+            </Button>
+          ) : (
             <Button
               type="submit"
               className="ml-auto px-8 py-6 text-lg bg-brand-yellow hover:bg-brand-yellow/90 text-brand-navy hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
             >
               Submit Order
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="ml-auto px-8 py-6 text-lg bg-brand-navy hover:bg-brand-navy/90 dark:bg-brand-yellow dark:text-brand-navy dark:hover:bg-brand-yellow/90 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-            >
-              Next
             </Button>
           )}
         </motion.div>
