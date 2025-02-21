@@ -20,6 +20,8 @@ export const useOrderFormHandlers = ({
     setStep,
     setShowContinueModal,
     toast,
+    savedItems,
+    setSavedItems,
   });
 
   const { handleContinue, handleAddMore } = createItemHandlers({

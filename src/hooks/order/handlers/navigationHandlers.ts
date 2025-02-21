@@ -9,6 +9,8 @@ interface NavigationHandlersProps {
   setStep: (step: number) => void;
   setShowContinueModal: (show: boolean) => void;
   toast: any;
+  savedItems: OrderFormValues[];
+  setSavedItems: (items: OrderFormValues[] | ((prev: OrderFormValues[]) => OrderFormValues[])) => void;
 }
 
 export const createNavigationHandlers = ({
@@ -17,6 +19,8 @@ export const createNavigationHandlers = ({
   setStep,
   setShowContinueModal,
   toast,
+  savedItems,
+  setSavedItems,
 }: NavigationHandlersProps) => {
   const handleNext = () => {
     const formData = form.getValues();
@@ -61,6 +65,24 @@ export const createNavigationHandlers = ({
           description: "Please upload designs for all selected print locations",
         });
         return;
+      }
+
+      // Crear una copia limpia de las ubicaciones de impresión
+      const cleanPrintLocations = printLocations.map(location => {
+        if (location.startsWith("custom:") && location.endsWith(":")) {
+          return null;
+        }
+        return location;
+      }).filter(Boolean) as string[];
+
+      // Guardar el item actual antes de ir al resumen
+      const currentTotalQuantity = getTotalQuantity(formData.sizes);
+      if (currentTotalQuantity > 0) {
+        setSavedItems(prev => [...prev, {
+          ...formData,
+          printLocations: cleanPrintLocations,
+          designs: { ...formData.designs }
+        }]);
       }
 
       setStep(3); // Ir a la pantalla de resumen
