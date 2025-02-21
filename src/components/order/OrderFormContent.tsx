@@ -43,9 +43,14 @@ export const OrderFormContent = ({
 }: OrderFormContentProps) => {
   const { theme } = useTheme();
 
+  const onSubmit = (data: OrderFormValues) => {
+    console.log("Form submitted with data:", data);
+    handleSubmit(data);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
