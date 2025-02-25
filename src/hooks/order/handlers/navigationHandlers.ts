@@ -87,6 +87,25 @@ export const createNavigationHandlers = ({
 
       setStep(3); // Ir a la pantalla de resumen
     }
+    else if (step === 3) {
+      // Después del resumen, ir al formulario de contacto
+      setStep(4);
+    }
+    else if (step === 4) {
+      // Validar la información de contacto antes de permitir enviar
+      const contactInfo = formData.contactInfo;
+      if (!contactInfo?.fullName || !contactInfo?.email || !contactInfo?.phone || !contactInfo?.address) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please fill in all required contact information",
+        });
+        return;
+      }
+      
+      // Si toda la información está completa, permitir enviar
+      setStep(5);
+    }
   };
 
   return { handleNext };
