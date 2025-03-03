@@ -2,14 +2,27 @@
 import { OrderFormValues } from "@/types/order";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Package2, Shirt, Box, Palette, MapPin } from "lucide-react";
+import { Package2, Shirt, Box, Palette, MapPin, FileImage } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface ReviewStepProps {
   savedItems: OrderFormValues[];
 }
 
 export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
+  const [openDesigns, setOpenDesigns] = useState<number[]>([]);
+  
+  const toggleDesigns = (index: number) => {
+    setOpenDesigns(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index) 
+        : [...prev, index]
+    );
+  };
+
   const formatCottonType = (type: string) => {
     switch (type) {
       case 'standard':
@@ -144,6 +157,51 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                       )}
                     </ul>
                   </div>
+                  
+                  {/* Designs Preview Section */}
+                  <Collapsible 
+                    open={openDesigns.includes(index)} 
+                    onOpenChange={() => toggleDesigns(index)}
+                    className="md:col-span-2 mt-4"
+                  >
+                    <CollapsibleTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full flex items-center justify-center gap-2 py-2 border-dashed border-brand-navy/30 dark:border-brand-yellow/30"
+                      >
+                        <FileImage className="w-5 h-5 text-brand-navy/70 dark:text-brand-yellow/70" />
+                        <span className="font-medium text-brand-navy dark:text-white">
+                          {openDesigns.includes(index) ? "Hide Designs" : "View Uploaded Designs"}
+                        </span>
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                        <h4 className="font-medium text-gray-700 dark:text-gray-200 mb-4">Uploaded Designs</h4>
+                        
+                        {Object.keys(item.designs || {}).length > 0 ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {Object.entries(item.designs || {}).map(([location, designUrl]) => (
+                              <div key={location} className="flex flex-col">
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                  {formatPrintLocation(location)}
+                                </p>
+                                <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 p-2">
+                                  <img 
+                                    src={designUrl} 
+                                    alt={`Design for ${formatPrintLocation(location)}`}
+                                    className="w-full h-40 object-contain" 
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-gray-500 dark:text-gray-400 italic">No designs uploaded</p>
+                        )}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </div>
               </div>
             </motion.div>
