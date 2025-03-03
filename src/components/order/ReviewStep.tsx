@@ -4,25 +4,12 @@ import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Package2, Shirt, Box, Palette, MapPin, FileImage } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 
 interface ReviewStepProps {
   savedItems: OrderFormValues[];
 }
 
 export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
-  const [openDesigns, setOpenDesigns] = useState<number[]>([]);
-  
-  const toggleDesigns = (index: number) => {
-    setOpenDesigns(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index) 
-        : [...prev, index]
-    );
-  };
-
   const formatCottonType = (type: string) => {
     switch (type) {
       case 'standard':
@@ -137,71 +124,46 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                     </ul>
                   </div>
 
-                  {/* Print Locations */}
+                  {/* Print Locations with Design Previews */}
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 md:col-span-2">
                     <div className="flex items-center gap-3 mb-3">
                       <MapPin className="w-5 h-5 text-brand-navy/70 dark:text-brand-yellow/70" />
                       <h4 className="font-medium text-gray-700 dark:text-gray-200">Print Locations</h4>
                     </div>
-                    <ul className="space-y-2 ml-8">
-                      {Array.isArray(item.printLocations) && item.printLocations.length > 0 ? (
-                        item.printLocations.map((location, idx) => (
-                          <li key={idx} className="text-gray-600 dark:text-gray-300">
-                            {formatPrintLocation(location)}
-                          </li>
-                        ))
-                      ) : (
-                        <li className="text-red-500 dark:text-red-400 italic">
-                          Please select at least one print location
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                  
-                  {/* Designs Preview Section */}
-                  <Collapsible 
-                    open={openDesigns.includes(index)} 
-                    onOpenChange={() => toggleDesigns(index)}
-                    className="md:col-span-2 mt-4"
-                  >
-                    <CollapsibleTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        className="w-full flex items-center justify-center gap-2 py-2 border-dashed border-brand-navy/30 dark:border-brand-yellow/30"
-                      >
-                        <FileImage className="w-5 h-5 text-brand-navy/70 dark:text-brand-yellow/70" />
-                        <span className="font-medium text-brand-navy dark:text-white">
-                          {openDesigns.includes(index) ? "Hide Designs" : "View Uploaded Designs"}
-                        </span>
-                      </Button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                        <h4 className="font-medium text-gray-700 dark:text-gray-200 mb-4">Uploaded Designs</h4>
-                        
-                        {Object.keys(item.designs || {}).length > 0 ? (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {Object.entries(item.designs || {}).map(([location, designUrl]) => (
-                              <div key={location} className="flex flex-col">
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                  {formatPrintLocation(location)}
-                                </p>
+                    
+                    {Array.isArray(item.printLocations) && item.printLocations.length > 0 ? (
+                      <div className="space-y-4 ml-8">
+                        {item.printLocations.map((location, idx) => (
+                          <div key={idx} className="flex items-start gap-4">
+                            <div className="flex-1">
+                              <p className="text-gray-600 dark:text-gray-300">
+                                {formatPrintLocation(location)}
+                              </p>
+                            </div>
+                            
+                            {/* Design Preview */}
+                            {item.designs && item.designs[location] && (
+                              <div className="flex-1">
                                 <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 p-2">
                                   <img 
-                                    src={designUrl} 
+                                    src={item.designs[location]} 
                                     alt={`Design for ${formatPrintLocation(location)}`}
-                                    className="w-full h-40 object-contain" 
+                                    className="h-24 object-contain mx-auto" 
                                   />
                                 </div>
                               </div>
-                            ))}
+                            )}
                           </div>
-                        ) : (
-                          <p className="text-gray-500 dark:text-gray-400 italic">No designs uploaded</p>
-                        )}
+                        ))}
                       </div>
-                    </CollapsibleContent>
-                  </Collapsible>
+                    ) : (
+                      <div className="ml-8">
+                        <p className="text-red-500 dark:text-red-400 italic">
+                          Please select at least one print location
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>
