@@ -1,5 +1,5 @@
 
-import { Menu, ShoppingCart, Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Button } from "./ui/button";
@@ -35,12 +35,6 @@ export default function Navbar() {
                 <Sun className="h-5 w-5 hover:text-brand-yellow transition-colors" />
               )}
             </Button>
-            <a href="/cart" className="relative group">
-              <ShoppingCart className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-              <span className="absolute -top-2 -right-2 bg-brand-yellow text-brand-navy text-xs rounded-full w-5 h-5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                0
-              </span>
-            </a>
           </div>
 
           {/* Mobile Menu Button */}
