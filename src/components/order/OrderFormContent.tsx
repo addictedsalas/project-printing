@@ -46,10 +46,10 @@ export const OrderFormContent = ({
 
   const onSubmit = async (data: OrderFormValues) => {
     console.log("Form submitted with data:", data);
-    if (step === totalSteps) {
-      await handleSubmit(data);
-    } else {
+    if (step < 4) {
       handleNext();
+    } else {
+      await handleSubmit(data);
     }
   };
 
@@ -105,7 +105,7 @@ export const OrderFormContent = ({
               Previous
             </Button>
           )}
-          {step < totalSteps ? (
+          {step < 4 ? (
             <Button
               type="button"
               onClick={handleNext}

@@ -9,7 +9,7 @@ import { useOrderFormHandlers } from "./useOrderFormHandlers";
 
 export const useOrderForm = () => {
   const [step, setStep] = useState(1);
-  const totalSteps = 3;
+  const totalSteps = 4; // Updated to include contact information step
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showContinueModal, setShowContinueModal] = useState(false);
   const [savedItems, setSavedItems] = useState<OrderFormValues[]>([]);

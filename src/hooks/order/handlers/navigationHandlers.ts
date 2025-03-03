@@ -36,7 +36,7 @@ export const createNavigationHandlers = ({
         });
         return;
       }
-      setStep(2); // Ir a la pantalla de customización
+      setStep(2); // Go to customization screen
     } 
     else if (step === 2) {
       const printLocations = formData.printLocations || [];
@@ -50,10 +50,10 @@ export const createNavigationHandlers = ({
         return;
       }
 
-      // Verificar que cada ubicación de impresión tenga un diseño asociado
+      // Verify that each print location has an associated design
       const hasAllDesigns = printLocations.every(location => {
         if (location.startsWith('custom:')) {
-          return true; // Las ubicaciones personalizadas no necesitan diseño subido
+          return true; // Custom locations don't need uploaded design
         }
         return formData.designs[location];
       });
@@ -67,7 +67,7 @@ export const createNavigationHandlers = ({
         return;
       }
 
-      // Crear una copia limpia de las ubicaciones de impresión
+      // Create a clean copy of print locations
       const cleanPrintLocations = printLocations.map(location => {
         if (location.startsWith("custom:") && location.endsWith(":")) {
           return null;
@@ -75,7 +75,7 @@ export const createNavigationHandlers = ({
         return location;
       }).filter(Boolean) as string[];
 
-      // Guardar el item actual antes de ir al resumen
+      // Save the current item before moving to the summary
       const currentTotalQuantity = getTotalQuantity(formData.sizes);
       if (currentTotalQuantity > 0) {
         setSavedItems(prev => [...prev, {
@@ -85,14 +85,14 @@ export const createNavigationHandlers = ({
         }]);
       }
 
-      setStep(3); // Ir a la pantalla de resumen
+      setStep(3); // Go to the summary screen
     }
     else if (step === 3) {
-      // Después del resumen, ir al formulario de contacto
+      // After summary, go to contact form
       setStep(4);
     }
     else if (step === 4) {
-      // Validar la información de contacto antes de permitir enviar
+      // Validate contact information before allowing submission
       const contactInfo = formData.contactInfo;
       if (!contactInfo?.fullName || !contactInfo?.email || !contactInfo?.phone || !contactInfo?.address) {
         toast({
@@ -103,7 +103,7 @@ export const createNavigationHandlers = ({
         return;
       }
       
-      // Si toda la información está completa, permitir enviar
+      // If all information is complete, allow submission
       setStep(5);
     }
   };
