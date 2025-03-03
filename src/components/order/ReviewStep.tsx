@@ -134,24 +134,24 @@ export const ReviewStep = ({ savedItems }: ReviewStepProps) => {
                     {Array.isArray(item.printLocations) && item.printLocations.length > 0 ? (
                       <div className="space-y-4 ml-8">
                         {item.printLocations.map((location, idx) => (
-                          <div key={idx} className="flex items-start gap-4">
-                            <div className="flex-1">
-                              <p className="text-gray-600 dark:text-gray-300">
-                                {formatPrintLocation(location)}
-                              </p>
-                            </div>
+                          <div key={idx} className="flex items-center gap-3">
+                            <p className="text-gray-600 dark:text-gray-300 min-w-36">
+                              {formatPrintLocation(location)}:
+                            </p>
                             
                             {/* Design Preview */}
-                            {item.designs && item.designs[location] && (
-                              <div className="flex-1">
-                                <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 p-2">
-                                  <img 
-                                    src={item.designs[location]} 
-                                    alt={`Design for ${formatPrintLocation(location)}`}
-                                    className="h-24 object-contain mx-auto" 
-                                  />
-                                </div>
+                            {item.designs && item.designs[location] ? (
+                              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 p-1 inline-flex">
+                                <img 
+                                  src={item.designs[location]} 
+                                  alt={`Design for ${formatPrintLocation(location)}`}
+                                  className="h-20 object-contain" 
+                                />
                               </div>
+                            ) : (
+                              <span className="text-gray-400 dark:text-gray-500 italic text-sm">
+                                No design uploaded
+                              </span>
                             )}
                           </div>
                         ))}
