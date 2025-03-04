@@ -1,13 +1,17 @@
-// server.cjs - CommonJS version
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
-const path = require('path');
+/**
+ * Hostinger-specific server configuration
+ * This file should be used as the entry point for your Node.js application on Hostinger
+ */
 
 // Load environment variables
-dotenv.config();
+require('dotenv').config();
+
+// Import required modules
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { createTransporter, testEmailConfig } = require('./server.js');
 
 // Create Express app
 const app = express();
@@ -18,40 +22,6 @@ app.use(bodyParser.json());
 
 // Serve static files from dist directory
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// Log environment variables for debugging
-console.log('Environment variables loaded:');
-console.log('VITE_SMTP_USER:', process.env.VITE_SMTP_USER);
-console.log('VITE_SMTP_PASS:', process.env.VITE_SMTP_PASS ? '[PRESENT]' : '[MISSING]');
-console.log('VITE_SMTP_HOST:', process.env.VITE_SMTP_HOST);
-console.log('VITE_SMTP_PORT:', process.env.VITE_SMTP_PORT);
-
-// Create email transporter
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.VITE_SMTP_HOST,
-    port: parseInt(process.env.VITE_SMTP_PORT),
-    secure: true,
-    auth: {
-      user: process.env.VITE_SMTP_USER,
-      pass: process.env.VITE_SMTP_PASS
-    }
-  });
-}
-
-// Test the email configuration
-async function testEmailConfig() {
-  try {
-    const transporter = createTransporter();
-    console.log('Testing SMTP connection...');
-    const verify = await transporter.verify();
-    console.log('SMTP connection verified:', verify);
-    return true;
-  } catch (error) {
-    console.error('SMTP connection failed:', error);
-    return false;
-  }
-}
 
 // Simple test endpoint
 app.get('/api/test', (req, res) => {
@@ -82,7 +52,7 @@ app.post('/api/send-email', async (req, res) => {
     const mailOptions = {
       from: process.env.VITE_SMTP_USER,
       to: "info@projectprinting.org",
-      subject: `New message from ${data.name}: ${data.subject}`,
+      subject: `Nuevo mensaje de contacto: ${data.subject}`,
       text: emailContent,
     };
     
@@ -117,7 +87,7 @@ app.get('*', (req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
   console.log(`API endpoints available:`);
   console.log(`- GET /api/test`);
   console.log(`- POST /api/send-email`);
@@ -130,6 +100,3 @@ testEmailConfig().then(valid => {
     console.warn('Warning: Email configuration is not valid. Contact form will not work correctly.');
   }
 });
-
-// Export the app for potential use in other files
-module.exports = app;

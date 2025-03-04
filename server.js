@@ -147,4 +147,16 @@ async function createServer() {
   });
 }
 
-createServer().catch(console.error);
+// Check if this file is being run directly
+if (require.main === module) {
+  // Load environment variables
+  dotenv.config();
+  
+  // Start the server
+  createServer().catch((err) => {
+    console.error('Failed to start server:', err);
+  });
+}
+
+// Export the createServer function for use in other files
+module.exports = { createServer, createTransporter, testEmailConfig };
