@@ -1,28 +1,25 @@
-
 import { sendEmail } from '@/lib/email';
+import type { Request, Response } from 'express';
 
-export default async function handler(req: Request) {
+// This is a simple API endpoint to handle email sending
+export default async function handler(req: Request, res: Response) {
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const data = await req.json();
+    const data = req.body;
+    
+    // Validate required fields
+    if (!data.name || !data.email || !data.subject || !data.message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
     await sendEmail(data);
     
-    return new Response(JSON.stringify({ message: 'Email sent successfully' }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return res.status(500).json({ error: 'Failed to send email' });
   }
 }

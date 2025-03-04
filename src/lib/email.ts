@@ -1,15 +1,30 @@
-
 import * as nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.hostinger.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
+// Get environment variables from the appropriate source
+const getEnvVar = (name: string) => {
+  // When running in Node.js (server-side)
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[name];
   }
-});
+  // When running in browser (client-side with Vite)
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[name];
+  }
+  return undefined;
+};
+
+// Create transporter with environment variables
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: "smtp.hostinger.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: getEnvVar('VITE_SMTP_USER'),
+      pass: getEnvVar('VITE_SMTP_PASS')
+    }
+  });
+};
 
 export const sendEmail = async (data: {
   name: string;
@@ -25,11 +40,19 @@ export const sendEmail = async (data: {
   `;
 
   const mailOptions = {
-    from: process.env.SMTP_USER,
+    from: getEnvVar('VITE_SMTP_USER'),
     to: "info@projectprinting.org",
     subject: `Nuevo mensaje de contacto: ${data.subject}`,
     text: emailContent,
   };
 
-  return transporter.sendMail(mailOptions);
+  try {
+    const transporter = createTransporter();
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
 };

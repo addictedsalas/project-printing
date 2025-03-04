@@ -1,4 +1,3 @@
-
 import { Mail, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,16 @@ export default function Contact() {
     };
 
     try {
-      const response = await fetch('/api/send-email', {
+      console.log('Sending email data:', data);
+      
+      // Use the full URL in development to ensure it's hitting the correct endpoint
+      const apiUrl = import.meta.env.DEV 
+        ? 'http://localhost:3000/api/send-email' 
+        : '/api/send-email';
+      
+      console.log('Sending request to:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,9 +41,16 @@ export default function Contact() {
         body: JSON.stringify(data),
       });
 
+      console.log('Response status:', response.status);
+      
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server error response:', errorText);
         throw new Error('Error al enviar el mensaje');
       }
+
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
 
       toast({
         title: "¡Mensaje enviado!",
@@ -44,7 +59,7 @@ export default function Contact() {
       
       (e.target as HTMLFormElement).reset();
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error details:', error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -165,6 +180,7 @@ export default function Contact() {
                     <Input 
                       required
                       type="text"
+                      name="firstName"
                       placeholder="John"
                       className="bg-white/50 dark:bg-brand-navy-dark/50"
                     />
@@ -177,6 +193,7 @@ export default function Contact() {
                     <Input 
                       required
                       type="text"
+                      name="lastName"
                       placeholder="Doe"
                       className="bg-white/50 dark:bg-brand-navy-dark/50"
                     />
@@ -190,6 +207,7 @@ export default function Contact() {
                   <Input 
                     required
                     type="email"
+                    name="email"
                     placeholder="john@example.com"
                     className="bg-white/50 dark:bg-brand-navy-dark/50"
                   />
@@ -202,6 +220,7 @@ export default function Contact() {
                   <Input 
                     required
                     type="text"
+                    name="subject"
                     placeholder="How can we help?"
                     className="bg-white/50 dark:bg-brand-navy-dark/50"
                   />
@@ -213,6 +232,7 @@ export default function Contact() {
                   </label>
                   <Textarea 
                     required
+                    name="message"
                     placeholder="Type your message here..."
                     className="min-h-[150px] bg-white/50 dark:bg-brand-navy-dark/50"
                   />

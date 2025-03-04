@@ -1,69 +1,71 @@
-# Welcome to your Lovable project
+# Project Printing
 
-## Project info
+A modern web application for Project Printing, featuring a responsive design with React, Vite, and Express.
 
-**URL**: https://lovable.dev/projects/f22227f9-a947-467c-8429-a7d4d671629e
+## Features
 
-## How can I edit this code?
+- **Modern UI**: Built with React and Tailwind CSS
+- **Contact Form**: Integrated email functionality using Nodemailer
+- **Responsive Design**: Works on all device sizes
+- **Server-Side Integration**: Express.js backend with API endpoints
 
-There are several ways of editing your application.
+## Technology Stack
 
-**Use Lovable**
+- **Frontend**: React, Tailwind CSS, Radix UI
+- **Backend**: Express.js, Node.js
+- **Build Tool**: Vite
+- **Email Service**: Nodemailer with SMTP
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f22227f9-a947-467c-8429-a7d4d671629e) and start prompting.
+## Setup Instructions
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
-**Use your preferred IDE**
+### Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
+1. Clone the repository
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone <repository-url>
+cd project-printing
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install dependencies
+```sh
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Create a `.env` file in the root directory with the following variables:
+```
+VITE_SMTP_HOST=smtp.hostinger.com
+VITE_SMTP_PORT=465
+VITE_SMTP_USER=info@projectprinting.org
+VITE_SMTP_PASS=your_password_here
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Build the project
+```sh
+npm run build
+```
+
+5. Start the server
+```sh
+node server.js
+```
+
+The application will be available at http://localhost:3000
+
+## Development
+
+To start the development server:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Email Configuration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This project uses Nodemailer with SMTP for sending emails. See the [NODEMAILER_SETUP.md](./NODEMAILER_SETUP.md) file for detailed configuration instructions.
 
-**Use GitHub Codespaces**
+## License
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f22227f9-a947-467c-8429-a7d4d671629e) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+MIT
